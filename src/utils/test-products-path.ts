@@ -87,6 +87,22 @@ export async function findXctestrunPaths(testProductsPath: string): Promise<stri
   await collectXctestrunPaths(testProductsPath, paths);
   return paths.sort((left, right) => left.localeCompare(right));
 }
+export async function hasMultipleSimulatorPlatforms(testProductsPath: string): Promise<boolean> {
+  const xctestrunPaths = await findXctestrunPaths(testProductsPath);
+  const simulatorPlatforms = new Set<string>();
+
+  for (const xctestrunPath of xctestrunPaths) {
+    const contents = await fs.promises.readFile(xctestrunPath, 'utf8');
+    for (const match of contents.matchAll(/(?:^|[-/])([A-Za-z]+simulator)(?:[/\\])/gu)) {
+      simulatorPlatforms.add(match[1]!.toLowerCase());
+    }
+    if (simulatorPlatforms.size > 1) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 export function markTestProductsPathCompleted(testProductsPath: string | undefined): void {
   if (!testProductsPath) {

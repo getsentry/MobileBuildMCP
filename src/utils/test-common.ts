@@ -8,6 +8,7 @@ import * as path from 'node:path';
 import { log } from './logger.ts';
 import { constructDestinationString, XcodePlatform } from './xcode.ts';
 import { executeXcodeBuildCommand } from './build/index.ts';
+import type { BuildCommandResult } from './build/index.ts';
 import { extractTestFailuresFromXcresult } from './xcresult-test-failures.ts';
 
 import { normalizeTestRunnerEnv } from './environment.ts';
@@ -23,6 +24,7 @@ import {
 } from './result-bundle-path.ts';
 import {
   createDefaultTestProductsPath,
+  hasMultipleSimulatorPlatforms,
   markTestProductsPathCompleted,
 } from './test-products-path.ts';
 import { resolvePathFromCwd } from './path.ts';
@@ -317,17 +319,36 @@ export function createTestExecutor(
         message: 'Running tests',
       });
 
-      let testWithoutBuildingResult: PreparedTestCommandResult;
+      let testWithoutBuildingResult: PreparedTestCommandResult | BuildCommandResult;
       try {
-        testWithoutBuildingResult = await executePreparedTestCommand(
-          { ...params, testProductsPath },
-          filterPreparedTestExtraArgs(executionPlan.testArgs),
-          resultBundlePath,
-          executor,
-          execOpts,
-          started.pipeline,
-          getPreparedTestDestinationArgs(executionPlan.testArgs),
-        );
+        const usesMultipleSimulatorPlatforms =
+          await hasMultipleSimulatorPlatforms(testProductsPath);
+        testWithoutBuildingResult = usesMultipleSimulatorPlatforms
+          ? await executeXcodeBuildCommand(
+              {
+                ...params,
+                extraArgs: [
+                  ...filterPreparedTestExtraArgs(executionPlan.testArgs),
+                  '-resultBundlePath',
+                  resultBundlePath,
+                ],
+              },
+              platformOptions,
+              params.preferXcodebuild,
+              'test-without-building',
+              executor,
+              execOpts,
+              started.pipeline,
+            )
+          : await executePreparedTestCommand(
+              { ...params, testProductsPath },
+              filterPreparedTestExtraArgs(executionPlan.testArgs),
+              resultBundlePath,
+              executor,
+              execOpts,
+              started.pipeline,
+              getPreparedTestDestinationArgs(executionPlan.testArgs),
+            );
       } finally {
         markTestProductsPathCompleted(testProductsPath);
         if (shouldUseDefaultResultBundlePath) {

@@ -23,7 +23,13 @@ vi.mock('../xcresult-test-failures.ts', () => ({
   extractTestSummaryCountsFromXcresult: vi.fn(() => null),
 }));
 
-function createSuccessfulCommandResponse(): CommandResponse {
+function createSuccessfulCommandResponse(command?: readonly string[]): CommandResponse {
+  if (command?.at(-1) === 'build-for-testing') {
+    const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
+    if (testProductsPath) {
+      mkdirSync(testProductsPath, { recursive: true });
+    }
+  }
   return {
     success: true,
     output: '',
@@ -155,7 +161,7 @@ describe('createTestExecutor', () => {
         opts?.onStdout?.('Ld /tmp/Weather.build/Weather normal arm64\n');
       }
 
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -202,7 +208,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -277,7 +283,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -355,14 +361,15 @@ describe('createTestExecutor', () => {
     expect(commands).toHaveLength(1);
     expect(commands[0]).not.toContain('-resultBundlePath');
     expect(result.artifacts.xcresultPath).toBeUndefined();
-    expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(true);
+    expect(existsSync(testProductsPath!)).toBe(false);
+    expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(false);
   });
 
   it('injects the default result bundle only into the simulator test execution phase', async () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -407,7 +414,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -452,7 +459,7 @@ describe('createTestExecutor', () => {
         const testProductsIndex = command.indexOf('-testProductsPath');
         testProductsPath = command[testProductsIndex + 1];
         mkdirSync(testProductsPath!);
-        return createSuccessfulCommandResponse();
+        return createSuccessfulCommandResponse(command);
       }
 
       expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(false);

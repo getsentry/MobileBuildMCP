@@ -12,6 +12,7 @@ import {
   getWorkspaceFilesystemLayout,
   setXcodeBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
+import { withManagedTestProductsReader } from '../test-products-lifecycle.ts';
 import { getTestProductsCompletionMarkerPath } from '../test-products-path.ts';
 
 const WORKSPACE_KEY = 'Demo-aaaaaaaaaaaa';
@@ -69,5 +70,44 @@ describe('test products purge storage', () => {
     expect(existsSync(getTestProductsCompletionMarkerPath(managed))).toBe(false);
     expect(existsSync(callerOwned)).toBe(true);
     expect(existsSync(externalCallerOwned)).toBe(true);
+  });
+
+  it('skips a managed bundle while an active reader is consuming it', async () => {
+    const now = Date.UTC(2026, 4, 6, 12);
+    const layout = getWorkspaceFilesystemLayout(WORKSPACE_KEY);
+    const managed = path.join(
+      layout.testProducts,
+      'test_sim_2026-05-02T12-00-00-000Z_pid999999999_abcdef12.xctestproducts',
+    );
+    writeTestProducts(managed, now - 4 * 24 * 60 * 60 * 1000);
+    writeFileSync(getTestProductsCompletionMarkerPath(managed), 'completed');
+    const report = await enumeratePurgeStorage({
+      scope: { type: 'workspace', workspaceKey: WORKSPACE_KEY },
+    });
+    const plan = await planPurgeStorage({
+      report,
+      scope: { type: 'workspace', workspaceKey: WORKSPACE_KEY },
+      classes: ['testProducts'],
+      now,
+    });
+
+    const result = await withManagedTestProductsReader(
+      managed,
+      () => executePurgeStoragePlan(plan, { now }),
+      {
+        workspaceKey: WORKSPACE_KEY,
+        maxAgeMs: 365 * 24 * 60 * 60 * 1000,
+        maxCount: 3,
+      },
+    );
+
+    expect(result.deleted).toEqual([]);
+    expect(result.skipped).toEqual([
+      expect.objectContaining({
+        path: managed,
+        reason: 'test products candidate is protected by active lifecycle owner',
+      }),
+    ]);
+    expect(existsSync(managed)).toBe(true);
   });
 });

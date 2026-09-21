@@ -29,6 +29,8 @@ function createDefaultConfig(
     showTestTiming: false,
     uiDebuggerGuardMode: 'error',
     incrementalBuildsEnabled: false,
+    testProductsMaxCount: 3,
+    testProductsMaxAgeDays: 1,
     dapRequestTimeoutMs: 30000,
     dapLogEvents: false,
     launchJsonWaitMs: 8000,

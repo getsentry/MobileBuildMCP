@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { mkdirSync } from 'node:fs';
 import * as z from 'zod';
 import {
   createMockCommandResponse,
@@ -26,6 +27,22 @@ const runTestMacosLogic = (
   executor: Parameters<typeof testMacosLogic>[1],
   fileSystemExecutor: Parameters<typeof testMacosLogic>[2],
 ) => runToolLogic(() => testMacosLogic(params, executor, fileSystemExecutor));
+
+function createRequestedTestProducts(command: readonly string[]): void {
+  if (command.at(-1) !== 'build-for-testing') return;
+  const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
+  if (testProductsPath) {
+    mkdirSync(testProductsPath, { recursive: true });
+  }
+}
+
+function createSuccessfulTestExecutor(output: string): ReturnType<typeof createMockExecutor> {
+  return createMockExecutor({
+    success: true,
+    output,
+    onExecute: createRequestedTestProducts,
+  });
+}
 
 describe('test_macos plugin (unified)', () => {
   beforeEach(() => {
@@ -112,10 +129,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should allow only projectPath', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -131,10 +145,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should allow only workspacePath', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -152,10 +163,7 @@ describe('test_macos plugin (unified)', () => {
 
   describe('Handler Behavior (Complete Literal Returns)', () => {
     it('should return pending response with workspace when xcodebuild succeeds', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -172,10 +180,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should return pending response with project when xcodebuild succeeds', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -192,10 +197,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should use default configuration when not provided', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -211,10 +213,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should handle optional parameters correctly', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -234,10 +233,7 @@ describe('test_macos plugin (unified)', () => {
     });
 
     it('should handle successful test execution with minimal parameters', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Suite All Tests passed',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Suite All Tests passed');
 
       const { result } = await runTestMacosLogic(
         {
@@ -263,6 +259,7 @@ describe('test_macos plugin (unified)', () => {
         _detached?: boolean,
       ) => {
         commandCalls.push({ command, logPrefix, cwd: opts?.cwd });
+        createRequestedTestProducts(command);
         return createMockCommandResponse({
           success: true,
           output: 'Test Succeeded',
@@ -332,18 +329,20 @@ describe('test_macos plugin (unified)', () => {
 
     it('should return pending response with optional parameters', async () => {
       const mockExecutor = async (
-        _command: string[],
+        command: string[],
         _logPrefix?: string,
         _useShell?: boolean,
         _opts?: { env?: Record<string, string> },
         _detached?: boolean,
-      ) =>
-        createMockCommandResponse({
+      ) => {
+        createRequestedTestProducts(command);
+        return createMockCommandResponse({
           success: true,
           output: 'Test Succeeded',
           error: undefined,
           exitCode: 0,
         });
+      };
 
       const { result } = await runTestMacosLogic(
         {

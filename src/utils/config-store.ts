@@ -12,6 +12,9 @@ import type { FilePathRenderStyle, UiDebuggerGuardMode } from './runtime-config-
 import { isFilePathRenderStyle } from './file-path-render-style.ts';
 import { normalizeSessionDefaultsProfileName } from './session-defaults-profile.ts';
 
+export const DEFAULT_TEST_PRODUCTS_MAX_COUNT = 3;
+export const DEFAULT_TEST_PRODUCTS_MAX_AGE_DAYS = 1;
+
 export type RuntimeConfigOverrides = Partial<{
   enabledWorkflows: string[];
   customWorkflows: Record<string, string[]>;
@@ -24,6 +27,8 @@ export type RuntimeConfigOverrides = Partial<{
   filePathRenderStyle: FilePathRenderStyle;
   uiDebuggerGuardMode: UiDebuggerGuardMode;
   incrementalBuildsEnabled: boolean;
+  testProductsMaxCount: number;
+  testProductsMaxAgeDays: number;
   dapRequestTimeoutMs: number;
   dapLogEvents: boolean;
   launchJsonWaitMs: number;
@@ -51,6 +56,8 @@ export type ResolvedRuntimeConfig = {
   filePathRenderStyle?: FilePathRenderStyle;
   uiDebuggerGuardMode: UiDebuggerGuardMode;
   incrementalBuildsEnabled: boolean;
+  testProductsMaxCount: number;
+  testProductsMaxAgeDays: number;
   dapRequestTimeoutMs: number;
   dapLogEvents: boolean;
   launchJsonWaitMs: number;
@@ -87,6 +94,8 @@ const DEFAULT_CONFIG: ResolvedRuntimeConfig = {
   showTestTiming: false,
   uiDebuggerGuardMode: 'error',
   incrementalBuildsEnabled: false,
+  testProductsMaxCount: DEFAULT_TEST_PRODUCTS_MAX_COUNT,
+  testProductsMaxAgeDays: DEFAULT_TEST_PRODUCTS_MAX_AGE_DAYS,
   dapRequestTimeoutMs: 30_000,
   dapLogEvents: false,
   launchJsonWaitMs: 8000,
@@ -126,6 +135,47 @@ function parseNonNegativeInt(value: string | undefined): number | undefined {
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed < 0) return undefined;
   return Math.floor(parsed);
+}
+
+function parsePositiveIntegerEnvironmentValue(
+  name: string,
+  value: string | undefined,
+): number | undefined {
+  if (value === undefined) return undefined;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    throw new Error(`${name} must be a positive integer`);
+  }
+  return parsed;
+}
+
+function parsePositiveNumberEnvironmentValue(
+  name: string,
+  value: string | undefined,
+): number | undefined {
+  if (value === undefined) return undefined;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    throw new Error(`${name} must be a positive finite number`);
+  }
+  return parsed;
+}
+
+function validateTestProductsRetentionOverrides(
+  overrides: RuntimeConfigOverrides | undefined,
+): void {
+  if (hasOwnProperty(overrides, 'testProductsMaxCount')) {
+    const maxCount = overrides.testProductsMaxCount;
+    if (typeof maxCount !== 'number' || !Number.isInteger(maxCount) || maxCount < 1) {
+      throw new Error('testProductsMaxCount must be a positive integer');
+    }
+  }
+  if (hasOwnProperty(overrides, 'testProductsMaxAgeDays')) {
+    const maxAgeDays = overrides.testProductsMaxAgeDays;
+    if (typeof maxAgeDays !== 'number' || !Number.isFinite(maxAgeDays) || maxAgeDays <= 0) {
+      throw new Error('testProductsMaxAgeDays must be a positive finite number');
+    }
+  }
 }
 
 function parseEnabledWorkflows(value: string | undefined): string[] | undefined {
@@ -225,6 +275,24 @@ function readEnvConfig(env: NodeJS.ProcessEnv): RuntimeConfigOverrides {
   );
 
   setIfDefined(config, 'incrementalBuildsEnabled', parseBoolean(env.INCREMENTAL_BUILDS_ENABLED));
+
+  setIfDefined(
+    config,
+    'testProductsMaxCount',
+    parsePositiveIntegerEnvironmentValue(
+      'XCODEBUILDMCP_TEST_PRODUCTS_MAX_COUNT',
+      env.XCODEBUILDMCP_TEST_PRODUCTS_MAX_COUNT,
+    ),
+  );
+
+  setIfDefined(
+    config,
+    'testProductsMaxAgeDays',
+    parsePositiveNumberEnvironmentValue(
+      'XCODEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS',
+      env.XCODEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS,
+    ),
+  );
 
   const axePath = env.XCODEBUILDMCP_AXE_PATH ?? env.AXE_PATH;
   if (axePath) config.axePath = axePath;
@@ -456,6 +524,7 @@ function resolveConfig(opts: {
   overrides?: RuntimeConfigOverrides;
   env?: NodeJS.ProcessEnv;
 }): ResolvedRuntimeConfig {
+  validateTestProductsRetentionOverrides(opts.overrides);
   const envConfig = readEnvConfig(opts.env ?? process.env);
 
   return {
@@ -534,6 +603,18 @@ function resolveConfig(opts: {
       fileConfig: opts.fileConfig,
       envConfig,
       fallback: DEFAULT_CONFIG.incrementalBuildsEnabled,
+    }),
+    testProductsMaxCount: resolveFromLayers({
+      key: 'testProductsMaxCount',
+      overrides: opts.overrides,
+      envConfig,
+      fallback: DEFAULT_CONFIG.testProductsMaxCount,
+    }),
+    testProductsMaxAgeDays: resolveFromLayers({
+      key: 'testProductsMaxAgeDays',
+      overrides: opts.overrides,
+      envConfig,
+      fallback: DEFAULT_CONFIG.testProductsMaxAgeDays,
     }),
     dapRequestTimeoutMs: resolveFromLayers({
       key: 'dapRequestTimeoutMs',

@@ -13,7 +13,10 @@ import {
   isTestProductsCompletionMarkerTempName,
   isXcodeBuildMCPManagedTestProductsName,
 } from '../test-products-path.ts';
-import { isProtectedManagedTestProducts } from '../test-products-lifecycle.ts';
+import {
+  getManagedTestProductsReaderStateDir,
+  isProtectedManagedTestProducts,
+} from '../test-products-lifecycle.ts';
 import {
   WORKSPACE_FILESYSTEM_LIFECYCLE_LOCK_LEASE_MS,
   WORKSPACE_FILESYSTEM_LIFECYCLE_MIN_VISIBLE_MS,
@@ -185,7 +188,11 @@ async function validateClassSpecificDeletionCandidate(
       if (
         await isProtectedManagedTestProducts(
           { name, path: candidate.path, mtimeMs: candidate.mtimeMs },
-          { now, minVisibleMs: 0 },
+          {
+            now,
+            minVisibleMs: 0,
+            readerStateDir: getManagedTestProductsReaderStateDir(candidate.workspaceKey),
+          },
         )
       ) {
         return 'test products candidate is protected by active lifecycle owner';

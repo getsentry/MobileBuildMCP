@@ -7,6 +7,10 @@
 - Renamed the project from XcodeBuildMCP to MobileBuildMCP. The npm package, CLI binaries (`mobilebuildmcp`, `mobilebuildmcp-doctor`), Homebrew formula, `MOBILEBUILDMCP_*` environment variables, `mobilebuildmcp://` resource URIs, `mobilebuildmcp.output.*` structured output schema IDs, the `.mobilebuildmcp/config.yaml` project config directory, and the `~/Library/Developer/MobileBuildMCP` state directory all use the new name. The `xcodebuildmcp.com` domain is retired: structured output schema `$id` URLs now use `https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/`, documentation links point at the docs sources in the `getsentry/xcodebuildmcp.com` repository, and the MCP registry name is `io.github.getsentry/mobilebuildmcp`.
 - Dictionary-shaped MCP inputs now use client-compatible wire representations ([#491](https://github.com/getsentry/XcodeBuildMCP/issues/491)). The `env` and `testRunnerEnv` inputs on build, launch, test, and session-default tools are arrays of `{ "key": "...", "value": "..." }` entries, while `xcode_ide_call_tool.arguments` is a JSON object string. MobileBuildMCP converts these values to their existing internal objects only after MCP input validation.
 
+### Fixed
+
+- Managed `.xctestproducts` now prune promptly around builds and tests, defaulting to three bundles retained for one day. Set `XCODEBUILDMCP_TEST_PRODUCTS_MAX_COUNT` or `XCODEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS` to override those limits ([#524](https://github.com/getsentry/XcodeBuildMCP/issues/524)).
+
 ## [2.7.0]
 
 ### New! Xcode 27 Device Hub simulator support

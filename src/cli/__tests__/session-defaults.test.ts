@@ -20,6 +20,8 @@ describe('CLI session defaults', () => {
         showTestTiming: false,
         uiDebuggerGuardMode: 'error',
         incrementalBuildsEnabled: false,
+        testProductsMaxCount: 3,
+        testProductsMaxAgeDays: 1,
         dapRequestTimeoutMs: 30_000,
         dapLogEvents: false,
         launchJsonWaitMs: 8_000,

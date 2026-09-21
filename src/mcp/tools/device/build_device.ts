@@ -31,27 +31,25 @@ import { displayPath } from '../../../utils/build-preflight.ts';
 import { resolveEffectiveDerivedDataPath } from '../../../utils/derived-data-path.ts';
 import { resolvePathFromCwd } from '../../../utils/path.ts';
 import { filterTestProductsPathArgs } from '../../../utils/test-source.ts';
-import {
-  createDefaultTestProductsPath,
-  findXctestrunPaths,
-  markTestProductsPathCompleted,
-} from '../../../utils/test-products-path.ts';
+import { findXctestrunPaths } from '../../../utils/test-products-path.ts';
+import { withManagedTestProductsOutput } from '../../../utils/test-products-lifecycle.ts';
 import { createBuildInvocationFragment } from '../../../utils/xcodebuild-pipeline.ts';
 
 interface PreparedBuildDeviceExecution {
   buildAction: 'build' | 'build-for-testing';
   invocationRequest: BuildInvocationRequest;
-  isManagedTestProductsPath: boolean;
   logLabel: 'Build' | 'Build for Testing';
   sharedBuildParams: BuildDeviceParams;
   testProductsPath?: string;
 }
 
-function prepareBuildDeviceExecution(params: BuildDeviceParams): PreparedBuildDeviceExecution {
+function prepareBuildDeviceExecution(
+  params: BuildDeviceParams,
+  managedTestProductsPath?: string,
+): PreparedBuildDeviceExecution {
   const buildForTesting = params.buildForTesting ?? false;
-  const isManagedTestProductsPath = buildForTesting && params.testProductsPath === undefined;
   const testProductsPath = buildForTesting
-    ? (resolvePathFromCwd(params.testProductsPath) ?? createDefaultTestProductsPath('build_device'))
+    ? (resolvePathFromCwd(params.testProductsPath) ?? managedTestProductsPath)
     : undefined;
   const sharedBuildParams = testProductsPath
     ? {
@@ -67,7 +65,6 @@ function prepareBuildDeviceExecution(params: BuildDeviceParams): PreparedBuildDe
   return {
     buildAction: buildForTesting ? 'build-for-testing' : 'build',
     invocationRequest: createBuildDeviceRequest(params, testProductsPath),
-    isManagedTestProductsPath,
     logLabel: buildForTesting ? 'Build for Testing' : 'Build',
     sharedBuildParams,
     testProductsPath,
@@ -140,58 +137,67 @@ export function createBuildDeviceExecutor(
   prepared?: PreparedBuildDeviceExecution,
 ): StreamingExecutor<BuildDeviceParams, BuildDeviceResult> {
   return async (params, ctx) => {
-    const resolved = prepared ?? prepareBuildDeviceExecution(params);
-    const platform = mapDevicePlatform(params.platform);
-    const started = createDomainStreamingPipeline('build_device', 'BUILD', ctx, 'build-result');
+    const executePrepared = async (
+      resolved: PreparedBuildDeviceExecution,
+    ): Promise<BuildDeviceResult> => {
+      const platform = mapDevicePlatform(params.platform);
+      const started = createDomainStreamingPipeline('build_device', 'BUILD', ctx, 'build-result');
 
-    const buildResult = await executeXcodeBuildCommand(
-      resolved.sharedBuildParams,
-      {
-        platform,
-        logPrefix: `${platform} Device ${resolved.logLabel}`,
-        deviceId: params.buildForTesting ? params.deviceId : undefined,
-      },
-      params.preferXcodebuild ?? false,
-      resolved.buildAction,
-      executor,
-      undefined,
-      started.pipeline,
-    );
-    const succeeded = !buildResult.isError;
+      const buildResult = await executeXcodeBuildCommand(
+        resolved.sharedBuildParams,
+        {
+          platform,
+          logPrefix: `${platform} Device ${resolved.logLabel}`,
+          deviceId: params.buildForTesting ? params.deviceId : undefined,
+        },
+        params.preferXcodebuild ?? false,
+        resolved.buildAction,
+        executor,
+        undefined,
+        started.pipeline,
+      );
+      const succeeded = !buildResult.isError;
+      const xctestrunPaths =
+        succeeded && resolved.testProductsPath
+          ? await findXctestrunPaths(resolved.testProductsPath)
+          : [];
 
-    if (resolved.isManagedTestProductsPath) {
-      markTestProductsPathCompleted(resolved.testProductsPath);
+      return createBuildDomainResult({
+        started,
+        succeeded,
+        target: 'device',
+        artifacts: {
+          buildLogPath: displayPath(started.pipeline.logPath),
+          ...(succeeded && resolved.testProductsPath
+            ? { testProductsPath: displayPath(resolved.testProductsPath) }
+            : {}),
+          ...(xctestrunPaths.length > 0 ? { xctestrunPaths: xctestrunPaths.map(displayPath) } : {}),
+        },
+        fallbackErrorMessages: collectFallbackErrorMessages(started, [], buildResult.content),
+        request: resolved.invocationRequest,
+      });
+    };
+
+    if (prepared) {
+      return executePrepared(prepared);
     }
-
-    const xctestrunPaths =
-      succeeded && resolved.testProductsPath
-        ? await findXctestrunPaths(resolved.testProductsPath)
-        : [];
-
-    return createBuildDomainResult({
-      started,
-      succeeded,
-      target: 'device',
-      artifacts: {
-        buildLogPath: displayPath(started.pipeline.logPath),
-        ...(succeeded && resolved.testProductsPath
-          ? { testProductsPath: displayPath(resolved.testProductsPath) }
-          : {}),
-        ...(xctestrunPaths.length > 0 ? { xctestrunPaths: xctestrunPaths.map(displayPath) } : {}),
-      },
-      fallbackErrorMessages: collectFallbackErrorMessages(started, [], buildResult.content),
-      request: resolved.invocationRequest,
-    });
+    return params.buildForTesting && params.testProductsPath === undefined
+      ? withManagedTestProductsOutput(
+          'build_device',
+          (testProductsPath) =>
+            executePrepared(prepareBuildDeviceExecution(params, testProductsPath)),
+          { isSuccessful: (result) => !result.didError },
+        )
+      : executePrepared(prepareBuildDeviceExecution(params));
   };
 }
 
-export async function buildDeviceLogic(
+async function executeBuildDeviceLogic(
   params: BuildDeviceParams,
   executor: CommandExecutor,
-): Promise<void> {
+  prepared: PreparedBuildDeviceExecution,
+): Promise<BuildDeviceResult> {
   const ctx = getHandlerContext();
-  const prepared = prepareBuildDeviceExecution(params);
-
   ctx.emit(createBuildInvocationFragment('build-result', 'BUILD', prepared.invocationRequest));
   const executionContext = createStreamingExecutionContext(ctx);
   const executeBuildDevice = createBuildDeviceExecutor(executor, prepared);
@@ -222,6 +228,27 @@ export async function buildDeviceLogic(
       ctx.nextStepConditionKeys = ['app_build_succeeded'];
     }
   }
+  return result;
+}
+
+export async function buildDeviceLogic(
+  params: BuildDeviceParams,
+  executor: CommandExecutor,
+): Promise<void> {
+  if (params.buildForTesting && params.testProductsPath === undefined) {
+    await withManagedTestProductsOutput(
+      'build_device',
+      (testProductsPath) =>
+        executeBuildDeviceLogic(
+          params,
+          executor,
+          prepareBuildDeviceExecution(params, testProductsPath),
+        ),
+      { isSuccessful: (result) => !result.didError },
+    );
+    return;
+  }
+  await executeBuildDeviceLogic(params, executor, prepareBuildDeviceExecution(params));
 }
 
 export const schema = getSessionAwareToolSchemaShape({

@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -10,6 +10,14 @@ import { setRuntimeInstanceForTests } from '../runtime-instance.ts';
 import { createTestExecutor } from '../test-common.ts';
 import { resetWorkspaceFilesystemLifecycleStateForTests } from '../workspace-filesystem-lifecycle.ts';
 import { XcodePlatform } from '../xcode.ts';
+
+function createRequestedTestProducts(command: readonly string[]): void {
+  if (command.at(-1) !== 'build-for-testing') return;
+  const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
+  if (testProductsPath) {
+    mkdirSync(testProductsPath, { recursive: true });
+  }
+}
 
 describe('prepared test execution', () => {
   let tempAppDir: string;
@@ -81,6 +89,7 @@ describe('prepared test execution', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
+      createRequestedTestProducts(command);
       return createMockCommandResponse({ success: true, output: '', exitCode: 0 });
     };
     const executeTest = createTestExecutor(executor, {
@@ -112,6 +121,7 @@ describe('prepared test execution', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
+      createRequestedTestProducts(command);
       return createMockCommandResponse({ success: true, output: '', exitCode: 0 });
     };
     const executeTest = createTestExecutor(executor, {

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { mkdirSync } from 'node:fs';
 import * as z from 'zod';
 import { computeScopedDerivedDataPath } from '../../../../utils/derived-data-path.ts';
 import {
@@ -27,6 +28,22 @@ const runTestDeviceLogic = (
   fileSystemExecutor: Parameters<typeof testDeviceLogic>[2],
 ) => runToolLogic(() => testDeviceLogic(params, executor, fileSystemExecutor));
 
+function createRequestedTestProducts(command: readonly string[]): void {
+  if (command.at(-1) !== 'build-for-testing') return;
+  const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
+  if (testProductsPath) {
+    mkdirSync(testProductsPath, { recursive: true });
+  }
+}
+
+function createSuccessfulTestExecutor(output: string): ReturnType<typeof createMockExecutor> {
+  return createMockExecutor({
+    success: true,
+    output,
+    onExecute: createRequestedTestProducts,
+  });
+}
+
 function createSpyExecutor(): {
   commandCalls: Array<{ args: string[]; logPrefix?: string }>;
   executor: ReturnType<typeof createMockExecutor>;
@@ -36,6 +53,7 @@ function createSpyExecutor(): {
     success: true,
     output: 'Test Succeeded',
     onExecute: (command, logPrefix) => {
+      createRequestedTestProducts(command);
       commandCalls.push({ args: command, logPrefix });
     },
   });
@@ -82,10 +100,7 @@ describe('test_device plugin', () => {
     });
 
     it('should validate XOR between projectPath and workspacePath', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result: projectResult } = await runTestDeviceLogic(
         {
@@ -199,10 +214,7 @@ describe('test_device plugin', () => {
 
   describe('Handler Behavior (Complete Literal Returns)', () => {
     it('should return pending response for successful tests', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result } = await runTestDeviceLogic(
         {
@@ -270,10 +282,7 @@ describe('test_device plugin', () => {
     });
 
     it('should support different platforms', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result } = await runTestDeviceLogic(
         {
@@ -293,10 +302,7 @@ describe('test_device plugin', () => {
     });
 
     it('should handle optional parameters', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result } = await runTestDeviceLogic(
         {
@@ -318,10 +324,7 @@ describe('test_device plugin', () => {
     });
 
     it('should expose user-provided result bundle paths in test output', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result } = await runTestDeviceLogic(
         {
@@ -346,10 +349,7 @@ describe('test_device plugin', () => {
     });
 
     it('should handle workspace testing successfully', async () => {
-      const mockExecutor = createMockExecutor({
-        success: true,
-        output: 'Test Succeeded',
-      });
+      const mockExecutor = createSuccessfulTestExecutor('Test Succeeded');
 
       const { result } = await runTestDeviceLogic(
         {

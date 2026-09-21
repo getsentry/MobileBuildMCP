@@ -22,9 +22,9 @@ import {
   markResultBundlePathCompleted,
 } from './result-bundle-path.ts';
 import {
-  createDefaultTestProductsPath,
-  markTestProductsPathCompleted,
-} from './test-products-path.ts';
+  withManagedTestProductsOutput,
+  withManagedTestProductsReader,
+} from './test-products-lifecycle.ts';
 import { resolvePathFromCwd } from './path.ts';
 import { displayPath } from './build-preflight.ts';
 import {
@@ -206,19 +206,29 @@ async function executePreparedTestCommand(
     'test-without-building',
   ];
   const sourceWorkingDirectory = resolveSourceWorkingDirectory(params);
-  const response = await executor(command, 'Test Run', false, {
-    ...execOpts,
-    ...(sourceWorkingDirectory ? { cwd: sourceWorkingDirectory } : {}),
-    onStdout: (chunk) => pipeline.onStdout(chunk),
-    onStderr: (chunk) => pipeline.onStderr(chunk),
-  });
+  const execute = async (): Promise<{
+    content: Array<{ type: 'text'; text: string }>;
+    isError?: boolean;
+  }> => {
+    const response = await executor(command, 'Test Run', false, {
+      ...execOpts,
+      ...(sourceWorkingDirectory ? { cwd: sourceWorkingDirectory } : {}),
+      onStdout: (chunk) => pipeline.onStdout(chunk),
+      onStderr: (chunk) => pipeline.onStderr(chunk),
+    });
 
-  return response.success
-    ? { content: [{ type: 'text', text: 'Test Run test-without-building succeeded.' }] }
-    : {
-        content: [{ type: 'text', text: 'Test Run test-without-building failed.' }],
-        isError: true,
-      };
+    return response.success
+      ? { content: [{ type: 'text' as const, text: 'Test Run test-without-building succeeded.' }] }
+      : {
+          content: [{ type: 'text' as const, text: 'Test Run test-without-building failed.' }],
+          isError: true,
+        };
+  };
+
+  const preparedSourcePath = params.testProductsPath ?? params.xctestrunPath;
+  return preparedSourcePath
+    ? withManagedTestProductsReader(resolvePathFromCwd(preparedSourcePath), execute)
+    : execute();
 }
 
 type PreparedTestCommandResult = Awaited<ReturnType<typeof executePreparedTestCommand>>;
@@ -261,95 +271,94 @@ export function createTestExecutor(
       parsedResultBundleArgs.resultBundlePath ?? createDefaultResultBundlePath(toolName);
 
     if (!hasPreparedTestSource) {
-      const testProductsPath = createDefaultTestProductsPath(toolName);
-      const executionPlan = createSimulatorTwoPhaseExecutionPlan({
-        extraArgs: parsedResultBundleArgs.remainingArgs,
-        preflight: options.preflight,
-      });
+      let managedOutputWasProduced = false;
+      return withManagedTestProductsOutput(
+        toolName,
+        async (testProductsPath) => {
+          const executionPlan = createSimulatorTwoPhaseExecutionPlan({
+            extraArgs: parsedResultBundleArgs.remainingArgs,
+            preflight: options.preflight,
+          });
 
-      let buildForTestingResult: Awaited<ReturnType<typeof executeXcodeBuildCommand>>;
-      try {
-        buildForTestingResult = await executeXcodeBuildCommand(
-          {
-            ...params,
-            scheme: params.scheme!,
-            extraArgs: [
-              ...filterTestProductsPathArgs(executionPlan.buildArgs),
-              '-testProductsPath',
+          const buildForTestingResult = await executeXcodeBuildCommand(
+            {
+              ...params,
+              scheme: params.scheme!,
+              extraArgs: [
+                ...filterTestProductsPathArgs(executionPlan.buildArgs),
+                '-testProductsPath',
+                testProductsPath,
+              ],
+            },
+            platformOptions,
+            params.preferXcodebuild,
+            'build-for-testing',
+            executor,
+            execOpts,
+            started.pipeline,
+            { propagateInfrastructureErrors: true },
+          );
+
+          if (buildForTestingResult.isError) {
+            return createDisplayedTestDomainResult({
+              started,
+              succeeded: false,
+              target,
+              artifacts: createXcodebuildTestArtifacts(params, started),
+              fallbackErrorMessages: getFallbackErrorMessages(
+                started.stderrLines,
+                buildForTestingResult.content,
+              ),
+              includeDetectedXcresult: false,
+              preflight: options.preflight,
+              request: options.request,
+            });
+          }
+          managedOutputWasProduced = true;
+
+          started.pipeline.emitFragment({
+            kind: 'test-result',
+            fragment: 'build-stage',
+            operation: 'TEST',
+            stage: 'RUN_TESTS',
+            message: 'Running tests',
+          });
+
+          let testWithoutBuildingResult: PreparedTestCommandResult;
+          try {
+            testWithoutBuildingResult = await executePreparedTestCommand(
+              { ...params, testProductsPath },
+              filterPreparedTestExtraArgs(executionPlan.testArgs),
+              resultBundlePath,
+              executor,
+              execOpts,
+              started.pipeline,
+              getPreparedTestDestinationArgs(executionPlan.testArgs),
+            );
+          } finally {
+            if (shouldUseDefaultResultBundlePath) {
+              markResultBundlePathCompleted(resultBundlePath);
+            }
+          }
+          emitXcresultFailures(started.pipeline, resultBundlePath);
+
+          return createDisplayedTestDomainResult({
+            started,
+            succeeded: !testWithoutBuildingResult.isError,
+            target,
+            artifacts: createXcodebuildTestArtifacts(params, started, resultBundlePath, {
               testProductsPath,
-            ],
-          },
-          platformOptions,
-          params.preferXcodebuild,
-          'build-for-testing',
-          executor,
-          execOpts,
-          started.pipeline,
-          { propagateInfrastructureErrors: true },
-        );
-      } catch (error) {
-        markTestProductsPathCompleted(testProductsPath);
-        throw error;
-      }
-
-      if (buildForTestingResult.isError) {
-        markTestProductsPathCompleted(testProductsPath);
-        return createDisplayedTestDomainResult({
-          started,
-          succeeded: false,
-          target,
-          artifacts: createXcodebuildTestArtifacts(params, started),
-          fallbackErrorMessages: getFallbackErrorMessages(
-            started.stderrLines,
-            buildForTestingResult.content,
-          ),
-          includeDetectedXcresult: false,
-          preflight: options.preflight,
-          request: options.request,
-        });
-      }
-
-      started.pipeline.emitFragment({
-        kind: 'test-result',
-        fragment: 'build-stage',
-        operation: 'TEST',
-        stage: 'RUN_TESTS',
-        message: 'Running tests',
-      });
-
-      let testWithoutBuildingResult: PreparedTestCommandResult;
-      try {
-        testWithoutBuildingResult = await executePreparedTestCommand(
-          { ...params, testProductsPath },
-          filterPreparedTestExtraArgs(executionPlan.testArgs),
-          resultBundlePath,
-          executor,
-          execOpts,
-          started.pipeline,
-          getPreparedTestDestinationArgs(executionPlan.testArgs),
-        );
-      } finally {
-        markTestProductsPathCompleted(testProductsPath);
-        if (shouldUseDefaultResultBundlePath) {
-          markResultBundlePathCompleted(resultBundlePath);
-        }
-      }
-      emitXcresultFailures(started.pipeline, resultBundlePath);
-
-      return createDisplayedTestDomainResult({
-        started,
-        succeeded: !testWithoutBuildingResult.isError,
-        target,
-        artifacts: createXcodebuildTestArtifacts(params, started, resultBundlePath, {
-          testProductsPath,
-        }),
-        fallbackErrorMessages: getFallbackErrorMessages(
-          started.stderrLines,
-          testWithoutBuildingResult.content,
-        ),
-        preflight: options.preflight,
-        request: options.request,
-      });
+            }),
+            fallbackErrorMessages: getFallbackErrorMessages(
+              started.stderrLines,
+              testWithoutBuildingResult.content,
+            ),
+            preflight: options.preflight,
+            request: options.request,
+          });
+        },
+        { isSuccessful: () => managedOutputWasProduced },
+      );
     }
 
     started.pipeline.emitFragment({

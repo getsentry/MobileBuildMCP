@@ -1,6 +1,6 @@
 {
   "name": "mobilebuildmcp",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "mcpName": "io.github.getsentry/mobilebuildmcp",
   "iOSTemplateVersion": "v1.0.8",
   "macOSTemplateVersion": "v1.0.5",

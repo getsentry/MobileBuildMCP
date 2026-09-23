@@ -7,13 +7,13 @@
     "source": "github",
     "id": "945551361"
   },
-  "version": "2.7.0",
+  "version": "2.7.1",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "mobilebuildmcp",
-      "version": "2.7.0",
+      "version": "2.7.1",
       "transport": {
         "type": "stdio"
       },

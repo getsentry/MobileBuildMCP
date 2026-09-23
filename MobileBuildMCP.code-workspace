@@ -4,10 +4,10 @@
       "path": ".",
     },
     {
-      "path": "../MobileBuildMCP-iOS-Template",
+      "path": "../XcodeBuildMCP-iOS-Template",
     },
     {
-      "path": "../MobileBuildMCP-macOS-Template",
+      "path": "../XcodeBuildMCP-macOS-Template",
     },
   ],
 }

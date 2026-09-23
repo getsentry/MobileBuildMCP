@@ -37,7 +37,7 @@ ESM TypeScript project (`type: module`). Key layers:
    ```
 4. Update `CHANGELOG.md` under `## [Unreleased]`
 5. Update documentation if adding or modifying features
-6. Clone and test against example projects (e.g., `MobileBuildMCP-iOS-Template`) when changes affect runtime behavior
+6. Clone and test against example projects (e.g., `XcodeBuildMCP-iOS-Template`) when changes affect runtime behavior
 7. Push and create a pull request with a clear description
 8. Link any related issues
 

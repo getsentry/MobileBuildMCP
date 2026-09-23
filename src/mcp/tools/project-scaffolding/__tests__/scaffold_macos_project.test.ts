@@ -133,9 +133,9 @@ describe('scaffold_macos_project plugin', () => {
   describe('Command Generation', () => {
     it('should generate correct curl command for macOS template download', async () => {
       const expectedUrl =
-        'https://github.com/getsentry/MobileBuildMCP-macOS-Template/releases/download/';
+        'https://github.com/getsentry/XcodeBuildMCP-macOS-Template/releases/download/';
 
-      expect(expectedUrl).toContain('MobileBuildMCP-macOS-Template');
+      expect(expectedUrl).toContain('XcodeBuildMCP-macOS-Template');
       expect(expectedUrl).toContain('releases/download');
 
       const expectedFilename = 'template.zip';
@@ -159,14 +159,14 @@ describe('scaffold_macos_project plugin', () => {
 
     it('should generate correct commands for template with version', async () => {
       const testVersion = 'v1.0.0';
-      const expectedUrlWithVersion = `https://github.com/getsentry/MobileBuildMCP-macOS-Template/releases/download/${testVersion}/`;
+      const expectedUrlWithVersion = `https://github.com/getsentry/XcodeBuildMCP-macOS-Template/releases/download/${testVersion}/`;
 
       expect(expectedUrlWithVersion).toContain(testVersion);
-      expect(expectedUrlWithVersion).toContain('MobileBuildMCP-macOS-Template');
+      expect(expectedUrlWithVersion).toContain('XcodeBuildMCP-macOS-Template');
       expect(expectedUrlWithVersion).toContain('releases/download');
       expect(testVersion).toMatch(/^v\d+\.\d+\.\d+$/);
       expect(expectedUrlWithVersion).toBe(
-        `https://github.com/getsentry/MobileBuildMCP-macOS-Template/releases/download/${testVersion}/`,
+        `https://github.com/getsentry/XcodeBuildMCP-macOS-Template/releases/download/${testVersion}/`,
       );
     });
 

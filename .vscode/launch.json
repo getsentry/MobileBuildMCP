@@ -36,8 +36,8 @@
       "env": {
         "MOBILEBUILDMCP_DEBUG": "true",
         "INCREMENTAL_BUILDS_ENABLED": "false",
-        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "${workspaceFolder}/../MobileBuildMCP-iOS-Template",
-        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "${workspaceFolder}/../MobileBuildMCP-macOS-Template"
+        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-iOS-Template",
+        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-macOS-Template"
       },
       "sourceMaps": true,
       "outFiles": [

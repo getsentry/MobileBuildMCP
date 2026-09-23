@@ -14,8 +14,8 @@
       "env": {
         "MOBILEBUILDMCP_DEBUG": "true",
         "MOBILEBUILDMCP_SENTRY_DISABLED": "true",
-        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "../../../MobileBuildMCP-iOS-Template",
-        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "../../../MobileBuildMCP-macOS-Template"
+        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "../../../XcodeBuildMCP-iOS-Template",
+        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "../../../XcodeBuildMCP-macOS-Template"
       }
     }
   }

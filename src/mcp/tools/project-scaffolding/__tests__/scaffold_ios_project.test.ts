@@ -33,7 +33,7 @@ describe('scaffold_ios_project plugin', () => {
       existsSync: (path) => {
         return (
           path.includes('mobilebuild-mcp-template') ||
-          path.includes('XcodeBuildMCP-iOS-Template') ||
+          path.includes('MobileBuildMCP-iOS-Template') ||
           path.includes('/template') ||
           path.endsWith('template') ||
           path.includes('extracted') ||
@@ -163,7 +163,7 @@ describe('scaffold_ios_project plugin', () => {
         '-o',
         expect.stringMatching(/template\.zip$/),
         expect.stringMatching(
-          /https:\/\/github\.com\/getsentry\/XcodeBuildMCP-iOS-Template\/releases\/download\/v\d+\.\d+\.\d+\/XcodeBuildMCP-iOS-Template-\d+\.\d+\.\d+\.zip/,
+          /https:\/\/github\.com\/getsentry\/MobileBuildMCP-iOS-Template\/releases\/download\/v\d+\.\d+\.\d+\/MobileBuildMCP-iOS-Template-\d+\.\d+\.\d+\.zip/,
         ),
       ]);
       expect(unzipOptions).toEqual({
@@ -206,7 +206,7 @@ describe('scaffold_ios_project plugin', () => {
         '-f',
         '-o',
         expect.stringMatching(/template\.zip$/),
-        'https://github.com/getsentry/XcodeBuildMCP-iOS-Template/releases/download/v2.0.0/XcodeBuildMCP-iOS-Template-2.0.0.zip',
+        'https://github.com/getsentry/MobileBuildMCP-iOS-Template/releases/download/v2.0.0/MobileBuildMCP-iOS-Template-2.0.0.zip',
       ]);
 
       await initConfigStoreForTest({ iosTemplatePath: '/mock/template/path' });

@@ -22,16 +22,16 @@ describe('axe-helpers', () => {
   let tempDir: string;
 
   beforeEach(() => {
-    originalResourceRoot = process.env.XCODEBUILDMCP_RESOURCE_ROOT;
+    originalResourceRoot = process.env.MOBILEBUILDMCP_RESOURCE_ROOT;
     originalDyldFrameworkPath = process.env.DYLD_FRAMEWORK_PATH;
-    originalAxePath = process.env.XCODEBUILDMCP_AXE_PATH;
+    originalAxePath = process.env.MOBILEBUILDMCP_AXE_PATH;
     originalLegacyAxePath = process.env.AXE_PATH;
-    originalAxeSourcePath = process.env.XCODEBUILDMCP_AXE_SOURCE_PATH;
+    originalAxeSourcePath = process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH;
     originalLegacyAxeSourcePath = process.env.AXE_SOURCE_PATH;
-    tempDir = mkdtempSync(join(tmpdir(), 'xbmcp-axe-helpers-'));
-    delete process.env.XCODEBUILDMCP_AXE_PATH;
+    tempDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-axe-helpers-'));
+    delete process.env.MOBILEBUILDMCP_AXE_PATH;
     delete process.env.AXE_PATH;
-    delete process.env.XCODEBUILDMCP_AXE_SOURCE_PATH;
+    delete process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH;
     delete process.env.AXE_SOURCE_PATH;
     __resetConfigStoreForTests();
     resetResourceRootCacheForTests();
@@ -39,9 +39,9 @@ describe('axe-helpers', () => {
 
   afterEach(() => {
     if (originalResourceRoot === undefined) {
-      delete process.env.XCODEBUILDMCP_RESOURCE_ROOT;
+      delete process.env.MOBILEBUILDMCP_RESOURCE_ROOT;
     } else {
-      process.env.XCODEBUILDMCP_RESOURCE_ROOT = originalResourceRoot;
+      process.env.MOBILEBUILDMCP_RESOURCE_ROOT = originalResourceRoot;
     }
 
     if (originalDyldFrameworkPath === undefined) {
@@ -51,9 +51,9 @@ describe('axe-helpers', () => {
     }
 
     if (originalAxePath === undefined) {
-      delete process.env.XCODEBUILDMCP_AXE_PATH;
+      delete process.env.MOBILEBUILDMCP_AXE_PATH;
     } else {
-      process.env.XCODEBUILDMCP_AXE_PATH = originalAxePath;
+      process.env.MOBILEBUILDMCP_AXE_PATH = originalAxePath;
     }
 
     if (originalLegacyAxePath === undefined) {
@@ -63,9 +63,9 @@ describe('axe-helpers', () => {
     }
 
     if (originalAxeSourcePath === undefined) {
-      delete process.env.XCODEBUILDMCP_AXE_SOURCE_PATH;
+      delete process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH;
     } else {
-      process.env.XCODEBUILDMCP_AXE_SOURCE_PATH = originalAxeSourcePath;
+      process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH = originalAxeSourcePath;
     }
 
     if (originalLegacyAxeSourcePath === undefined) {
@@ -85,7 +85,7 @@ describe('axe-helpers', () => {
     const frameworksDir = join(resourceRoot, 'bundled', 'Frameworks');
     mkdirSync(frameworksDir, { recursive: true });
     writeExecutable(axePath);
-    process.env.XCODEBUILDMCP_RESOURCE_ROOT = resourceRoot;
+    process.env.MOBILEBUILDMCP_RESOURCE_ROOT = resourceRoot;
     delete process.env.DYLD_FRAMEWORK_PATH;
 
     const env = getBundledAxeEnvironment();
@@ -100,7 +100,7 @@ describe('axe-helpers', () => {
     const frameworksDir = join(resourceRoot, 'bundled', 'Frameworks');
     mkdirSync(frameworksDir, { recursive: true });
     writeExecutable(axePath);
-    process.env.XCODEBUILDMCP_RESOURCE_ROOT = resourceRoot;
+    process.env.MOBILEBUILDMCP_RESOURCE_ROOT = resourceRoot;
     process.env.DYLD_FRAMEWORK_PATH = '/existing/frameworks';
 
     const env = getBundledAxeEnvironment();
@@ -116,8 +116,8 @@ describe('axe-helpers', () => {
     const bundledAxePath = join(resourceRoot, 'bundled', 'axe');
     writeExecutable(sourceAxePath);
     writeExecutable(bundledAxePath);
-    process.env.XCODEBUILDMCP_AXE_SOURCE_PATH = sourceRoot;
-    process.env.XCODEBUILDMCP_RESOURCE_ROOT = resourceRoot;
+    process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH = sourceRoot;
+    process.env.MOBILEBUILDMCP_RESOURCE_ROOT = resourceRoot;
 
     expect(resolveAxeBinary()).toEqual({ path: sourceAxePath, source: 'source' });
   });
@@ -125,8 +125,8 @@ describe('axe-helpers', () => {
   it('keeps explicit axePath precedence over axeSourcePath', () => {
     const configuredAxePath = join(tempDir, 'configured', 'axe');
     writeExecutable(configuredAxePath);
-    process.env.XCODEBUILDMCP_AXE_PATH = configuredAxePath;
-    process.env.XCODEBUILDMCP_AXE_SOURCE_PATH = join(tempDir, 'missing-source');
+    process.env.MOBILEBUILDMCP_AXE_PATH = configuredAxePath;
+    process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH = join(tempDir, 'missing-source');
 
     expect(resolveAxeBinary()).toEqual({ path: configuredAxePath, source: 'env' });
   });
@@ -135,8 +135,8 @@ describe('axe-helpers', () => {
     const sourceRoot = join(tempDir, 'AXe');
     const sourceAxePath = join(sourceRoot, '.build', 'arm64-apple-macosx', 'release', 'axe');
     writeExecutable(sourceAxePath);
-    process.env.XCODEBUILDMCP_AXE_PATH = join(tempDir, 'missing', 'axe');
-    process.env.XCODEBUILDMCP_AXE_SOURCE_PATH = sourceRoot;
+    process.env.MOBILEBUILDMCP_AXE_PATH = join(tempDir, 'missing', 'axe');
+    process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH = sourceRoot;
 
     expect(resolveAxeBinary()).toEqual({ path: sourceAxePath, source: 'source' });
   });
@@ -144,8 +144,8 @@ describe('axe-helpers', () => {
   it('fails loudly for invalid explicit axeSourcePath instead of falling back', () => {
     const resourceRoot = join(tempDir, 'portable-root');
     writeExecutable(join(resourceRoot, 'bundled', 'axe'));
-    process.env.XCODEBUILDMCP_RESOURCE_ROOT = resourceRoot;
-    process.env.XCODEBUILDMCP_AXE_SOURCE_PATH = join(tempDir, 'missing-source');
+    process.env.MOBILEBUILDMCP_RESOURCE_ROOT = resourceRoot;
+    process.env.MOBILEBUILDMCP_AXE_SOURCE_PATH = join(tempDir, 'missing-source');
 
     expect(() => resolveAxeBinary()).toThrow(
       'Configured axeSourcePath does not exist or is not a directory',

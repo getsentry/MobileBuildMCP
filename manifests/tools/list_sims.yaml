@@ -5,7 +5,7 @@ names:
   cli: list
 description: List iOS simulators.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-list
+  schema: mobilebuildmcp.output.simulator-list
   version: "2"
 annotations:
   title: List Simulators

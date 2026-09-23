@@ -141,7 +141,7 @@ export function startDaemonBackground(opts: StartDaemonBackgroundOptions): void 
     env: {
       ...process.env,
       ...opts.env,
-      XCODEBUILDMCP_SOCKET: opts.socketPath,
+      MOBILEBUILDMCP_SOCKET: opts.socketPath,
       XCODEBUILDCLI_SOCKET: opts.socketPath,
     },
   });
@@ -248,7 +248,7 @@ export function startDaemonForeground(opts: StartDaemonForegroundOptions): Promi
       env: {
         ...process.env,
         ...opts.env,
-        XCODEBUILDMCP_SOCKET: opts.socketPath,
+        MOBILEBUILDMCP_SOCKET: opts.socketPath,
         XCODEBUILDCLI_SOCKET: opts.socketPath,
       },
     });

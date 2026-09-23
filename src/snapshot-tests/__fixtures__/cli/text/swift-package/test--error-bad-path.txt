@@ -4,7 +4,7 @@
    Scheme: NONEXISTENT
    Configuration: debug
    Platform: Swift Package
-   Derived Data: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData
+   Derived Data: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData
 
 Errors (1):
 
@@ -12,4 +12,4 @@ Errors (1):
 
 ❌ Test failed. (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log

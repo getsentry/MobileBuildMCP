@@ -68,7 +68,7 @@ function isLikelyMcpCommand(command: string): boolean {
   return (
     /(^|\s)mcp(\s|$)/.test(normalized) &&
     !/(^|\s)daemon(\s|$)/.test(normalized) &&
-    (normalized.includes('xcodebuildmcp') ||
+    (normalized.includes('mobilebuildmcp') ||
       normalized.includes('build/cli.js') ||
       normalized.includes('/cli.js'))
   );

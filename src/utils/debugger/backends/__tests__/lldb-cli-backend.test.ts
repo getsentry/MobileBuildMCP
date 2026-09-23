@@ -5,8 +5,8 @@ import {
 } from '../../../../test-utils/mock-executors.ts';
 import { createLldbCliBackend } from '../lldb-cli-backend.ts';
 
-const SENTINEL_COMMAND = 'script print("__XCODEBUILDMCP_DONE__")';
-const SENTINEL_OUTPUT = '\n__XCODEBUILDMCP_DONE__\nXCODEBUILDMCP_LLDB> ';
+const SENTINEL_COMMAND = 'script print("__MOBILEBUILDMCP_DONE__")';
+const SENTINEL_OUTPUT = '\n__MOBILEBUILDMCP_DONE__\nMOBILEBUILDMCP_LLDB> ';
 
 function emitSentinel(session: MockInteractiveSession): void {
   session.stdout.write(SENTINEL_OUTPUT);

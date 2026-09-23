@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.test-result",
+  "schema": "mobilebuildmcp.output.test-result",
   "schemaVersion": "3",
   "didError": true,
   "error": "Tests failed",
@@ -23,7 +23,7 @@
     },
     "artifacts": {
       "deviceId": "<UUID>",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/test_device_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/test_device_<TIMESTAMP>_pid<PID>.log"
     },
     "tests": {
       "selected": [

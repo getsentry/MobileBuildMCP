@@ -98,7 +98,7 @@ export async function xcodeIdeCallToolLogic(params: Params): Promise<void> {
     ctx,
     executionContext,
     result,
-    'xcodebuildmcp.output.xcode-bridge-call-result',
+    'mobilebuildmcp.output.xcode-bridge-call-result',
     '3',
   );
 }

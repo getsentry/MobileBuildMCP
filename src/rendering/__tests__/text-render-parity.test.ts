@@ -108,7 +108,7 @@ describe('text render parity', () => {
         },
       ],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',
@@ -169,7 +169,7 @@ describe('text render parity', () => {
         },
       ],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',
@@ -238,7 +238,7 @@ describe('text render parity', () => {
         },
       ],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',
@@ -314,7 +314,7 @@ describe('text render parity', () => {
         },
       ],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-result',
@@ -344,7 +344,7 @@ describe('text render parity', () => {
     const input = {
       items: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-run-result',
+        schema: 'mobilebuildmcp.output.build-run-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-run-result' as const,
@@ -383,7 +383,7 @@ describe('text render parity', () => {
     const input = {
       items: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.app-path',
+        schema: 'mobilebuildmcp.output.app-path',
         schemaVersion: '1.0.0',
         result: {
           kind: 'app-path' as const,
@@ -414,7 +414,7 @@ describe('text render parity', () => {
     const fixture: TranscriptFixture = {
       progressEvents: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-result',
@@ -453,7 +453,7 @@ describe('text render parity', () => {
     );
     expect(output).toBe(captureCliText(fixture));
     expect(output).toContain('get_mac_app_path({ scheme: "MCPTest" })');
-    expect(output).not.toContain('xcodebuildmcp macos get-app-path');
+    expect(output).not.toContain('mobilebuildmcp macos get-app-path');
   });
 
   it('does not capture streaming fragments for render session final text', () => {
@@ -502,7 +502,7 @@ describe('text render parity', () => {
     session.emit(buildSummary);
     session.emit(transcriptLine);
     session.setStructuredOutput?.({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       schemaVersion: '1.0.0',
       result: {
         kind: 'build-result',
@@ -533,7 +533,7 @@ describe('text render parity', () => {
     const fixture: TranscriptFixture = {
       progressEvents: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-result',
@@ -569,7 +569,7 @@ describe('text render parity', () => {
     const fixture: TranscriptFixture = {
       progressEvents: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.scheme-list',
+        schema: 'mobilebuildmcp.output.scheme-list',
         schemaVersion: '1.0.0',
         result: {
           kind: 'scheme-list',
@@ -619,7 +619,7 @@ describe('text render parity', () => {
     const fixture: TranscriptFixture = {
       progressEvents: [],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-result',
@@ -657,7 +657,7 @@ describe('text render parity', () => {
       'text',
     );
     expect(output).toBe(captureCliText(fixture));
-    expect(output).toContain('xcodebuildmcp macos get-app-path --scheme MCPTest');
+    expect(output).toContain('mobilebuildmcp macos get-app-path --scheme MCPTest');
     expect(output).not.toContain('get_mac_app_path({');
   });
 });

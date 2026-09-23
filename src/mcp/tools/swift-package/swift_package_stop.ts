@@ -53,7 +53,7 @@ export async function swift_package_stopLogic(
   setStructuredOutput(ctx, result);
 }
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.stop-result';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.stop-result';
 
 function createSwiftPackageStopResult(params: SwiftPackageStopParams): SwiftPackageStopResult {
   return {

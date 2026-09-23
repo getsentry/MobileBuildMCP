@@ -1,7 +1,7 @@
 import * as path from 'node:path';
 import * as os from 'node:os';
 
-export const APP_DIR = path.join(os.homedir(), 'Library', 'Developer', 'XcodeBuildMCP');
+export const APP_DIR = path.join(os.homedir(), 'Library', 'Developer', 'MobileBuildMCP');
 
 let appDirOverrideForTests: string | null = null;
 
@@ -29,12 +29,12 @@ export interface WorkspaceFilesystemLayout {
   simulatorLaunchOsLogRegistryDir: string;
 }
 
-export function getXcodeBuildMCPAppDir(): string {
+export function getMobileBuildMCPAppDir(): string {
   return appDirOverrideForTests ?? APP_DIR;
 }
 
 export function getWorkspacesDir(): string {
-  return path.join(getXcodeBuildMCPAppDir(), 'workspaces');
+  return path.join(getMobileBuildMCPAppDir(), 'workspaces');
 }
 
 function normalizeWorkspaceKey(workspaceKey: string): string {
@@ -82,6 +82,6 @@ export function getWorkspaceFilesystemLayout(workspaceKey: string): WorkspaceFil
   };
 }
 
-export function setXcodeBuildMCPAppDirOverrideForTests(dir: string | null): void {
+export function setMobileBuildMCPAppDirOverrideForTests(dir: string | null): void {
   appDirOverrideForTests = dir;
 }

@@ -30,7 +30,7 @@ function createTrackedChild(pid = 777): ChildProcess {
 
 describe('session-status resource', () => {
   beforeEach(async () => {
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-session-status-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-session-status-'));
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setRuntimeInstanceForTests({
       instanceId: 'session-status-test',

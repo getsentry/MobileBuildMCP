@@ -5,7 +5,7 @@ names:
   cli: continue
 description: Continue debug session.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-session-action
+  schema: mobilebuildmcp.output.debug-session-action
   version: "2"
 routing:
   stateful: true

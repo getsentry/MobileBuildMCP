@@ -63,16 +63,16 @@ if [[ ! -d "$PORTABLE_ROOT/bin" || ! -d "$PORTABLE_ROOT/libexec" ]]; then
   echo "Portable layout missing bin/ or libexec/: $PORTABLE_ROOT"
   exit 1
 fi
-if [[ ! -x "$PORTABLE_ROOT/bin/xcodebuildmcp" ]]; then
-  echo "Missing executable wrapper: $PORTABLE_ROOT/bin/xcodebuildmcp"
+if [[ ! -x "$PORTABLE_ROOT/bin/mobilebuildmcp" ]]; then
+  echo "Missing executable wrapper: $PORTABLE_ROOT/bin/mobilebuildmcp"
   exit 1
 fi
-if [[ ! -x "$PORTABLE_ROOT/bin/xcodebuildmcp-doctor" ]]; then
-  echo "Missing executable wrapper: $PORTABLE_ROOT/bin/xcodebuildmcp-doctor"
+if [[ ! -x "$PORTABLE_ROOT/bin/mobilebuildmcp-doctor" ]]; then
+  echo "Missing executable wrapper: $PORTABLE_ROOT/bin/mobilebuildmcp-doctor"
   exit 1
 fi
-if [[ ! -x "$PORTABLE_ROOT/libexec/xcodebuildmcp" ]]; then
-  echo "Missing executable binary: $PORTABLE_ROOT/libexec/xcodebuildmcp"
+if [[ ! -x "$PORTABLE_ROOT/libexec/mobilebuildmcp" ]]; then
+  echo "Missing executable binary: $PORTABLE_ROOT/libexec/mobilebuildmcp"
   exit 1
 fi
 if [[ ! -d "$PORTABLE_ROOT/libexec/manifests" ]]; then
@@ -83,7 +83,7 @@ if [[ ! -f "$PORTABLE_ROOT/libexec/schemas/structured-output/_defs/common.schema
   echo "Missing structured output common schema under libexec"
   exit 1
 fi
-if [[ ! -f "$PORTABLE_ROOT/libexec/schemas/structured-output/xcodebuildmcp.output.session-defaults/1.schema.json" ]]; then
+if [[ ! -f "$PORTABLE_ROOT/libexec/schemas/structured-output/mobilebuildmcp.output.session-defaults/1.schema.json" ]]; then
   echo "Missing session defaults structured output schema under libexec"
   exit 1
 fi
@@ -130,9 +130,9 @@ for runtime_arch in $RUNTIME_ARCHS; do
 done
 
 if [[ "$CAN_EXECUTE" == "true" ]]; then
-  "$PORTABLE_ROOT/bin/xcodebuildmcp" --help >/dev/null
-  "$PORTABLE_ROOT/bin/xcodebuildmcp-doctor" --help >/dev/null
-  "$PORTABLE_ROOT/bin/xcodebuildmcp" init --print >/dev/null
+  "$PORTABLE_ROOT/bin/mobilebuildmcp" --help >/dev/null
+  "$PORTABLE_ROOT/bin/mobilebuildmcp-doctor" --help >/dev/null
+  "$PORTABLE_ROOT/bin/mobilebuildmcp" init --print >/dev/null
 else
   echo "Skipping binary execution checks: host arch ($HOST_ARCH) not in runtime archs ($RUNTIME_ARCHS)"
 fi

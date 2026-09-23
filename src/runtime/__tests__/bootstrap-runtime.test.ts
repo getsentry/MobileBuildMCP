@@ -18,7 +18,7 @@ import { getRuntimeInstance, setRuntimeInstanceForTests } from '../../utils/runt
 import { workspaceKeyForRoot } from '../../utils/workspace-identity.ts';
 
 const cwd = '/repo';
-const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
+const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
 
 function createFsWithSessionDefaults() {
   const yaml = [
@@ -151,12 +151,12 @@ describe('bootstrapRuntime', () => {
     expect(sessionStore.getAll().simulatorName).toBe('iPhone 17');
   });
 
-  describe('XCODEBUILDMCP_CWD env override', () => {
+  describe('MOBILEBUILDMCP_CWD env override', () => {
     let chdirSpy: ReturnType<typeof vi.spyOn> | null = null;
     let originalEnvValue: string | undefined;
 
     beforeEach(() => {
-      originalEnvValue = process.env.XCODEBUILDMCP_CWD;
+      originalEnvValue = process.env.MOBILEBUILDMCP_CWD;
       chdirSpy = vi.spyOn(process, 'chdir').mockImplementation(() => undefined);
     });
 
@@ -164,26 +164,26 @@ describe('bootstrapRuntime', () => {
       chdirSpy?.mockRestore();
       chdirSpy = null;
       if (originalEnvValue === undefined) {
-        delete process.env.XCODEBUILDMCP_CWD;
+        delete process.env.MOBILEBUILDMCP_CWD;
       } else {
-        process.env.XCODEBUILDMCP_CWD = originalEnvValue;
+        process.env.MOBILEBUILDMCP_CWD = originalEnvValue;
       }
     });
 
     it('chdirs to env-var value when opts.cwd is undefined', async () => {
-      process.env.XCODEBUILDMCP_CWD = '/explicit/project/dir';
+      process.env.MOBILEBUILDMCP_CWD = '/explicit/project/dir';
       await bootstrapRuntime({ runtime: 'cli', fs: createFsWithSessionDefaults() });
       expect(chdirSpy).toHaveBeenCalledWith('/explicit/project/dir');
     });
 
     it('does not chdir when opts.cwd is provided (caller wins)', async () => {
-      process.env.XCODEBUILDMCP_CWD = '/should/be/ignored';
+      process.env.MOBILEBUILDMCP_CWD = '/should/be/ignored';
       await bootstrapRuntime({ runtime: 'cli', cwd, fs: createFsWithSessionDefaults() });
       expect(chdirSpy).not.toHaveBeenCalled();
     });
 
     it('expands a leading ~/ to the home directory', async () => {
-      process.env.XCODEBUILDMCP_CWD = '~/Developer/project';
+      process.env.MOBILEBUILDMCP_CWD = '~/Developer/project';
       await bootstrapRuntime({ runtime: 'cli', fs: createFsWithSessionDefaults() });
       const calledWith = chdirSpy?.mock.calls[0]?.[0] as string;
       expect(calledWith.endsWith('/Developer/project')).toBe(true);
@@ -191,13 +191,13 @@ describe('bootstrapRuntime', () => {
     });
 
     it('expands a bare ~ to the home directory', async () => {
-      process.env.XCODEBUILDMCP_CWD = '~';
+      process.env.MOBILEBUILDMCP_CWD = '~';
       await bootstrapRuntime({ runtime: 'cli', fs: createFsWithSessionDefaults() });
       expect(chdirSpy).toHaveBeenCalledWith(os.homedir());
     });
 
     it('falls back gracefully when chdir throws', async () => {
-      process.env.XCODEBUILDMCP_CWD = '/nonexistent';
+      process.env.MOBILEBUILDMCP_CWD = '/nonexistent';
       chdirSpy?.mockImplementation(() => {
         throw new Error('ENOENT');
       });
@@ -207,7 +207,7 @@ describe('bootstrapRuntime', () => {
     });
 
     it('is a no-op when env var is unset', async () => {
-      delete process.env.XCODEBUILDMCP_CWD;
+      delete process.env.MOBILEBUILDMCP_CWD;
       await bootstrapRuntime({ runtime: 'cli', cwd, fs: createFsWithSessionDefaults() });
       expect(chdirSpy).not.toHaveBeenCalled();
     });

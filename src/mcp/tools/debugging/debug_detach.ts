@@ -52,7 +52,7 @@ function createDebugDetachResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugDetachResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-session-action',
+    schema: 'mobilebuildmcp.output.debug-session-action',
     schemaVersion: '2',
   };
 }

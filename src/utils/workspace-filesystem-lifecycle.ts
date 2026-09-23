@@ -220,14 +220,14 @@ function hasLiveHelperPidInName(fileName: string): boolean {
   return false;
 }
 
-export function isXcodeBuildMCPManagedLogName(fileName: string): boolean {
+export function isMobileBuildMCPManagedLogName(fileName: string): boolean {
   if (fileName === 'daemon.log') {
     return true;
   }
   return XCODEBUILD_LOG_NAME_PATTERN.test(fileName) || SIMULATOR_LOG_NAME_PATTERN.test(fileName);
 }
 
-export function isXcodeBuildMCPManagedResultBundleName(fileName: string): boolean {
+export function isMobileBuildMCPManagedResultBundleName(fileName: string): boolean {
   return RESULT_BUNDLE_NAME_PATTERN.test(fileName);
 }
 
@@ -314,7 +314,7 @@ async function pruneKnownLogDirectory(
   await fs.mkdir(options.logDir, { recursive: true, mode: 0o700 });
   const entries = await fs.readdir(options.logDir, { withFileTypes: true });
   const candidates = entries
-    .filter((entry) => entry.isFile() && isXcodeBuildMCPManagedLogName(entry.name))
+    .filter((entry) => entry.isFile() && isMobileBuildMCPManagedLogName(entry.name))
     .map((entry) => ({ name: entry.name, path: path.join(options.logDir, entry.name) }));
 
   const stats = await Promise.all(
@@ -408,7 +408,7 @@ async function pruneKnownResultBundleDirectory(
   await fs.mkdir(resultBundleDir, { recursive: true, mode: 0o700 });
   const entries = await fs.readdir(resultBundleDir, { withFileTypes: true });
   const candidates = entries
-    .filter((entry) => entry.isDirectory() && isXcodeBuildMCPManagedResultBundleName(entry.name))
+    .filter((entry) => entry.isDirectory() && isMobileBuildMCPManagedResultBundleName(entry.name))
     .map((entry) => ({ name: entry.name, path: path.join(resultBundleDir, entry.name) }));
 
   const stats = await Promise.all(

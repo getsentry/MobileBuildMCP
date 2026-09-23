@@ -1,6 +1,6 @@
 # Claude UI benchmark harness
 
-Local/manual harness for running Claude Code against configurable tool surfaces and auditing UI automation behavior. The default suite configuration targets the development XcodeBuildMCP MCP server.
+Local/manual harness for running Claude Code against configurable tool surfaces and auditing UI automation behavior. The default suite configuration targets the development MobileBuildMCP MCP server.
 
 The harness:
 
@@ -8,7 +8,7 @@ The harness:
 - reads the referenced prompt Markdown file from disk and feeds it to `claude -p`
 - creates, boots, waits for, and opens a fresh temporary simulator before Claude launches for each suite run by default
 - writes an isolated per-run MCP workspace config with the suite defaults and temporary `simulatorId` when MCP is enabled
-- generates a Claude MCP config pointing at `node build/cli.js mcp` with `XCODEBUILDMCP_CWD` set to that isolated workspace when MCP is enabled
+- generates a Claude MCP config pointing at `node build/cli.js mcp` with `MOBILEBUILDMCP_CWD` set to that isolated workspace when MCP is enabled
 - optionally preflights configured first-run prompts before Claude launches, outside the measured run
 - deletes the temporary simulator at the end of the suite, best effort, using only the ID created by the harness
 - writes artifacts under `out.nosync/claude-benchmarks/<suite>/<timestamp>/`
@@ -55,7 +55,7 @@ Request an exact Claude model for controlled comparisons:
 
 ```bash
 npm run bench:claude-ui -- --suite weather --model claude-sonnet-4-7
-npm run bench:claude-ui:xcodebuildmcp -- --model claude-sonnet-4-7
+npm run bench:claude-ui:mobilebuildmcp -- --model claude-sonnet-4-7
 ```
 
 The `--model` CLI option overrides `claude.model` from the suite YAML for that run.
@@ -114,11 +114,11 @@ Retry a suite up to three total attempts when trying to establish a baseline. If
 
 Tool sequence differences are reported as observed comparison data because real Claude runs can choose equally valid UI paths. Sequence differences do not affect task/process completion status.
 
-`sessionDefaults` are written to a harness-owned config at `<run>/mcp-workspace/.xcodebuildmcp/config.yaml`. The generated Claude MCP config sets `XCODEBUILDMCP_CWD` to `<run>/mcp-workspace`, so the dev MCP server reads only the benchmark config instead of any repo or example-project `.xcodebuildmcp/config.yaml`. Unknown keys fail fast. Relative path defaults such as `projectPath`, `workspacePath`, and `derivedDataPath` are resolved against the suite `workingDirectory` before being written because the MCP server cwd is the isolated workspace.
+`sessionDefaults` are written to a harness-owned config at `<run>/mcp-workspace/.mobilebuildmcp/config.yaml`. The generated Claude MCP config sets `MOBILEBUILDMCP_CWD` to `<run>/mcp-workspace`, so the dev MCP server reads only the benchmark config instead of any repo or example-project `.mobilebuildmcp/config.yaml`. Unknown keys fail fast. Relative path defaults such as `projectPath`, `workspacePath`, and `derivedDataPath` are resolved against the suite `workingDirectory` before being written because the MCP server cwd is the isolated workspace.
 
 ## Configuring Claude and tracked tools
 
-Suites can override the Claude invocation without changing harness code. Omit this block for the default XcodeBuildMCP MCP behavior.
+Suites can override the Claude invocation without changing harness code. Omit this block for the default MobileBuildMCP MCP behavior.
 
 ```yaml
 claude:
@@ -290,7 +290,7 @@ Each run writes:
 
 - `prompt.md` — exact suite prompt fed to Claude
 - `mcp-config.json` — generated Claude MCP config
-- `mcp-workspace/.xcodebuildmcp/config.yaml` — isolated MCP server config with effective suite defaults
+- `mcp-workspace/.mobilebuildmcp/config.yaml` — isolated MCP server config with effective suite defaults
 - `claude.jsonl` — Claude stream JSON output
 - `claude.stderr` — Claude stderr
 - `claude-command.log` — command, cwd, simulator ID, requested/observed model, `claude --version`, exit status, wall clock

@@ -39,4 +39,4 @@ File: example_projects/iOS_Calculator/CalculatorAppPackage/Sources/CalculatorApp
 🟢 Full Coverage (15 functions) -- all at 100%
 
 Next steps:
-1. View overall coverage: xcodebuildmcp coverage get-coverage-report --xcresult-path <TMPDIR>/TestResults.xcresult
+1. View overall coverage: mobilebuildmcp coverage get-coverage-report --xcresult-path <TMPDIR>/TestResults.xcresult

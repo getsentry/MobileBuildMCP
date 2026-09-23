@@ -26,7 +26,7 @@ function createDeps(overrides?: Partial<DoctorDependencies>): DoctorDependencies
     env: {
       getEnvironmentVariables() {
         const x: Record<string, string | undefined> = {
-          XCODEBUILDMCP_DEBUG: 'true',
+          MOBILEBUILDMCP_DEBUG: 'true',
           INCREMENTAL_BUILDS_ENABLED: '1',
           PATH: '/usr/local/bin:/usr/bin:/bin',
           DEVELOPER_DIR: '/Applications/Xcode.app/Contents/Developer',
@@ -226,7 +226,7 @@ describe('doctor tool', () => {
               HOME: '/Users/testuser',
               USER: 'testuser',
               TMPDIR: '/Users/testuser/tmp',
-              XCODEBUILDMCP_API_KEY: 'super-secret-key',
+              MOBILEBUILDMCP_API_KEY: 'super-secret-key',
             };
           },
           getSystemInfo: () => ({
@@ -327,7 +327,7 @@ describe('doctor tool', () => {
         env: {
           getEnvironmentVariables() {
             const x: Record<string, string | undefined> = {
-              XCODEBUILDMCP_DEBUG: 'true',
+              MOBILEBUILDMCP_DEBUG: 'true',
               INCREMENTAL_BUILDS_ENABLED: '0',
               PATH: '/usr/local/bin:/usr/bin:/bin',
               DEVELOPER_DIR: '/Applications/Xcode.app/Contents/Developer',

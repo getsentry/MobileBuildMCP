@@ -8,8 +8,8 @@ import type {
 } from '../types/domain-results.ts';
 import { extractQueryDiagnostics } from './xcodebuild-error-utils.ts';
 
-export const APP_PATH_STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.app-path';
-export const BUNDLE_ID_STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.bundle-id';
+export const APP_PATH_STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.app-path';
+export const BUNDLE_ID_STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.bundle-id';
 
 export function appPathErrorMessages(rawMessage: string): string[] {
   return extractQueryDiagnostics(rawMessage).errors.map((error) => error.message);

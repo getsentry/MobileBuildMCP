@@ -34,13 +34,13 @@ function lockDirFor(appDir: string): string {
 }
 
 async function makeTempDir(): Promise<string> {
-  const tempDir = await mkdtemp(path.join(tmpdir(), 'xcodebuildmcp-fs-lock-'));
+  const tempDir = await mkdtemp(path.join(tmpdir(), 'mobilebuildmcp-fs-lock-'));
   tempDirs.push(tempDir);
   return tempDir;
 }
 
 function makeTempDirSync(): string {
-  const tempDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-fs-lock-'));
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-fs-lock-'));
   tempDirs.push(tempDir);
   return tempDir;
 }

@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.test-result/3.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "$defs": {
+    "buildInvocationRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "buildForTesting": { "type": "boolean" },
+        "scheme": { "type": "string" },
+        "workspacePath": { "type": "string" },
+        "projectPath": { "type": "string" },
+        "packagePath": { "type": "string" },
+        "targetName": { "type": "string" },
+        "configuration": { "type": "string" },
+        "platform": { "type": "string" },
+        "target": {
+          "enum": ["simulator", "device", "macos", "swift-package"]
+        },
+        "simulatorName": { "type": "string" },
+        "simulatorId": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "executableName": { "type": "string" },
+        "arch": { "type": "string" },
+        "derivedDataPath": { "type": "string" },
+        "testProductsPath": { "type": "string" },
+        "xctestrunPath": { "type": "string" },
+        "onlyTesting": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "skipTesting": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.test-result"
+    },
+    "schemaVersion": {
+      "const": "3"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": ["string", "null"]
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/buildInvocationRequest"
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": ["SUCCEEDED", "FAILED"]
+            },
+            "durationMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "target": {
+              "enum": ["simulator", "device", "macos", "swift-package"]
+            },
+            "counts": {
+              "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/counts"
+            }
+          },
+          "required": ["status"]
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deviceId": { "type": "string" },
+            "buildLogPath": { "type": "string" },
+            "packagePath": { "type": "string" },
+            "xcresultPath": { "type": "string" },
+            "testProductsPath": { "type": "string" },
+            "xctestrunPath": { "type": "string" }
+          },
+          "required": [],
+          "minProperties": 1
+        },
+        "diagnostics": {
+          "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/testDiagnostics"
+        },
+        "tests": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "selected": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "discovered": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "total": { "type": "integer", "minimum": 0 },
+                "items": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "required": ["total", "items"]
+            }
+          },
+          "required": []
+        },
+        "testCases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "suite": { "type": "string" },
+              "test": { "type": "string" },
+              "status": { "enum": ["passed", "failed", "skipped"] },
+              "durationMs": { "type": "integer", "minimum": 0 }
+            },
+            "required": ["test", "status"]
+          }
+        }
+      },
+      "required": ["summary", "artifacts", "diagnostics"]
+    },
+    "nextSteps": {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/nextSteps"
+    }
+  },
+  "required": ["schema", "schemaVersion", "didError", "error", "data"]
+}

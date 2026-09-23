@@ -439,9 +439,9 @@ export function createTestDomainResult(options: {
 }
 
 const XCODEBUILD_STRUCTURED_OUTPUT_SCHEMAS = {
-  'build-result': 'xcodebuildmcp.output.build-result',
-  'build-run-result': 'xcodebuildmcp.output.build-run-result',
-  'test-result': 'xcodebuildmcp.output.test-result',
+  'build-result': 'mobilebuildmcp.output.build-result',
+  'build-run-result': 'mobilebuildmcp.output.build-run-result',
+  'test-result': 'mobilebuildmcp.output.test-result',
 } as const;
 
 export type XcodebuildStructuredOutputKind = keyof typeof XCODEBUILD_STRUCTURED_OUTPUT_SCHEMAS;

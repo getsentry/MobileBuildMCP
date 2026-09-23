@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.debug-variables-result/1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.debug-variables-result"
+    },
+    "schemaVersion": {
+      "const": "1"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scopes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "locals": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "variables": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  "required": [
+                    "variables"
+                  ]
+                },
+                "globals": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "variables": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  "required": [
+                    "variables"
+                  ]
+                },
+                "registers": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "variables": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "variables"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "groups"
+                  ]
+                }
+              },
+              "required": [
+                "locals",
+                "globals",
+                "registers"
+              ]
+            }
+          },
+          "required": [
+            "scopes"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "diagnostics": {
+              "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/basicDiagnostics"
+            }
+          },
+          "required": [
+            "diagnostics"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "didError",
+    "error",
+    "data"
+  ]
+}

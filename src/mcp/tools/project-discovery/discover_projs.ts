@@ -296,7 +296,7 @@ function createDiscoverProjectsErrorResult(
 function setStructuredOutput(ctx: ToolHandlerContext, result: DiscoverProjsResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.project-list',
+    schema: 'mobilebuildmcp.output.project-list',
     schemaVersion: '2',
   };
 }

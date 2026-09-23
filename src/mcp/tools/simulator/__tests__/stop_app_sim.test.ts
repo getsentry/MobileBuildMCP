@@ -71,7 +71,7 @@ describe('stop_app_sim tool', () => {
   beforeEach(async () => {
     nextPid = 1234;
     trackedChildren.clear();
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-stop-app-sim-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-stop-app-sim-'));
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setRuntimeInstanceForTests({
       instanceId: 'stop-app-sim-test',

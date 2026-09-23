@@ -94,13 +94,13 @@ When reading issues:
 - CLI design note: do not rely on CLI session-default writes. CLI is intentionally deterministic for CI/scripting and should use explicit command arguments as the primary input surface.
 - When working on skill sources in `skills/`, use the `skill-creator` skill workflow.
 - After modifying any skill source, run `npx skill-check <skill-directory>` and address all errors/warnings before handoff.
-- Before handoff, run the matching manual Warden review for high-risk changes: runtime/CLI/daemon boundaries → `xcodebuildmcp-runtime-boundary-review`; test infrastructure or harnesses → `xcodebuildmcp-test-boundary-review`; tool manifests, schemas, or contracts → `xcodebuildmcp-tool-contract-review`. Invoke only applicable skills with `warden --skill <name>`.
+- Before handoff, run the matching manual Warden review for high-risk changes: runtime/CLI/daemon boundaries → `mobilebuildmcp-runtime-boundary-review`; test infrastructure or harnesses → `mobilebuildmcp-test-boundary-review`; tool manifests, schemas, or contracts → `mobilebuildmcp-tool-contract-review`. Invoke only applicable skills with `warden --skill <name>`.
 -
 ## Multi-process filesystem state
-- XcodeBuildMCP explicitly supports multiple concurrent MCP server, daemon, CLI, test, and helper processes for the same or different workspaces.
-- Shared filesystem state under `~/Library/Developer/XcodeBuildMCP` must be multi-process safe.
+- MobileBuildMCP explicitly supports multiple concurrent MCP server, daemon, CLI, test, and helper processes for the same or different workspaces.
+- Shared filesystem state under `~/Library/Developer/MobileBuildMCP` must be multi-process safe.
 - Use workspace-key scoped directories for workspace-owned state.
-- Do not store runtime state under `~/.xcodebuildmcp`; `.xcodebuildmcp/config.yaml` is only project configuration.
+- Do not store runtime state under `~/.mobilebuildmcp`; `.mobilebuildmcp/config.yaml` is only project configuration.
 - Use shared lock and atomic-write helpers for mutable shared files.
 - Prefer one-record-per-file registries over shared aggregate files.
 - Cleanup must verify ownership before deleting shared artifacts.
@@ -142,8 +142,8 @@ Use these sections under `## [Unreleased]`:
 - NEVER update snapshot fixtures unless asked to do so, these are integration tests, on failure assume code is wrong before questioning the fixture
 -
 #### Attribution
-- **Internal changes (from issues)**: `Fixed foo bar ([#123](https://github.com/getsentry/XcodeBuildMCP/issues/123))`
-- **External contributions**: `Added feature X ([#456](https://github.com/getsentry/XcodeBuildMCP/pull/456) by [@username](https://github.com/username))`
+- **Internal changes (from issues)**: `Fixed foo bar ([#123](https://github.com/getsentry/MobileBuildMCP/issues/123))`
+- **External contributions**: `Added feature X ([#456](https://github.com/getsentry/MobileBuildMCP/pull/456) by [@username](https://github.com/username))`
 
 ## Test Execution Rules
 - **NEVER run the snapshot or smoke test suites without explicit user permission.** They are expensive (~7 min baseline, spawn real `xcodebuild`/`simctl`/`devicectl` processes and can wedge). This covers `npm run test:snapshot`, `npm run test:smoke`, and any direct `vitest run --config vitest.snapshot.config.ts` / `vitest.smoke.config.ts` invocation. Ask first, then run only if the user agrees.

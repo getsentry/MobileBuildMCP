@@ -8,7 +8,7 @@ import { resolveMcpSnapshotOutcome } from '../mcp-harness.ts';
 import type { StructuredOutputEnvelope } from '../../types/structured-output.ts';
 
 const successEnvelope: StructuredOutputEnvelope<null> = {
-  schema: 'xcodebuildmcp.output.error',
+  schema: 'mobilebuildmcp.output.error',
   schemaVersion: '1',
   didError: false,
   error: null,

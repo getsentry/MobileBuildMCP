@@ -29,6 +29,6 @@ Hints
   Before running build/run/test/UI automation tools, set the desired device identifier in session defaults.
 
 Next steps:
-1. Build for device: xcodebuildmcp device build --scheme YOUR_SCHEME
-2. Run tests on device: xcodebuildmcp device test
-3. Get app path: xcodebuildmcp device get-app-path
+1. Build for device: mobilebuildmcp device build --scheme YOUR_SCHEME
+2. Run tests on device: mobilebuildmcp device test
+3. Get app path: mobilebuildmcp device get-app-path

@@ -10,7 +10,7 @@ import {
 } from '../config-store.ts';
 
 const cwd = '/repo';
-const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
+const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
 
 describe('config-store', () => {
   beforeEach(() => {
@@ -46,17 +46,17 @@ describe('config-store', () => {
 
   it('parses env values when provided', async () => {
     const env = {
-      XCODEBUILDMCP_DEBUG: 'true',
-      XCODEBUILDMCP_SENTRY_DISABLED: 'true',
+      MOBILEBUILDMCP_DEBUG: 'true',
+      MOBILEBUILDMCP_SENTRY_DISABLED: 'true',
       INCREMENTAL_BUILDS_ENABLED: '1',
-      XCODEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '12345',
-      XCODEBUILDMCP_DAP_LOG_EVENTS: 'true',
-      XBMCP_LAUNCH_JSON_WAIT_MS: '9000',
-      XCODEBUILDMCP_ENABLED_WORKFLOWS: 'simulator,logging',
-      XCODEBUILDMCP_UI_DEBUGGER_GUARD_MODE: 'warn',
-      XCODEBUILDMCP_DEBUGGER_BACKEND: 'lldb',
-      XCODEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
-      XCODEBUILDMCP_AXE_SOURCE_PATH: '/Volumes/Developer/AXe',
+      MOBILEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '12345',
+      MOBILEBUILDMCP_DAP_LOG_EVENTS: 'true',
+      MOBILEBUILDMCP_LAUNCH_JSON_WAIT_MS: '9000',
+      MOBILEBUILDMCP_ENABLED_WORKFLOWS: 'simulator,logging',
+      MOBILEBUILDMCP_UI_DEBUGGER_GUARD_MODE: 'warn',
+      MOBILEBUILDMCP_DEBUGGER_BACKEND: 'lldb',
+      MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
+      MOBILEBUILDMCP_AXE_SOURCE_PATH: '/Volumes/Developer/AXe',
     };
 
     await initConfigStore({ cwd, fs: createFs(), env });
@@ -85,10 +85,10 @@ describe('config-store', () => {
       '',
     ].join('\n');
     const env = {
-      XCODEBUILDMCP_DEBUG: 'true',
-      XCODEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '999',
-      XCODEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
-      XCODEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
+      MOBILEBUILDMCP_DEBUG: 'true',
+      MOBILEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '999',
+      MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
+      MOBILEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
     };
 
     await initConfigStore({
@@ -118,8 +118,8 @@ describe('config-store', () => {
       '',
     ].join('\n');
     const env = {
-      XCODEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
-      XCODEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
+      MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
+      MOBILEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
     };
 
     await initConfigStore({ cwd, fs: createFs(yaml), env });
@@ -290,7 +290,7 @@ describe('config-store', () => {
     await initConfigStore({
       cwd,
       fs,
-      env: { XCODEBUILDMCP_DEBUG: 'true' },
+      env: { MOBILEBUILDMCP_DEBUG: 'true' },
     });
 
     expect(getConfig().debug).toBe(true);
@@ -303,16 +303,16 @@ describe('config-store', () => {
 
   it('reads session defaults from env vars', async () => {
     const env = {
-      XCODEBUILDMCP_WORKSPACE_PATH: '/path/to/App.xcworkspace',
-      XCODEBUILDMCP_SCHEME: 'MyApp',
-      XCODEBUILDMCP_PLATFORM: 'macOS',
-      XCODEBUILDMCP_SUPPRESS_WARNINGS: 'true',
-      XCODEBUILDMCP_SHOW_TEST_TIMING: 'true',
-      XCODEBUILDMCP_DERIVED_DATA_PATH: '/tmp/dd',
-      XCODEBUILDMCP_USE_LATEST_OS: 'true',
-      XCODEBUILDMCP_ARCH: 'arm64',
-      XCODEBUILDMCP_SIMULATOR_NAME: 'iPhone 17',
-      XCODEBUILDMCP_BUNDLE_ID: 'com.example.app',
+      MOBILEBUILDMCP_WORKSPACE_PATH: '/path/to/App.xcworkspace',
+      MOBILEBUILDMCP_SCHEME: 'MyApp',
+      MOBILEBUILDMCP_PLATFORM: 'macOS',
+      MOBILEBUILDMCP_SUPPRESS_WARNINGS: 'true',
+      MOBILEBUILDMCP_SHOW_TEST_TIMING: 'true',
+      MOBILEBUILDMCP_DERIVED_DATA_PATH: '/tmp/dd',
+      MOBILEBUILDMCP_USE_LATEST_OS: 'true',
+      MOBILEBUILDMCP_ARCH: 'arm64',
+      MOBILEBUILDMCP_SIMULATOR_NAME: 'iPhone 17',
+      MOBILEBUILDMCP_BUNDLE_ID: 'com.example.app',
     };
 
     await initConfigStore({ cwd, fs: createFs(), env });
@@ -339,9 +339,9 @@ describe('config-store', () => {
       '',
     ].join('\n');
     const env = {
-      XCODEBUILDMCP_SCHEME: 'FromEnv',
-      XCODEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
-      XCODEBUILDMCP_PLATFORM: 'iOS',
+      MOBILEBUILDMCP_SCHEME: 'FromEnv',
+      MOBILEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
+      MOBILEBUILDMCP_PLATFORM: 'iOS',
     };
 
     await initConfigStore({ cwd, fs: createFs(yaml), env });
@@ -362,8 +362,8 @@ describe('config-store', () => {
       },
     });
     const env = {
-      XCODEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
-      XCODEBUILDMCP_SCHEME: 'FromEnv',
+      MOBILEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
+      MOBILEBUILDMCP_SCHEME: 'FromEnv',
     };
 
     await initConfigStore({ cwd, fs, env });
@@ -385,8 +385,8 @@ describe('config-store', () => {
       },
     });
     const env = {
-      XCODEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
-      XCODEBUILDMCP_SCHEME: 'FromEnv',
+      MOBILEBUILDMCP_WORKSPACE_PATH: '/env/path/App.xcworkspace',
+      MOBILEBUILDMCP_SCHEME: 'FromEnv',
     };
 
     await initConfigStore({ cwd, fs, env });
@@ -411,7 +411,7 @@ describe('config-store', () => {
     await initConfigStore({
       cwd,
       fs,
-      env: { XCODEBUILDMCP_DEBUG: 'true' },
+      env: { MOBILEBUILDMCP_DEBUG: 'true' },
     });
 
     expect(getConfig().debug).toBe(true);

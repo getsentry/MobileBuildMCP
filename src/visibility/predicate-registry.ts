@@ -35,7 +35,7 @@ export const PREDICATES: Record<string, PredicateFn> = {
 
   /**
    * Hide when running inside Xcode's coding agent.
-   * Use for XcodeBuildMCP tools that conflict with Xcode's native equivalents.
+   * Use for MobileBuildMCP tools that conflict with Xcode's native equivalents.
    */
   hideWhenXcodeAgentMode: (ctx: PredicateContext): boolean => !ctx.runningUnderXcode,
 

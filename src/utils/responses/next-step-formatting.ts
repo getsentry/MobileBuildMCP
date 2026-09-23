@@ -40,7 +40,7 @@ function formatNextStepForCli(step: NextStep): string {
     return resolveLabel(step);
   }
 
-  const parts = ['xcodebuildmcp'];
+  const parts = ['mobilebuildmcp'];
   if (step.workflow) {
     parts.push(step.workflow);
   }

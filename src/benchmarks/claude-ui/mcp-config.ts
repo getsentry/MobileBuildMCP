@@ -103,9 +103,9 @@ export async function writeMcpConfig(opts: {
         command: 'node',
         args: [path.join(repoRoot, 'build/cli.js'), 'mcp'],
         env: {
-          XCODEBUILDMCP_DEBUG: 'true',
-          XCODEBUILDMCP_SENTRY_DISABLED: 'true',
-          XCODEBUILDMCP_CWD: opts.mcpWorkspaceDirectory,
+          MOBILEBUILDMCP_DEBUG: 'true',
+          MOBILEBUILDMCP_SENTRY_DISABLED: 'true',
+          MOBILEBUILDMCP_CWD: opts.mcpWorkspaceDirectory,
         },
       },
     },
@@ -135,6 +135,6 @@ export function claudeBenchmarkEnv(
 ): NodeJS.ProcessEnv {
   const env = { ...source, ...additions };
   for (const name of sessionDefaultEnvNameSet) delete env[name];
-  delete env.XCODEBUILDMCP_CWD;
+  delete env.MOBILEBUILDMCP_CWD;
   return env;
 }

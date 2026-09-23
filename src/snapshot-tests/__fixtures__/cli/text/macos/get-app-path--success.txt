@@ -10,5 +10,5 @@
      └ App Path: <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app
 
 Next steps:
-1. Get bundle ID: xcodebuildmcp macos get-macos-bundle-id --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app
-2. Launch app: xcodebuildmcp macos launch --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app
+1. Get bundle ID: mobilebuildmcp macos get-macos-bundle-id --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app
+2. Launch app: mobilebuildmcp macos launch --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app

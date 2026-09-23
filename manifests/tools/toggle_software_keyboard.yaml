@@ -5,7 +5,7 @@ names:
   cli: toggle-software-keyboard
 description: Toggle the iOS Simulator software keyboard. Shows or hides the on-screen keyboard. Requires the simulator to be booted and Accessibility permission for the MCP host.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Toggle Software Keyboard

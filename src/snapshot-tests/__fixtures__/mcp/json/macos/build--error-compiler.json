@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-result",
+  "schema": "mobilebuildmcp.output.build-result",
   "schemaVersion": "3",
   "didError": true,
   "error": "Build failed",
@@ -10,7 +10,7 @@
       "target": "macos"
     },
     "artifacts": {
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_macos_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_macos_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],

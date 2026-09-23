@@ -34,7 +34,7 @@ fixBranchPrefix = "warden-sweep"
 # High-value PR reviews. maxTurns is deliberately capped so a single skill cannot monopolize the
 # ten-minute workflow budget.
 [[skills]]
-name = "xcodebuildmcp-snapshot-fixture-review"
+name = "mobilebuildmcp-snapshot-fixture-review"
 maxTurns = 3
 maxFindings = 3
 paths = [
@@ -82,7 +82,7 @@ actions = ["opened", "synchronize", "reopened"]
 
 # Targeted domain reviews run only when explicitly selected for high-risk changes.
 [[skills]]
-name = "xcodebuildmcp-runtime-boundary-review"
+name = "mobilebuildmcp-runtime-boundary-review"
 maxTurns = 8
 maxFindings = 5
 paths = [
@@ -101,7 +101,7 @@ paths = [
 type = "local"
 
 [[skills]]
-name = "xcodebuildmcp-test-boundary-review"
+name = "mobilebuildmcp-test-boundary-review"
 maxTurns = 8
 maxFindings = 5
 paths = [
@@ -119,7 +119,7 @@ ignorePaths = ["src/snapshot-tests/__fixtures__/**"]
 type = "local"
 
 [[skills]]
-name = "xcodebuildmcp-tool-contract-review"
+name = "mobilebuildmcp-tool-contract-review"
 maxTurns = 8
 maxFindings = 5
 paths = [

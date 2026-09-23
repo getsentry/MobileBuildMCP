@@ -38,7 +38,7 @@ export async function isDeviceAppInstalled(
   bundleId: string,
   runner: ExternalCommandRunner = runExternalCommand,
 ): Promise<boolean> {
-  const tempDirectory = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-device-app-list-'));
+  const tempDirectory = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-device-app-list-'));
   const outputPath = path.join(tempDirectory, 'result.json');
   try {
     await runExternalCommandChecked(
@@ -92,7 +92,7 @@ export async function launchDeviceApp(
   args: string[] = [],
   runner: ExternalCommandRunner = runExternalCommand,
 ): Promise<number> {
-  const tempDirectory = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-device-launch-'));
+  const tempDirectory = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-device-launch-'));
   const outputPath = path.join(tempDirectory, 'result.json');
   try {
     await runExternalCommandChecked(

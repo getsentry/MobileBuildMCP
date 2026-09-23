@@ -3,7 +3,7 @@ import type { CommandExecutor } from './execution/index.ts';
 /**
  * Headless launch policy.
  *
- * When `XCODEBUILDMCP_HEADLESS_LAUNCH=1` is set, GUI launches that would
+ * When `MOBILEBUILDMCP_HEADLESS_LAUNCH=1` is set, GUI launches that would
  * otherwise steal window focus on macOS are suppressed:
  *
  * - macOS app launches use `open -g` (run in background, no foreground steal).
@@ -15,7 +15,7 @@ import type { CommandExecutor } from './execution/index.ts';
  * deliberately off by default so MCP/CLI behaviour in production is unchanged.
  */
 
-const HEADLESS_LAUNCH_ENV_VAR = 'XCODEBUILDMCP_HEADLESS_LAUNCH';
+const HEADLESS_LAUNCH_ENV_VAR = 'MOBILEBUILDMCP_HEADLESS_LAUNCH';
 
 export function isHeadlessLaunchMode(): boolean {
   const value = process.env[HEADLESS_LAUNCH_ENV_VAR];

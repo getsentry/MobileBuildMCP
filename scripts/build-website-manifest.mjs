@@ -9,7 +9,7 @@
  * Usage:
  *   node scripts/build-website-manifest.mjs --out=<path> [--ref=<tag>]
  *
- * The output shape mirrors scripts/sync-xcodebuildmcp-manifests.mjs in the
+ * The output shape mirrors scripts/sync-mobilebuildmcp-manifests.mjs in the
  * website repo so the publish path can be flipped from pull (Monday cron PR)
  * to push (release-time direct commit) without changing consumers.
  */
@@ -99,7 +99,7 @@ async function main() {
 
   const ref = args.ref ?? `v${pkg.version}`;
   const snapshot = {
-    source: `github:getsentry/XcodeBuildMCP@${ref}`,
+    source: `github:getsentry/MobileBuildMCP@${ref}`,
     ref,
     syncedAt: new Date().toISOString(),
     version: pkg.version,

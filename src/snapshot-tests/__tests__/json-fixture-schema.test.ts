@@ -31,9 +31,9 @@ beforeAll(async () => {
   const options = {
     enabledWorkflows: [...manifest.workflows.keys()],
     env: {
-      XCODEBUILDMCP_DEBUG: 'true',
+      MOBILEBUILDMCP_DEBUG: 'true',
       // Include predicate-gated tools in the complete public contract.
-      XCODEBUILDMCP_EXPERIMENTAL_WORKFLOW_DISCOVERY: 'true',
+      MOBILEBUILDMCP_EXPERIMENTAL_WORKFLOW_DISCOVERY: 'true',
     },
   };
   try {
@@ -121,7 +121,7 @@ describe('structured JSON fixture schemas', () => {
     });
     expect(sessionResult.outcome).toBe('success');
     expect(sessionResult.structuredEnvelope).toMatchObject({
-      schema: 'xcodebuildmcp.output.session-defaults',
+      schema: 'mobilebuildmcp.output.session-defaults',
       didError: false,
       data: {
         profiles: {
@@ -141,7 +141,7 @@ describe('structured JSON fixture schemas', () => {
     });
     expect(xcodeResult.outcome).not.toBe('validation-error');
     expect(xcodeResult.structuredEnvelope?.schema).toBe(
-      'xcodebuildmcp.output.xcode-bridge-call-result',
+      'mobilebuildmcp.output.xcode-bridge-call-result',
     );
 
     for (const invalidArguments of [
@@ -155,7 +155,7 @@ describe('structured JSON fixture schemas', () => {
         arguments: invalidArguments,
       });
       expect(invalidResult.structuredEnvelope).toMatchObject({
-        schema: 'xcodebuildmcp.output.error',
+        schema: 'mobilebuildmcp.output.error',
         didError: true,
         data: { code: 'PARAMETER_VALIDATION_FAILED' },
       });
@@ -164,8 +164,8 @@ describe('structured JSON fixture schemas', () => {
 
   it('normalizes environment entries through every live handler boundary', async () => {
     const env = [{ key: 'CONTRACT_PROBE', value: 'enabled' }];
-    const missingProject = '/__xcodebuildmcp_contract_probe__/Missing.xcodeproj';
-    const missingTests = '/__xcodebuildmcp_contract_probe__/Missing.xctestproducts';
+    const missingProject = '/__mobilebuildmcp_contract_probe__/Missing.xcodeproj';
+    const missingTests = '/__mobilebuildmcp_contract_probe__/Missing.xctestproducts';
     const probes = [
       {
         toolName: 'build_run_device',
@@ -175,7 +175,7 @@ describe('structured JSON fixture schemas', () => {
           deviceId: 'CONTRACT-PROBE-DEVICE',
           env,
         },
-        expectedSchema: 'xcodebuildmcp.output.build-run-result',
+        expectedSchema: 'mobilebuildmcp.output.build-run-result',
         expectedInfrastructureText: 'spawn xcodebuild ENOENT',
       },
       {
@@ -185,7 +185,7 @@ describe('structured JSON fixture schemas', () => {
           bundleId: 'com.example.contract-probe',
           env,
         },
-        expectedSchema: 'xcodebuildmcp.output.launch-result',
+        expectedSchema: 'mobilebuildmcp.output.launch-result',
         expectedInfrastructureText: 'spawn xcrun ENOENT',
       },
       {
@@ -195,13 +195,13 @@ describe('structured JSON fixture schemas', () => {
           deviceId: 'CONTRACT-PROBE-DEVICE',
           testRunnerEnv: env,
         },
-        expectedSchema: 'xcodebuildmcp.output.test-result',
+        expectedSchema: 'mobilebuildmcp.output.test-result',
         expectedInfrastructureText: 'spawn xcodebuild ENOENT',
       },
       {
         toolName: 'test_macos',
         arguments: { testProductsPath: missingTests, testRunnerEnv: env },
-        expectedSchema: 'xcodebuildmcp.output.test-result',
+        expectedSchema: 'mobilebuildmcp.output.test-result',
         expectedInfrastructureText: 'spawn xcodebuild ENOENT',
       },
       {
@@ -211,7 +211,7 @@ describe('structured JSON fixture schemas', () => {
           bundleId: 'com.example.contract-probe',
           env,
         },
-        expectedSchema: 'xcodebuildmcp.output.launch-result',
+        expectedSchema: 'mobilebuildmcp.output.launch-result',
         expectedInfrastructureText: 'spawn xcrun ENOENT',
       },
       {
@@ -221,7 +221,7 @@ describe('structured JSON fixture schemas', () => {
           simulatorName: 'Contract Probe Missing Simulator',
           testRunnerEnv: env,
         },
-        expectedSchema: 'xcodebuildmcp.output.test-result',
+        expectedSchema: 'mobilebuildmcp.output.test-result',
         expectedInfrastructureText: 'Unable to determine the simulator platform',
       },
     ] as const;

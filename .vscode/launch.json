@@ -34,10 +34,10 @@
         "--inspect=9999"
       ],
       "env": {
-        "XCODEBUILDMCP_DEBUG": "true",
+        "MOBILEBUILDMCP_DEBUG": "true",
         "INCREMENTAL_BUILDS_ENABLED": "false",
-        "XCODEBUILDMCP_IOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-iOS-Template",
-        "XCODEBUILDMCP_MACOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-macOS-Template"
+        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-iOS-Template",
+        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "${workspaceFolder}/../XcodeBuildMCP-macOS-Template"
       },
       "sourceMaps": true,
       "outFiles": [

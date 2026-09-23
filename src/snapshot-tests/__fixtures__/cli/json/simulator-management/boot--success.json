@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.simulator-action-result",
+  "schema": "mobilebuildmcp.output.simulator-action-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -15,8 +15,8 @@
     }
   },
   "nextSteps": [
-    "Open the Simulator app (makes it visible): xcodebuildmcp simulator-management open",
-    "Install an app: xcodebuildmcp simulator install --simulator-id <UUID> --app-path PATH_TO_YOUR_APP",
-    "Launch an app: xcodebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id YOUR_APP_BUNDLE_ID"
+    "Open the Simulator app (makes it visible): mobilebuildmcp simulator-management open",
+    "Install an app: mobilebuildmcp simulator install --simulator-id <UUID> --app-path PATH_TO_YOUR_APP",
+    "Launch an app: mobilebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id YOUR_APP_BUNDLE_ID"
   ]
 }

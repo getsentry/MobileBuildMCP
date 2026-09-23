@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.xcode-bridge-status/2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.xcode-bridge-status"
+    },
+    "schemaVersion": {
+      "const": "2"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "disconnect"
+          ]
+        },
+        "status": {
+          "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/bridgeStatus"
+        }
+      },
+      "required": [
+        "action",
+        "status"
+      ]
+    },
+    "nextSteps": {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/nextSteps"
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "didError",
+    "error",
+    "data"
+  ]
+}

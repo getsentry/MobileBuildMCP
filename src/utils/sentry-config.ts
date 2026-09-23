@@ -6,7 +6,7 @@ export async function hydrateSentryDisabledEnvFromProjectConfig(opts?: {
   fs?: FileSystemExecutor;
 }): Promise<void> {
   const envDisabled =
-    process.env.XCODEBUILDMCP_SENTRY_DISABLED === 'true' || process.env.SENTRY_DISABLED === 'true';
+    process.env.MOBILEBUILDMCP_SENTRY_DISABLED === 'true' || process.env.SENTRY_DISABLED === 'true';
   if (envDisabled) {
     return;
   }
@@ -16,6 +16,6 @@ export async function hydrateSentryDisabledEnvFromProjectConfig(opts?: {
   const result = await loadProjectConfig({ fs, cwd });
 
   if (result.found && result.config.sentryDisabled === true) {
-    process.env.XCODEBUILDMCP_SENTRY_DISABLED = 'true';
+    process.env.MOBILEBUILDMCP_SENTRY_DISABLED = 'true';
   }
 }

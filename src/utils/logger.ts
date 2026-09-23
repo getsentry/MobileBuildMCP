@@ -24,7 +24,7 @@ import { areProcessStdioWritesSuppressed, isSentryCaptureSealed } from './shutdo
 
 function isSentryDisabledFromEnv(): boolean {
   return (
-    process.env.SENTRY_DISABLED === 'true' || process.env.XCODEBUILDMCP_SENTRY_DISABLED === 'true'
+    process.env.SENTRY_DISABLED === 'true' || process.env.MOBILEBUILDMCP_SENTRY_DISABLED === 'true'
   );
 }
 
@@ -68,7 +68,7 @@ function isTestEnv(): boolean {
   return (
     process.env.VITEST === 'true' ||
     process.env.NODE_ENV === 'test' ||
-    process.env.XCODEBUILDMCP_SILENCE_LOGS === 'true'
+    process.env.MOBILEBUILDMCP_SILENCE_LOGS === 'true'
   );
 }
 

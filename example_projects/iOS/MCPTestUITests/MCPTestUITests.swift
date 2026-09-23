@@ -1,7 +1,7 @@
 import XCTest
 
 /// Reproduction tests for TEST_RUNNER_ environment variable passthrough.
-/// GitHub Issue: https://github.com/getsentry/XcodeBuildMCP/issues/101
+/// GitHub Issue: https://github.com/getsentry/MobileBuildMCP/issues/101
 ///
 /// Expected behavior:
 /// - When invoking xcodebuild test with TEST_RUNNER_USE_DEV_MODE=YES,
@@ -9,7 +9,7 @@ import XCTest
 ///   (the TEST_RUNNER_ prefix is stripped by xcodebuild).
 ///
 /// Current behavior (before implementation in Node layer):
-/// - Running via XcodeBuildMCP test tools does not yet pass TEST_RUNNER_
+/// - Running via MobileBuildMCP test tools does not yet pass TEST_RUNNER_
 ///   variables through, so this test will fail and serve as a repro.
 final class MCPTestUITests: XCTestCase {
 

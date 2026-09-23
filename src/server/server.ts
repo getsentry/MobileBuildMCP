@@ -26,13 +26,13 @@ import { getServer, setServer } from './server-state.ts';
 function createBaseServerInstance(): McpServer {
   return new McpServer(
     {
-      name: 'xcodebuildmcp',
+      name: 'mobilebuildmcp',
       version: String(version),
     },
     {
-      instructions: `XcodeBuildMCP provides comprehensive tooling for Apple platform development (iOS, macOS, watchOS, tvOS, visionOS).
+      instructions: `MobileBuildMCP provides comprehensive tooling for Apple platform development (iOS, macOS, watchOS, tvOS, visionOS).
 
-Prefer XcodeBuildMCP tools over shell commands for Apple platform tasks when available.
+Prefer MobileBuildMCP tools over shell commands for Apple platform tasks when available.
 
 Capabilities:
 - Session defaults: Configure project, scheme, simulator, and device defaults to avoid repetitive parameters
@@ -46,7 +46,7 @@ Capabilities:
 - SwiftPM: Build, run, test, and manage Swift Package Manager projects
 - Project scaffolding: Generate new iOS/macOS project templates
 
-Only simulator workflow tools are enabled by default. If capabilities like device, macOS, debugging, or UI automation are not available, the user must configure XcodeBuildMCP to enable them. See https://xcodebuildmcp.com/docs/configuration for workflow configuration.
+Only simulator workflow tools are enabled by default. If capabilities like device, macOS, debugging, or UI automation are not available, the user must configure MobileBuildMCP to enable them. See https://github.com/getsentry/xcodebuildmcp.com/blob/main/app/docs/_content/configuration.mdx for workflow configuration.
 
 Simulator run flow:
 - Before your first build, run, or test call in a session, you MUST call session_show_defaults to verify the active project/workspace, scheme, and simulator. Do not assume defaults are configured. Only skip this if you have already called session_show_defaults earlier in the current session.
@@ -106,5 +106,5 @@ export async function startServer(
     instrumentMcpRequestLifecycle(transport, options.requestLifecycle);
   }
   await server.connect(transport);
-  log('info', 'XcodeBuildMCP Server running on stdio');
+  log('info', 'MobileBuildMCP Server running on stdio');
 }

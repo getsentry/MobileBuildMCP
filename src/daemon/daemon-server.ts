@@ -55,7 +55,7 @@ function bridgeResultToDaemonResult(
   const result = toBridgeCallResultDomainResult(bridgeResult, remoteTool);
   return {
     structuredOutput: {
-      schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+      schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
       schemaVersion: '3',
       result,
     },
@@ -236,7 +236,7 @@ export function startDaemonServer(ctx: DaemonServerContext): net.Server {
                   error: {
                     code: 'NOT_FOUND',
                     message:
-                      'xcode-ide workflow is not enabled for this daemon session (set XCODEBUILDMCP_ENABLED_WORKFLOWS to include xcode-ide)',
+                      'xcode-ide workflow is not enabled for this daemon session (set MOBILEBUILDMCP_ENABLED_WORKFLOWS to include xcode-ide)',
                   },
                 });
               }
@@ -271,7 +271,7 @@ export function startDaemonServer(ctx: DaemonServerContext): net.Server {
                   error: {
                     code: 'NOT_FOUND',
                     message:
-                      'xcode-ide workflow is not enabled for this daemon session (set XCODEBUILDMCP_ENABLED_WORKFLOWS to include xcode-ide)',
+                      'xcode-ide workflow is not enabled for this daemon session (set MOBILEBUILDMCP_ENABLED_WORKFLOWS to include xcode-ide)',
                   },
                 });
               }

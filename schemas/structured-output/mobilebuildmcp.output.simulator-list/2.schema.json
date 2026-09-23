@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-list/2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.simulator-list"
+    },
+    "schemaVersion": {
+      "const": "2"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "simulators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "simulatorId": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "isAvailable": {
+                "type": "boolean"
+              },
+              "runtime": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "simulatorId",
+              "state",
+              "isAvailable",
+              "runtime"
+            ]
+          }
+        }
+      },
+      "required": [
+        "simulators"
+      ]
+    },
+    "nextSteps": {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/nextSteps"
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "didError",
+    "error",
+    "data"
+  ]
+}

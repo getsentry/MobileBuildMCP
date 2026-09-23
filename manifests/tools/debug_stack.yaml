@@ -5,7 +5,7 @@ names:
   cli: stack
 description: Get backtrace.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-stack-result
+  schema: mobilebuildmcp.output.debug-stack-result
   version: "2"
 routing:
   stateful: true

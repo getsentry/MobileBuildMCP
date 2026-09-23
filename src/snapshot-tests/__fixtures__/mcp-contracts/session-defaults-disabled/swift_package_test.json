@@ -150,7 +150,7 @@
         "type": "object"
       }
     },
-    "$id": "https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.test-result/2.registration.schema.json",
+    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.test-result/2.registration.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
       {
@@ -239,7 +239,7 @@
             "type": ["string","null"]
           },
           "nextSteps": {"$ref":"#/$defs/nextSteps"},
-          "schema": {"const":"xcodebuildmcp.output.test-result"},
+          "schema": {"const":"mobilebuildmcp.output.test-result"},
           "schemaVersion": {"const":"2"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],
@@ -264,7 +264,7 @@
           },
           "didError": {"const":true},
           "error": {"minLength":1,"type":"string"},
-          "schema": {"const":"xcodebuildmcp.output.error"},
+          "schema": {"const":"mobilebuildmcp.output.error"},
           "schemaVersion": {"const":"1"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],

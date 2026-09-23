@@ -32,7 +32,7 @@ describe('scaffold_ios_project plugin', () => {
     mockFileSystemExecutor = createMockFileSystemExecutor({
       existsSync: (path) => {
         return (
-          path.includes('xcodebuild-mcp-template') ||
+          path.includes('mobilebuild-mcp-template') ||
           path.includes('XcodeBuildMCP-iOS-Template') ||
           path.includes('/template') ||
           path.endsWith('template') ||
@@ -167,7 +167,7 @@ describe('scaffold_ios_project plugin', () => {
         ),
       ]);
       expect(unzipOptions).toEqual({
-        cwd: expect.stringMatching(/xcodebuild-mcp-template-/),
+        cwd: expect.stringMatching(/mobilebuild-mcp-template-/),
       });
 
       await initConfigStoreForTest({ iosTemplatePath: '/mock/template/path' });

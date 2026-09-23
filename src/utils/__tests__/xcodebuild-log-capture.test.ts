@@ -16,7 +16,7 @@ let logDir: string;
 
 describe('xcodebuild log capture', () => {
   beforeEach(() => {
-    logDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-log-capture-'));
+    logDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-log-capture-'));
     setXcodebuildLogDirOverrideForTests(logDir);
     setRuntimeInstanceForTests({
       instanceId: 'capture-test',

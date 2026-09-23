@@ -14,7 +14,7 @@ import {
 } from '../log-capture/simulator-launch-oslog-registry.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 
 let registryDir: string;
@@ -38,10 +38,10 @@ function createRecord(
 
 describe.sequential('simulator launch OSLog registry', () => {
   beforeEach(() => {
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-oslog-registry-'));
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-oslog-app-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-oslog-registry-'));
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-oslog-app-'));
     setSimulatorLaunchOsLogRegistryDirForTests(registryDir);
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
     setSimulatorLaunchOsLogRecordActiveOverrideForTests(async (record) => {
       return record.helperPid === process.pid && record.expectedCommandParts.includes('node');
     });
@@ -50,7 +50,7 @@ describe.sequential('simulator launch OSLog registry', () => {
   afterEach(async () => {
     setSimulatorLaunchOsLogRecordActiveOverrideForTests(null);
     setSimulatorLaunchOsLogRegistryDirForTests(null);
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     await rm(registryDir, { recursive: true, force: true });
     await rm(appDir, { recursive: true, force: true });
   });

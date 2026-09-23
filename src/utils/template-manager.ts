@@ -77,7 +77,7 @@ export class TemplateManager {
     );
 
     // Create temp directory for download
-    const tempDir = join(tmpdir(), `xcodebuild-mcp-template-${randomUUID()}`);
+    const tempDir = join(tmpdir(), `mobilebuild-mcp-template-${randomUUID()}`);
     await fileSystemExecutor.mkdir(tempDir, { recursive: true });
 
     try {

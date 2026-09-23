@@ -13,4 +13,4 @@ Compiler Errors (1):
 
 ❌ Build failed. (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log

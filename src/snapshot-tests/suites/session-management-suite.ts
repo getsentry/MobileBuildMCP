@@ -70,7 +70,7 @@ export function registerSessionManagementSnapshotSuite(runtime: SnapshotRuntime)
     beforeEach(async () => {
       cleanup = new CleanupStack();
       try {
-        testWorkspace = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-session-snapshot-'));
+        testWorkspace = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-session-snapshot-'));
         cleanup.defer('remove session snapshot directory', () =>
           rmSync(testWorkspace, { recursive: true, force: true }),
         );

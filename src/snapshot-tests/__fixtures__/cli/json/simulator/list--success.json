@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.simulator-list",
+  "schema": "mobilebuildmcp.output.simulator-list",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -85,9 +85,9 @@
     ]
   },
   "nextSteps": [
-    "Boot a simulator: xcodebuildmcp simulator boot --simulator-id UUID_FROM_ABOVE",
-    "Open the simulator UI: xcodebuildmcp simulator open",
-    "Build for simulator: xcodebuildmcp simulator build --scheme YOUR_SCHEME --simulator-id UUID_FROM_ABOVE",
-    "Get app path: xcodebuildmcp simulator get-app-path --scheme YOUR_SCHEME --platform 'iOS Simulator' --simulator-id UUID_FROM_ABOVE"
+    "Boot a simulator: mobilebuildmcp simulator boot --simulator-id UUID_FROM_ABOVE",
+    "Open the simulator UI: mobilebuildmcp simulator open",
+    "Build for simulator: mobilebuildmcp simulator build --scheme YOUR_SCHEME --simulator-id UUID_FROM_ABOVE",
+    "Get app path: mobilebuildmcp simulator get-app-path --scheme YOUR_SCHEME --platform 'iOS Simulator' --simulator-id UUID_FROM_ABOVE"
   ]
 }

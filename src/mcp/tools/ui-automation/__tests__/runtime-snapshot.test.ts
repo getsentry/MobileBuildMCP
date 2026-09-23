@@ -644,7 +644,7 @@ describe('runtime snapshot normalization', () => {
     );
     expect(
       snapshot.payload.elements.find(
-        (element) => element.identifier === 'xcodebuildmcp.inferred.sheet-content',
+        (element) => element.identifier === 'mobilebuildmcp.inferred.sheet-content',
       ),
     ).toBeUndefined();
     expect(snapshot.payload.actions.some((action) => action.action === 'swipeWithin')).toBe(false);
@@ -732,7 +732,7 @@ describe('runtime snapshot normalization', () => {
     });
     expect(
       snapshot.payload.elements.find(
-        (element) => element.identifier === 'xcodebuildmcp.inferred.sheet-content',
+        (element) => element.identifier === 'mobilebuildmcp.inferred.sheet-content',
       ),
     ).toBeUndefined();
     expect(snapshot.payload.elements[0]?.actions).not.toContain('swipeWithin');
@@ -813,7 +813,7 @@ describe('runtime snapshot normalization', () => {
     });
     expect(
       snapshot.payload.elements.find(
-        (element) => element.identifier === 'xcodebuildmcp.inferred.sheet-content',
+        (element) => element.identifier === 'mobilebuildmcp.inferred.sheet-content',
       ),
     ).toBeUndefined();
     expect(snapshot.payload.elements[0]?.actions).not.toContain('swipeWithin');
@@ -846,7 +846,7 @@ describe('runtime snapshot normalization', () => {
     expect(snapshot.payload.elements[0]?.actions).toEqual([]);
     expect(
       snapshot.payload.elements.find(
-        (element) => element.identifier === 'xcodebuildmcp.inferred.sheet-content',
+        (element) => element.identifier === 'mobilebuildmcp.inferred.sheet-content',
       ),
     ).toBeUndefined();
   });

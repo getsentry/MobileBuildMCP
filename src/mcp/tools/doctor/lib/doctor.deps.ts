@@ -184,9 +184,9 @@ export function createDoctorDependencies(executor: CommandExecutor): DoctorDepen
         'NODE_ENV',
         'SENTRY_DISABLED',
         'AXE_PATH',
-        'XBMCP_LAUNCH_JSON_WAIT_MS',
-        'XCODEBUILDMCP_DEBUGGER_BACKEND',
-        'XCODEBUILDMCP_UI_DEBUGGER_GUARD_MODE',
+        'MOBILEBUILDMCP_LAUNCH_JSON_WAIT_MS',
+        'MOBILEBUILDMCP_DEBUGGER_BACKEND',
+        'MOBILEBUILDMCP_UI_DEBUGGER_GUARD_MODE',
       ];
 
       const envVars: Record<string, string | undefined> = {};
@@ -195,7 +195,7 @@ export function createDoctorDependencies(executor: CommandExecutor): DoctorDepen
       }
 
       for (const key of Object.keys(process.env)) {
-        if (key.startsWith('XCODEBUILDMCP_')) {
+        if (key.startsWith('MOBILEBUILDMCP_')) {
           envVars[key] = process.env[key];
         }
       }

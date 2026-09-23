@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-settings",
+  "schema": "mobilebuildmcp.output.build-settings",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -2424,8 +2424,8 @@
     ]
   },
   "nextSteps": [
-    "Build for macOS: xcodebuildmcp macos build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp",
-    "Build for iOS Simulator: xcodebuildmcp simulator build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'",
-    "List schemes: xcodebuildmcp project-discovery list-schemes --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace"
+    "Build for macOS: mobilebuildmcp macos build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp",
+    "Build for iOS Simulator: mobilebuildmcp simulator build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'",
+    "List schemes: mobilebuildmcp project-discovery list-schemes --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace"
   ]
 }

@@ -18,7 +18,7 @@ import {
   registryPathForWorkspaceKey,
   setDaemonRunDirOverrideForTests,
 } from '../socket-path.ts';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
 
 const stalePid = 999_999_999;
 
@@ -41,14 +41,14 @@ describe('daemon registry', () => {
   let daemonRunDir: string;
 
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-daemon-registry-app-'));
-    daemonRunDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-daemon-registry-run-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-daemon-registry-app-'));
+    daemonRunDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-daemon-registry-run-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
     setDaemonRunDirOverrideForTests(daemonRunDir);
   });
 
   afterEach(() => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     setDaemonRunDirOverrideForTests(null);
     rmSync(appDir, { recursive: true, force: true });
     rmSync(daemonRunDir, { recursive: true, force: true });
@@ -70,7 +70,7 @@ describe('daemon registry', () => {
     expect(registryPathForWorkspaceKey('workspace-a')).toBe(expectedRegistryPath);
     expect(readDaemonRegistryEntry('workspace-a')).toEqual(entry);
     expect(existsSync(expectedRegistryPath)).toBe(true);
-    expect(entry.socketPath).toBe(path.join(daemonRunDir, 'xcodebuildmcp-0dcf2d98505d', 'd.sock'));
+    expect(entry.socketPath).toBe(path.join(daemonRunDir, 'mobilebuildmcp-0dcf2d98505d', 'd.sock'));
     expect(logPathForWorkspaceKey('workspace-a')).toBe(
       path.join(appDir, 'workspaces', 'workspace-a', 'logs', 'daemon.log'),
     );

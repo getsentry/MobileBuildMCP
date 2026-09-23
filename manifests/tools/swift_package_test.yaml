@@ -5,7 +5,7 @@ names:
   cli: test
 description: Run swift package target tests.
 outputSchema:
-  schema: xcodebuildmcp.output.test-result
+  schema: mobilebuildmcp.output.test-result
   version: "2"
 predicates:
   - hideWhenXcodeAgentMode

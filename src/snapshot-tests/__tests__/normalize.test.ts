@@ -14,7 +14,7 @@ describe('normalizeSnapshotOutput', () => {
     expect(
       normalizeSnapshotOutput(
         [
-          '1. Stop app: xcodebuildmcp device stop --device-id <UUID> --process-id 12345',
+          '1. Stop app: mobilebuildmcp device stop --device-id <UUID> --process-id 12345',
           'Device: iPhone, OS: 26.4.2 (a)',
           '      TARGET_DEVICE_MODEL = iPhone17,2',
           '      TARGET_DEVICE_OS_VERSION = 26.4.2',
@@ -34,7 +34,7 @@ describe('normalizeSnapshotOutput', () => {
       ),
     ).toBe(
       [
-        '1. Stop app: xcodebuildmcp device stop --device-id <UUID> --process-id <PID>',
+        '1. Stop app: mobilebuildmcp device stop --device-id <UUID> --process-id <PID>',
         'Device: iPhone, OS: <OS_VERSION>',
         '      TARGET_DEVICE_MODEL = <DEVICE_MODEL>',
         '      TARGET_DEVICE_OS_VERSION = <OS_VERSION>',
@@ -187,62 +187,62 @@ describe('normalizeSnapshotOutput', () => {
   it('preserves display-formatted home paths while normalizing workspace hashes', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-c5da0cbe19a7/logs/build.log\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-c5da0cbe19a7/logs/build.log\n',
       ),
-    ).toBe('~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build.log\n');
+    ).toBe('~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build.log\n');
   });
 
   it('normalizes worktree-specific workspace names to the canonical fixture label', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/issue-450-c5da0cbe19a7/logs/build.log\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/issue-450-c5da0cbe19a7/logs/build.log\n',
       ),
-    ).toBe('~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build.log\n');
+    ).toBe('~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build.log\n');
   });
 
   it('normalizes generated test products process and random suffixes', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/issue-450-c5da0cbe19a7/test-products/test_sim_2026-07-16T13-20-13-467Z_pid31212_06abe32f.xctestproducts\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/issue-450-c5da0cbe19a7/test-products/test_sim_2026-07-16T13-20-13-467Z_pid31212_06abe32f.xctestproducts\n',
       ),
     ).toBe(
-      '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/test-products/test_sim_<TIMESTAMP>_pid<PID>.xctestproducts\n',
+      '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/test-products/test_sim_<TIMESTAMP>_pid<PID>.xctestproducts\n',
     );
   });
 
-  it('normalizes absolute home XcodeBuildMCP paths to ~/', () => {
+  it('normalizes absolute home MobileBuildMCP paths to ~/', () => {
     expect(
       normalizeSnapshotOutput(
-        '<HOME>/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-c5da0cbe19a7/logs/build.log\n',
+        '<HOME>/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-c5da0cbe19a7/logs/build.log\n',
       ),
-    ).toBe('~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build.log\n');
+    ).toBe('~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build.log\n');
   });
 
   it('normalizes workspace hash and derived data hash together', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-c5da0cbe19a7/DerivedData/CalculatorApp-7834e7689e33\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-c5da0cbe19a7/DerivedData/CalculatorApp-7834e7689e33\n',
       ),
     ).toBe(
-      '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>\n',
+      '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>\n',
     );
   });
 
   it('normalizes workspace root nodes with trailing slash', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-c5da0cbe19a7/\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-c5da0cbe19a7/\n',
       ),
-    ).toBe('~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/\n');
+    ).toBe('~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/\n');
   });
 
   it('normalizes xcode-ide raw response artifact path volatility', () => {
     expect(
       normalizeSnapshotOutput(
-        '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-c5da0cbe19a7/state/xcode-ide/call-tool/ownerpid22817_6DDCB226-377E-4F3F-93D4-3CA386249E80/2026-05-07T17-21-14-001Z-list-tools-44fa9782.json — Raw Response JSON\n',
+        '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-c5da0cbe19a7/state/xcode-ide/call-tool/ownerpid22817_6DDCB226-377E-4F3F-93D4-3CA386249E80/2026-05-07T17-21-14-001Z-list-tools-44fa9782.json — Raw Response JSON\n',
       ),
     ).toBe(
-      '~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/state/xcode-ide/call-tool/ownerpid<PID>_<UUID>/<TIMESTAMP>-list-tools-<HASH>.json — Raw Response JSON\n',
+      '~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/state/xcode-ide/call-tool/ownerpid<PID>_<UUID>/<TIMESTAMP>-list-tools-<HASH>.json — Raw Response JSON\n',
     );
   });
 
@@ -256,8 +256,8 @@ describe('normalizeSnapshotOutput', () => {
     expect(
       normalizeSnapshotOutput(
         [
-          'Tap: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref e48',
-          'Scroll: xcodebuildmcp ui-automation swipe --within-element-ref "e1" --direction up',
+          'Tap: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref e48',
+          'Scroll: mobilebuildmcp ui-automation swipe --within-element-ref "e1" --direction up',
           'MCP: tap({ simulatorId: "<UUID>", elementRef: "e48" })',
           'JSON: {"action":"tap","elementRef":"e40"}',
           'Message: acted on within elementRef e6',
@@ -265,8 +265,8 @@ describe('normalizeSnapshotOutput', () => {
       ),
     ).toBe(
       [
-        'Tap: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>',
-        'Scroll: xcodebuildmcp ui-automation swipe --within-element-ref "<REF>" --direction up',
+        'Tap: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>',
+        'Scroll: mobilebuildmcp ui-automation swipe --within-element-ref "<REF>" --direction up',
         'MCP: tap({ simulatorId: "<UUID>", elementRef: "<REF>" })',
         'JSON: {"action":"tap","elementRef":"<REF>"}',
         'Message: acted on within elementRef <REF>',

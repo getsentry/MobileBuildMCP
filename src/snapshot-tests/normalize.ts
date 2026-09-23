@@ -73,9 +73,9 @@ const SDK_VERSION_REGEX =
 const CODEX_ARG0_PATH_REGEX = /<HOME>\/\.codex\/tmp\/arg0\/codex-arg0[A-Za-z0-9]+/g;
 const CODEX_WORKTREE_NODE_MODULES_REGEX =
   /<HOME>\/\.codex\/worktrees\/[^/:]+\/node_modules\/\.bin/g;
-const XCODEBUILDMCP_HOME_PREFIX_REGEX = /<HOME>(?=\/Library\/Developer\/XcodeBuildMCP(?:\/|$))/g;
-const XCODEBUILDMCP_WORKSPACE_KEY_REGEX =
-  /(~\/Library\/Developer\/XcodeBuildMCP\/workspaces\/)[^/\n]+-[0-9a-f]{12}(?=\/|$)/g;
+const MOBILEBUILDMCP_HOME_PREFIX_REGEX = /<HOME>(?=\/Library\/Developer\/MobileBuildMCP(?:\/|$))/g;
+const MOBILEBUILDMCP_WORKSPACE_KEY_REGEX =
+  /(~\/Library\/Developer\/MobileBuildMCP\/workspaces\/)[^/\n]+-[0-9a-f]{12}(?=\/|$)/g;
 const XCODE_IDE_ARTIFACT_OWNER_PID_REGEX = /(\/state\/xcode-ide\/call-tool\/ownerpid)\d+_/g;
 const XCODE_IDE_ARTIFACT_HASH_REGEX =
   /(\/state\/xcode-ide\/call-tool\/[^/\n]+\/[^/\n]+-)[0-9a-f]{8}(?=\.json)/g;
@@ -269,13 +269,13 @@ export function normalizeSnapshotOutput(
       '<TMPDIR>',
     );
   }
-  normalized = normalized.replace(XCODEBUILDMCP_HOME_PREFIX_REGEX, '~');
-  normalized = normalized.replace(XCODEBUILDMCP_WORKSPACE_KEY_REGEX, '$1XcodeBuildMCP-<HASH>');
+  normalized = normalized.replace(MOBILEBUILDMCP_HOME_PREFIX_REGEX, '~');
+  normalized = normalized.replace(MOBILEBUILDMCP_WORKSPACE_KEY_REGEX, '$1MobileBuildMCP-<HASH>');
   normalized = normalized.replace(XCODE_IDE_ARTIFACT_OWNER_PID_REGEX, '$1<PID>_');
   normalized = normalized.replace(XCODE_IDE_ARTIFACT_HASH_REGEX, '$1<HASH>');
   normalized = normalized.replace(
-    /(Build Logs: )(?:<TMPDIR>|~\/Library\/Developer\/XcodeBuildMCP)\/logs\//g,
-    '$1~/Library/Developer/XcodeBuildMCP/logs/',
+    /(Build Logs: )(?:<TMPDIR>|~\/Library\/Developer\/MobileBuildMCP)\/logs\//g,
+    '$1~/Library/Developer/MobileBuildMCP/logs/',
   );
   normalized = normalized.replace(
     /Raw Response JSON: .+\/xcode-ide\/call-tool\/.+\/[A-Za-z0-9._-]+\.json/g,

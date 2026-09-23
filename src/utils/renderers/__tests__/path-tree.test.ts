@@ -14,7 +14,7 @@ const runtimeLogFileName =
   'io.sentry.calculatorapp_2026-05-07T12-48-10-840Z_helperpid25309_ownerpid24748_88fd8a4f.log';
 const osLogFileName =
   'io.sentry.calculatorapp_oslog_2026-05-07T12-48-12-805Z_helperpid25369_ownerpid24748_14da7d85.log';
-const managedWorkspacePath = `${homePath}/Library/Developer/XcodeBuildMCP/workspaces/${workspaceKey}`;
+const managedWorkspacePath = `${homePath}/Library/Developer/MobileBuildMCP/workspaces/${workspaceKey}`;
 
 describe('formatPathTree', () => {
   it('groups paths by their shared ancestor before display formatting', () => {
@@ -41,7 +41,7 @@ describe('formatPathTree', () => {
         { formatPath: displayPath },
       ),
     ).toEqual([
-      `└── ~/Library/Developer/XcodeBuildMCP/workspaces/${workspaceKey}/`,
+      `└── ~/Library/Developer/MobileBuildMCP/workspaces/${workspaceKey}/`,
       `    ├── DerivedData/${derivedDataDirectoryName}/Build/Products/Debug-iphonesimulator/CalculatorApp.app — App Path`,
       '    └── logs/',
       `        ├── ${buildLogFileName} — Build Logs`,
@@ -70,7 +70,7 @@ describe('formatPathTree', () => {
         { formatPath: displayPath },
       ),
     ).toEqual([
-      `├── ~/Library/Developer/XcodeBuildMCP/workspaces/${workspaceKey}/logs/`,
+      `├── ~/Library/Developer/MobileBuildMCP/workspaces/${workspaceKey}/logs/`,
       `│   ├── ${buildLogFileName} — Build Logs`,
       `│   └── ${runtimeLogFileName} — Runtime Logs`,
       '└── /Volumes/CustomDerivedData/CalculatorApp/Build/Products/Debug-iphonesimulator/CalculatorApp.app — App Path',

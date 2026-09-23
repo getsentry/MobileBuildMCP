@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.launch-result",
+  "schema": "mobilebuildmcp.output.launch-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -18,6 +18,6 @@
     }
   },
   "nextSteps": [
-    "Stop the app: xcodebuildmcp device stop --device-id <UUID> --process-id <PID>"
+    "Stop the app: mobilebuildmcp device stop --device-id <UUID> --process-id <PID>"
   ]
 }

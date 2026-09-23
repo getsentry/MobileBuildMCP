@@ -1,7 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import { log } from '../utils/logger.ts';
 
-const PROFILE_ENV = 'XCODEBUILDMCP_STARTUP_PROFILE';
+const PROFILE_ENV = 'MOBILEBUILDMCP_STARTUP_PROFILE';
 
 function isEnabled(): boolean {
   const value = process.env[PROFILE_ENV]?.toLowerCase();

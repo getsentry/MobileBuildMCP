@@ -10,7 +10,7 @@ import {
 } from '../purge-storage.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 import { getTestProductsCompletionMarkerPath } from '../test-products-path.ts';
 
@@ -27,12 +27,12 @@ describe('test products purge storage', () => {
   let appDir: string;
 
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-test-products-purge-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-test-products-purge-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
   });
 
   afterEach(async () => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     await rm(appDir, { recursive: true, force: true });
   });
 

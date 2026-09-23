@@ -14,4 +14,4 @@ Workspaces:
   example_projects/iOS_Calculator/CalculatorApp.xcworkspace
 
 Next steps:
-1. Build and run once defaults are set: xcodebuildmcp simulator build-and-run
+1. Build and run once defaults are set: mobilebuildmcp simulator build-and-run

@@ -5,7 +5,7 @@ names:
   cli: add-breakpoint
 description: Add breakpoint.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-breakpoint-result
+  schema: mobilebuildmcp.output.debug-breakpoint-result
   version: "2"
 routing:
   stateful: true

@@ -10,7 +10,7 @@ import {
 } from '../structured-output-schema.ts';
 
 const COMMON_DEFS_REF =
-  'https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json';
+  'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json';
 
 function expectNoExternalCommonRefs(schema: JsonObject): void {
   expect(JSON.stringify(schema)).not.toContain(COMMON_DEFS_REF);
@@ -40,13 +40,13 @@ describe('structured output schema bundling', () => {
 
   it('bundles a schema with a single external common ref', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     });
 
     expect(schema.$schema).toBe('https://json-schema.org/draft/2020-12/schema');
     expect(schema.$id).toBe(
-      'https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.simulator-list/1.schema.json',
+      'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-list/1.schema.json',
     );
     expect((schema.$defs as JsonObject).errorConsistency).toBeDefined();
     expect(JSON.stringify(schema)).toContain('#/$defs/errorConsistency');
@@ -56,7 +56,7 @@ describe('structured output schema bundling', () => {
 
   it('bundles transitive common refs', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       version: '1',
     });
     const defs = schema.$defs as JsonObject;
@@ -72,7 +72,7 @@ describe('structured output schema bundling', () => {
 
   it('preserves root-local defs while adding common defs', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       version: '1',
     });
     const defs = schema.$defs as JsonObject;
@@ -88,12 +88,12 @@ describe('structured output schema bundling', () => {
 
   it('bundles the shared structured error schema', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.error',
+      schema: 'mobilebuildmcp.output.error',
       version: '1',
     });
 
     expect(schema.$id).toBe(
-      'https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.error/1.schema.json',
+      'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.error/1.schema.json',
     );
     expect((schema.$defs as JsonObject).errorConsistency).toBeDefined();
     expectNoExternalCommonRefs(schema);
@@ -102,13 +102,13 @@ describe('structured output schema bundling', () => {
 
   it('returns fresh schema objects from the cache', () => {
     const first = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     });
     first.mutated = true;
 
     const second = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     });
     expect(second.mutated).toBeUndefined();
@@ -116,7 +116,7 @@ describe('structured output schema bundling', () => {
 
   it('advertises tool-specific and shared error schemas through the registration wrapper', () => {
     const ref = {
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     };
     const outputSchema = getMcpOutputSchemaForRegistration(ref);
@@ -124,17 +124,17 @@ describe('structured output schema bundling', () => {
 
     expect(jsonSchema).toEqual({
       $schema: 'https://json-schema.org/draft/2020-12/schema',
-      $id: 'https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.simulator-list/1.registration.schema.json',
+      $id: 'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-list/1.registration.schema.json',
       type: 'object',
       oneOf: [
         stripRegistrationResourceEnvelope(getMcpOutputSchema(ref)),
         stripRegistrationResourceEnvelope(
-          getMcpOutputSchema({ schema: 'xcodebuildmcp.output.error', version: '1' }),
+          getMcpOutputSchema({ schema: 'mobilebuildmcp.output.error', version: '1' }),
         ),
       ],
       $defs: {
         ...((getMcpOutputSchema(ref).$defs as JsonObject) ?? {}),
-        ...((getMcpOutputSchema({ schema: 'xcodebuildmcp.output.error', version: '1' })
+        ...((getMcpOutputSchema({ schema: 'mobilebuildmcp.output.error', version: '1' })
           .$defs as JsonObject) ?? {}),
       },
     });
@@ -147,7 +147,7 @@ describe('structured output schema bundling', () => {
 
   it('rejects nextSteps against the immutable v1 contract', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       version: '1',
     });
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
@@ -155,7 +155,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       validate({
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1',
         didError: false,
         error: null,
@@ -166,7 +166,7 @@ describe('structured output schema bundling', () => {
             target: 'simulator',
           },
           artifacts: {
-            buildLogPath: '~/Library/Developer/XcodeBuildMCP/logs/build.log',
+            buildLogPath: '~/Library/Developer/MobileBuildMCP/logs/build.log',
           },
           diagnostics: {
             warnings: [],
@@ -180,7 +180,7 @@ describe('structured output schema bundling', () => {
 
   it('accepts non-error structured envelopes with nextSteps in the bumped contract', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       version: '2',
     });
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
@@ -188,7 +188,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       validate({
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -199,7 +199,7 @@ describe('structured output schema bundling', () => {
             target: 'simulator',
           },
           artifacts: {
-            buildLogPath: '~/Library/Developer/XcodeBuildMCP/logs/build.log',
+            buildLogPath: '~/Library/Developer/MobileBuildMCP/logs/build.log',
           },
           diagnostics: {
             warnings: [],
@@ -214,16 +214,16 @@ describe('structured output schema bundling', () => {
   it('accepts prepared test artifacts only in build and test result v3', () => {
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
     const buildV2 = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.build-result', version: '2' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.build-result', version: '2' }),
     );
     const buildV3 = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.build-result', version: '3' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.build-result', version: '3' }),
     );
     const testV3 = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.test-result', version: '3' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.test-result', version: '3' }),
     );
     const buildEnvelope = {
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       schemaVersion: '3',
       didError: false,
       error: null,
@@ -242,7 +242,7 @@ describe('structured output schema bundling', () => {
     expect(buildV3(buildEnvelope)).toBe(true);
     expect(
       testV3({
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '3',
         didError: false,
         error: null,
@@ -261,7 +261,7 @@ describe('structured output schema bundling', () => {
 
   it('accepts video recording capture payloads in the bumped capture contract', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       version: '2',
     });
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
@@ -269,7 +269,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       validate({
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -291,40 +291,40 @@ describe('structured output schema bundling', () => {
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
     const cases = [
       {
-        schema: getMcpOutputSchema({ schema: 'xcodebuildmcp.output.build-result', version: '2' }),
+        schema: getMcpOutputSchema({ schema: 'mobilebuildmcp.output.build-result', version: '2' }),
         normal: {
-          schema: 'xcodebuildmcp.output.build-result',
+          schema: 'mobilebuildmcp.output.build-result',
           schemaVersion: '2',
           didError: false,
           error: null,
           data: {
             request: { scheme: 'CalculatorApp', workspacePath: 'CalculatorApp.xcworkspace' },
             summary: { status: 'SUCCEEDED', durationMs: 1234, target: 'simulator' },
-            artifacts: { buildLogPath: '~/Library/Developer/XcodeBuildMCP/logs/build.log' },
+            artifacts: { buildLogPath: '~/Library/Developer/MobileBuildMCP/logs/build.log' },
             diagnostics: { warnings: [], errors: [] },
           },
-          nextSteps: ['Get app path: xcodebuildmcp simulator get-app-path --scheme CalculatorApp'],
+          nextSteps: ['Get app path: mobilebuildmcp simulator get-app-path --scheme CalculatorApp'],
         },
         minimal: {
-          schema: 'xcodebuildmcp.output.build-result',
+          schema: 'mobilebuildmcp.output.build-result',
           schemaVersion: '2',
           didError: false,
           error: null,
           data: {
             summary: { status: 'SUCCEEDED', durationMs: 1234, target: 'simulator' },
-            artifacts: { buildLogPath: '~/Library/Developer/XcodeBuildMCP/logs/build.log' },
+            artifacts: { buildLogPath: '~/Library/Developer/MobileBuildMCP/logs/build.log' },
             diagnostics: { warnings: [], errors: [] },
           },
-          nextSteps: ['Get app path: xcodebuildmcp simulator get-app-path --scheme CalculatorApp'],
+          nextSteps: ['Get app path: mobilebuildmcp simulator get-app-path --scheme CalculatorApp'],
         },
       },
       {
         schema: getMcpOutputSchema({
-          schema: 'xcodebuildmcp.output.build-run-result',
+          schema: 'mobilebuildmcp.output.build-run-result',
           version: '2',
         }),
         normal: {
-          schema: 'xcodebuildmcp.output.build-run-result',
+          schema: 'mobilebuildmcp.output.build-run-result',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -336,7 +336,7 @@ describe('structured output schema bundling', () => {
           },
         },
         minimal: {
-          schema: 'xcodebuildmcp.output.build-run-result',
+          schema: 'mobilebuildmcp.output.build-run-result',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -348,9 +348,9 @@ describe('structured output schema bundling', () => {
         },
       },
       {
-        schema: getMcpOutputSchema({ schema: 'xcodebuildmcp.output.test-result', version: '2' }),
+        schema: getMcpOutputSchema({ schema: 'mobilebuildmcp.output.test-result', version: '2' }),
         normal: {
-          schema: 'xcodebuildmcp.output.test-result',
+          schema: 'mobilebuildmcp.output.test-result',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -367,7 +367,7 @@ describe('structured output schema bundling', () => {
           },
         },
         minimal: {
-          schema: 'xcodebuildmcp.output.test-result',
+          schema: 'mobilebuildmcp.output.test-result',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -384,9 +384,9 @@ describe('structured output schema bundling', () => {
         },
       },
       {
-        schema: getMcpOutputSchema({ schema: 'xcodebuildmcp.output.app-path', version: '2' }),
+        schema: getMcpOutputSchema({ schema: 'mobilebuildmcp.output.app-path', version: '2' }),
         normal: {
-          schema: 'xcodebuildmcp.output.app-path',
+          schema: 'mobilebuildmcp.output.app-path',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -397,7 +397,7 @@ describe('structured output schema bundling', () => {
           },
         },
         minimal: {
-          schema: 'xcodebuildmcp.output.app-path',
+          schema: 'mobilebuildmcp.output.app-path',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -428,7 +428,7 @@ describe('structured output schema bundling', () => {
 
   it('accepts structured error envelopes in registered output schemas', () => {
     const outputSchema = getMcpOutputSchemaForRegistration({
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     });
     const jsonSchema = z.toJSONSchema(outputSchema) as JsonObject;
@@ -437,7 +437,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       validate({
-        schema: 'xcodebuildmcp.output.error',
+        schema: 'mobilebuildmcp.output.error',
         schemaVersion: '1',
         didError: true,
         error: 'Parameter validation failed',
@@ -452,18 +452,18 @@ describe('structured output schema bundling', () => {
   it('accepts ui automation v2 runtime snapshots and semantic action errors', () => {
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
     const captureValidate = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.capture-result', version: '2' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.capture-result', version: '2' }),
     );
     const actionValidate = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.ui-action-result', version: '2' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.ui-action-result', version: '2' }),
     );
     const actionV3Validate = ajv.compile(
-      getMcpOutputSchema({ schema: 'xcodebuildmcp.output.ui-action-result', version: '3' }),
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.ui-action-result', version: '3' }),
     );
 
     expect(
       captureValidate({
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -496,7 +496,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       captureValidate({
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -516,7 +516,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       captureValidate({
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -536,7 +536,7 @@ describe('structured output schema bundling', () => {
     ).toBe(true);
 
     const fullUiActionEnvelope = {
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '3',
       didError: false,
       error: null,
@@ -572,7 +572,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       actionValidate({
-        schema: 'xcodebuildmcp.output.ui-action-result',
+        schema: 'mobilebuildmcp.output.ui-action-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -596,7 +596,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       actionValidate({
-        schema: 'xcodebuildmcp.output.ui-action-result',
+        schema: 'mobilebuildmcp.output.ui-action-result',
         schemaVersion: '2',
         didError: true,
         error: 'Element ref was not found in the current snapshot.',
@@ -617,7 +617,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       actionValidate({
-        schema: 'xcodebuildmcp.output.ui-action-result',
+        schema: 'mobilebuildmcp.output.ui-action-result',
         schemaVersion: '2',
         didError: false,
         error: null,
@@ -632,7 +632,7 @@ describe('structured output schema bundling', () => {
 
   it('accepts xcode bridge call-result artifacts', () => {
     const schema = getMcpOutputSchema({
-      schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+      schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
       version: '3',
     });
     const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
@@ -640,7 +640,7 @@ describe('structured output schema bundling', () => {
 
     expect(
       validate({
-        schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+        schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
         schemaVersion: '3',
         didError: false,
         error: null,

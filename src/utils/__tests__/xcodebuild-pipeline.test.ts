@@ -12,8 +12,8 @@ describe('xcodebuild-pipeline', () => {
   const originalEnv = { ...process.env };
 
   beforeEach(() => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'mcp';
-    delete process.env.XCODEBUILDMCP_CLI_OUTPUT_FORMAT;
+    process.env.MOBILEBUILDMCP_RUNTIME = 'mcp';
+    delete process.env.MOBILEBUILDMCP_CLI_OUTPUT_FORMAT;
   });
 
   afterEach(() => {
@@ -50,7 +50,7 @@ describe('xcodebuild-pipeline', () => {
     expect(result.state.milestones.map((m) => m.stage)).toContain('COMPILING');
 
     const structuredOutput: StructuredToolOutput = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1.0.0',
       result: {
         kind: 'test-result',
@@ -240,7 +240,7 @@ describe('xcodebuild-pipeline', () => {
     const text = renderCliTextTranscript({
       items: emittedEvents,
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',
@@ -290,7 +290,7 @@ describe('xcodebuild-pipeline', () => {
         renderCliTextTranscript({
           items: emittedEvents,
           structuredOutput: {
-            schema: 'xcodebuildmcp.output.test-result',
+            schema: 'mobilebuildmcp.output.test-result',
             schemaVersion: '1.0.0',
             result: {
               kind: 'test-result',
@@ -347,8 +347,8 @@ describe('xcodebuild-pipeline', () => {
   });
 
   it('produces JSONL output in CLI json mode', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'cli';
-    process.env.XCODEBUILDMCP_CLI_OUTPUT_FORMAT = 'json';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'cli';
+    process.env.MOBILEBUILDMCP_CLI_OUTPUT_FORMAT = 'json';
 
     const emittedEvents: AnyFragment[] = [];
     const pipeline = createXcodebuildPipeline({

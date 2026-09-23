@@ -90,7 +90,7 @@ export async function installXcodemake(
   expectedSha256 = XCODEMAKE_SHA256,
 ): Promise<boolean> {
   const tempDir = os.tmpdir();
-  const xcodemakeDir = path.join(tempDir, 'xcodebuildmcp');
+  const xcodemakeDir = path.join(tempDir, 'mobilebuildmcp');
   const xcodemakePath = path.join(xcodemakeDir, 'xcodemake');
   const stagingPath = `${xcodemakePath}.${process.pid}.${randomUUID()}.tmp`;
 

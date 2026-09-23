@@ -6,7 +6,7 @@ import { runDirectory } from '../run-directory.ts';
 
 describe('runDirectory', () => {
   it('continues running later suites after an earlier suite returns non-zero', async () => {
-    const directory = await mkdtemp(path.join(os.tmpdir(), 'xcodebuildmcp-bench-suites-'));
+    const directory = await mkdtemp(path.join(os.tmpdir(), 'mobilebuildmcp-bench-suites-'));
     try {
       await writeFile(path.join(directory, 'a.yml'), 'name: a\n', 'utf8');
       await writeFile(path.join(directory, 'b.yml'), 'name: b\n', 'utf8');

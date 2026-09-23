@@ -127,7 +127,7 @@ function createDebugAttachResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugAttachSimResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-session-action',
+    schema: 'mobilebuildmcp.output.debug-session-action',
     schemaVersion: '2',
   };
 }

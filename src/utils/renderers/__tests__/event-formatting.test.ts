@@ -55,7 +55,7 @@ describe('event formatting', () => {
           { label: '-skip-testing', value: 'MyAppTests/MyAppTests/testFlaky' },
           {
             label: 'Derived Data',
-            value: '~/Library/Developer/XcodeBuildMCP/workspaces/abc123/DerivedData',
+            value: '~/Library/Developer/MobileBuildMCP/workspaces/abc123/DerivedData',
           },
         ],
       }),
@@ -64,7 +64,7 @@ describe('event formatting', () => {
         '\u{1F9EA} Test',
         '',
         '   Scheme: MyApp',
-        '   Derived Data: ~/Library/Developer/XcodeBuildMCP/workspaces/abc123/DerivedData',
+        '   Derived Data: ~/Library/Developer/MobileBuildMCP/workspaces/abc123/DerivedData',
         '   Selective Testing:',
         '     MyAppTests/MyAppTests/testLaunch',
         '     Skip Testing: MyAppTests/MyAppTests/testFlaky',
@@ -129,7 +129,7 @@ describe('event formatting', () => {
   });
 
   it('treats glob metacharacters in compiler diagnostic filenames literally', () => {
-    const projectBaseDir = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-diagnostic-'));
+    const projectBaseDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-diagnostic-'));
     const sourceDir = join(projectBaseDir, 'Sources');
     const decoyDir = join(projectBaseDir, 'Decoy');
     const literalFile = join(sourceDir, 'ContentView[1].swift');

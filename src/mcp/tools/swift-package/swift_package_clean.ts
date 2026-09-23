@@ -10,7 +10,7 @@ import { createTypedTool, getHandlerContext } from '../../../utils/typed-tool-fa
 import { toErrorMessage } from '../../../utils/errors.ts';
 import { createBasicDiagnostics } from '../../../utils/diagnostics.ts';
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.build-result';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.build-result';
 
 const swiftPackageCleanSchema = z.object({
   packagePath: z.string(),

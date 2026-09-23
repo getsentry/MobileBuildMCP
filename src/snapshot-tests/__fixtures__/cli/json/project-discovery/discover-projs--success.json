@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.project-list",
+  "schema": "mobilebuildmcp.output.project-list",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -26,6 +26,6 @@
     ]
   },
   "nextSteps": [
-    "Build and run once defaults are set: xcodebuildmcp simulator build-and-run"
+    "Build and run once defaults are set: mobilebuildmcp simulator build-and-run"
   ]
 }

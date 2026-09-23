@@ -100,7 +100,7 @@ function logHydrationResult(hydration: MCPSessionHydrationResult): void {
 }
 
 function resolveCwdOverride(): string | undefined {
-  const raw = process.env.XCODEBUILDMCP_CWD;
+  const raw = process.env.MOBILEBUILDMCP_CWD;
   if (!raw) {
     return undefined;
   }
@@ -110,7 +110,7 @@ function resolveCwdOverride(): string | undefined {
 export async function bootstrapRuntime(
   opts: BootstrapRuntimeOptions,
 ): Promise<BootstrapRuntimeResult> {
-  process.env.XCODEBUILDMCP_RUNTIME = opts.runtime;
+  process.env.MOBILEBUILDMCP_RUNTIME = opts.runtime;
   const cwdOverride = opts.cwd === undefined ? resolveCwdOverride() : undefined;
   if (cwdOverride !== undefined) {
     try {
@@ -118,7 +118,7 @@ export async function bootstrapRuntime(
     } catch (error) {
       log(
         'warn',
-        `XCODEBUILDMCP_CWD points at "${cwdOverride}" but chdir failed: ${
+        `MOBILEBUILDMCP_CWD points at "${cwdOverride}" but chdir failed: ${
           error instanceof Error ? error.message : String(error)
         }. Falling back to existing cwd.`,
       );

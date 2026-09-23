@@ -4,7 +4,7 @@ Atmos Weather is a native SwiftUI weather app prototype for iOS.
 
 ## Launch
 
-Build and run the app with XcodeBuildMCP:
+Build and run the app with MobileBuildMCP:
 
 ```bash
 ../../build/cli.js simulator build-and-run
@@ -84,7 +84,7 @@ GET /v1/weather/loc-current-san-francisco
 
 ## Tests
 
-Run the app test suite through XcodeBuildMCP:
+Run the app test suite through MobileBuildMCP:
 
 ```bash
 ../../build/cli.js simulator test

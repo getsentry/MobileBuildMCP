@@ -5,7 +5,7 @@ names:
   cli: clean
 description: Clean build products.
 outputSchema:
-  schema: xcodebuildmcp.output.build-result
+  schema: mobilebuildmcp.output.build-result
   version: "2"
 predicates:
   - hideWhenXcodeAgentMode

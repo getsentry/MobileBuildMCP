@@ -188,7 +188,7 @@ This file is generated from production npm dependencies.
 | which@2.0.2 | ISC | https://github.com/isaacs/node-which |
 | wrap-ansi@7.0.0 | MIT | https://github.com/chalk/wrap-ansi |
 | wrappy@1.0.2 | ISC | https://github.com/npm/wrappy |
-| xcodebuildmcp@2.1.0 | MIT | https://github.com/getsentry/XcodeBuildMCP |
+| mobilebuildmcp@2.1.0 | MIT | https://github.com/getsentry/MobileBuildMCP |
 | xtend@4.0.2 | MIT | https://github.com/Raynos/xtend |
 | y18n@5.0.8 | ISC | https://github.com/yargs/y18n |
 | yaml@2.8.2 | ISC | https://github.com/eemeli/yaml |

@@ -4,4 +4,4 @@
 ✅ Simulator opened successfully
 
 Next steps:
-1. Boot a simulator for manual workflows: xcodebuildmcp simulator-management boot --simulator-id UUID_FROM_LIST_SIMS
+1. Boot a simulator for manual workflows: mobilebuildmcp simulator-management boot --simulator-id UUID_FROM_LIST_SIMS

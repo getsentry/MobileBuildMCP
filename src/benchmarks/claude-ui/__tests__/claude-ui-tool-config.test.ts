@@ -15,7 +15,7 @@ function artifacts(runDirectory: string): BenchmarkArtifacts {
     promptPath: path.join(runDirectory, 'prompt.md'),
     mcpConfigPath: path.join(runDirectory, 'mcp-config.json'),
     mcpWorkspaceDirectory: path.join(runDirectory, 'mcp-workspace'),
-    mcpWorkspaceConfigPath: path.join(runDirectory, 'mcp-workspace/.xcodebuildmcp/config.yaml'),
+    mcpWorkspaceConfigPath: path.join(runDirectory, 'mcp-workspace/.mobilebuildmcp/config.yaml'),
     claudeJsonlPath: path.join(runDirectory, 'claude.jsonl'),
     claudeStderrPath: path.join(runDirectory, 'claude.stderr'),
     claudeCommandLogPath: path.join(runDirectory, 'claude-command.log'),
@@ -544,7 +544,7 @@ describe('Claude UI benchmark tool configuration', () => {
       {
         name: 'vendor CLI weather',
         prompt: 'weather.md',
-        failurePatterns: ['xcodebuildmcp'],
+        failurePatterns: ['mobilebuildmcp'],
         failurePatternTargets: ['commands'],
         toolAnalysis: {
           matchers: [
@@ -579,7 +579,7 @@ describe('Claude UI benchmark tool configuration', () => {
             {
               type: 'tool_result',
               tool_use_id: 'tool-1',
-              content: 'Workspace: /Volumes/Developer/XcodeBuildMCP/example_projects/Weather',
+              content: 'Workspace: /Volumes/Developer/MobileBuildMCP/example_projects/Weather',
             },
           ],
         },

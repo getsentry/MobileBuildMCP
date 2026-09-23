@@ -10,11 +10,11 @@ claude:
     The benchmark harness has already created, booted, opened, and configured the target simulator.
     Do not call boot_sim or open_sim unless launch_app_sim reports the simulator is unavailable.
     Match the benchmark baseline tool pattern for Reminders. If you need tool discovery, load all
-    required tools in one ToolSearch using the full MCP names: mcp__xcodebuildmcp-dev__session_show_defaults,
-    mcp__xcodebuildmcp-dev__launch_app_sim, mcp__xcodebuildmcp-dev__snapshot_ui,
-    mcp__xcodebuildmcp-dev__tap, mcp__xcodebuildmcp-dev__wait_for_ui,
-    mcp__xcodebuildmcp-dev__type_text, mcp__xcodebuildmcp-dev__key_press,
-    mcp__xcodebuildmcp-dev__batch. Do not call ToolSearch again after that. Start with
+    required tools in one ToolSearch using the full MCP names: mcp__mobilebuildmcp-dev__session_show_defaults,
+    mcp__mobilebuildmcp-dev__launch_app_sim, mcp__mobilebuildmcp-dev__snapshot_ui,
+    mcp__mobilebuildmcp-dev__tap, mcp__mobilebuildmcp-dev__wait_for_ui,
+    mcp__mobilebuildmcp-dev__type_text, mcp__mobilebuildmcp-dev__key_press,
+    mcp__mobilebuildmcp-dev__batch. Do not call ToolSearch again after that. Start with
     session_show_defaults, then launch_app_sim. After launch_app_sim, use
     this tracked UI sequence: snapshot_ui, tap Add List,
     wait_for_ui settled, tap Continue if visible, type_text list name, tap Done, tap the new list,

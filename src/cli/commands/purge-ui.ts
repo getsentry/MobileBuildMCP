@@ -22,7 +22,7 @@ const CLASS_LABELS: Record<PurgeStorageClass, string> = {
 const BAR_WIDTH = 18;
 
 export const SKIPPED_FOR_SAFETY_HINT =
-  'Some paths were skipped for safety. Run `xcodebuildmcp purge --report --json` for diagnostics.';
+  'Some paths were skipped for safety. Run `mobilebuildmcp purge --report --json` for diagnostics.';
 
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) {
@@ -50,7 +50,7 @@ export function renderInteractiveOverview(
 ): string {
   const totalBytes = groups.reduce((total, group) => total + group.bytes, 0);
   const workspaceCount = groups.reduce((total, group) => total + group.workspaces.length, 0);
-  let output = 'XcodeBuildMCP storage\n\n';
+  let output = 'MobileBuildMCP storage\n\n';
   output += `Purgeable: ${formatBytes(totalBytes)} across ${groups.length} projects / ${workspaceCount} workspaces\n`;
   if (groups.length > 0) {
     output += '\nLargest projects:\n';
@@ -220,7 +220,7 @@ export function renderReportText(
   selectedScope: PurgeStorageScope,
 ): string {
   const selectedWorkspaces = workspacesForScope(report, selectedScope);
-  let output = 'XcodeBuildMCP storage report\n';
+  let output = 'MobileBuildMCP storage report\n';
   output += `App root: ${displayPath(report.appRoot)}\n`;
   output += `Total: ${formatBytes(report.totals.bytes)} (${report.totals.fileCount} files, ${report.totals.directoryCount} directories)\n`;
   output += `Selected scope: ${scopeLabel(selectedScope)} (${selectedWorkspaces.length} workspaces)\n\n`;

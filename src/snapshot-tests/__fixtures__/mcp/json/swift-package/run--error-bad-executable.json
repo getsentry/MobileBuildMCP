@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Build failed",
@@ -11,7 +11,7 @@
     },
     "artifacts": {
       "packagePath": "<TMPDIR>/spm",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],

@@ -10,15 +10,15 @@ import {
   getManagedResultBundleOwnerPid,
   getXcodeIdeCallToolTransientOwnerPid,
   isStaleXcodeIdeCallToolTransientDirectoryName,
-  isXcodeBuildMCPManagedLogName,
-  isXcodeBuildMCPManagedResultBundleName,
+  isMobileBuildMCPManagedLogName,
+  isMobileBuildMCPManagedResultBundleName,
   resetWorkspaceFilesystemLifecycleStateForTests,
   runWorkspaceFilesystemLifecycleSweep,
   scheduleWorkspaceFilesystemLifecycleSweep,
 } from '../workspace-filesystem-lifecycle.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 import { getResultBundleCompletionMarkerPath } from '../result-bundle-path.ts';
 import { getTestProductsCompletionMarkerPath } from '../test-products-path.ts';
@@ -80,8 +80,8 @@ function createTrackedChild(pid: number, onKill: () => void): ChildProcess {
 
 describe('workspace filesystem lifecycle', () => {
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-filesystem-lifecycle-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-filesystem-lifecycle-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
     setRuntimeInstanceForTests({
       instanceId: 'filesystem-lifecycle-test',
       pid: process.pid,
@@ -95,7 +95,7 @@ describe('workspace filesystem lifecycle', () => {
     setSimulatorLaunchOsLogRecordActiveOverrideForTests(null);
     await clearAllSimulatorLaunchOsLogSessionsForTests();
     setRuntimeInstanceForTests(null);
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     await rm(appDir, { recursive: true, force: true });
   });
 
@@ -103,10 +103,10 @@ describe('workspace filesystem lifecycle', () => {
     const logName = managedXcodebuildLogName();
     const resultBundleName = managedResultBundleName('test', 123);
 
-    expect(isXcodeBuildMCPManagedLogName(logName)).toBe(true);
-    expect(isXcodeBuildMCPManagedLogName('manual.log')).toBe(false);
-    expect(isXcodeBuildMCPManagedResultBundleName(resultBundleName)).toBe(true);
-    expect(isXcodeBuildMCPManagedResultBundleName('manual.xcresult')).toBe(false);
+    expect(isMobileBuildMCPManagedLogName(logName)).toBe(true);
+    expect(isMobileBuildMCPManagedLogName('manual.log')).toBe(false);
+    expect(isMobileBuildMCPManagedResultBundleName(resultBundleName)).toBe(true);
+    expect(isMobileBuildMCPManagedResultBundleName('manual.xcresult')).toBe(false);
     expect(getManagedResultBundleOwnerPid(resultBundleName)).toBe(123);
     expect(getXcodeIdeCallToolTransientOwnerPid('ownerpid999999999_stale')).toBe(999999999);
     expect(isStaleXcodeIdeCallToolTransientDirectoryName('ownerpid999999999_stale')).toBe(true);
@@ -184,7 +184,7 @@ describe('workspace filesystem lifecycle', () => {
     writeDaemonRegistryEntry({
       workspaceKey: 'workspace-a',
       workspaceRoot: '/tmp/workspace-a',
-      socketPath: '/tmp/xcodebuildmcp.sock',
+      socketPath: '/tmp/mobilebuildmcp.sock',
       logPath: daemonLog,
       pid: process.pid,
       startedAt: new Date(now).toISOString(),

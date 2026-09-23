@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.project-list",
+  "schema": "mobilebuildmcp.output.project-list",
   "schemaVersion": "2",
   "didError": true,
   "error": "Failed to discover projects.",

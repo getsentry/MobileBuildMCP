@@ -66,7 +66,7 @@ describe('simulator launch OSLog sessions', () => {
   beforeEach(() => {
     nextPid = 1000;
     trackedChildren.clear();
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-oslog-sessions-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-oslog-sessions-'));
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setRuntimeInstanceForTests({
       instanceId: 'current-instance',

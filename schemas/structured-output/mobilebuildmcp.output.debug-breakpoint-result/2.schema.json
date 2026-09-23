@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.debug-breakpoint-result/2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "$defs": {
+    "addFileLineBreakpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "file-line"
+        },
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "breakpointId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "file",
+        "line"
+      ]
+    },
+    "addFunctionBreakpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "function"
+        },
+        "name": {
+          "type": "string"
+        },
+        "breakpointId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ]
+    },
+    "removeBreakpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "breakpointId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "breakpointId"
+      ]
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.debug-breakpoint-result"
+    },
+    "schemaVersion": {
+      "const": "2"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "add",
+            "remove"
+          ]
+        },
+        "breakpoint": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/addFileLineBreakpoint"
+            },
+            {
+              "$ref": "#/$defs/addFunctionBreakpoint"
+            },
+            {
+              "$ref": "#/$defs/removeBreakpoint"
+            }
+          ]
+        },
+        "diagnostics": {
+          "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/basicDiagnostics"
+        }
+      },
+      "required": [
+        "action",
+        "breakpoint"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "add"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "breakpoint": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/addFileLineBreakpoint"
+                  },
+                  {
+                    "$ref": "#/$defs/addFunctionBreakpoint"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "remove"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "breakpoint": {
+                "$ref": "#/$defs/removeBreakpoint"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "nextSteps": {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/nextSteps"
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "didError",
+    "error",
+    "data"
+  ]
+}

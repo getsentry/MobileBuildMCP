@@ -6,7 +6,7 @@ names:
 description: >-
   Drag from a visible runtime elementRef in a direction, then return a refreshed runtime UI snapshot. Use this for exposed sheet grabbers or real scroll/list content refs when nextSteps suggests dragging; do not use raw screen coordinates.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: "2"
 routing:
   stateful: true

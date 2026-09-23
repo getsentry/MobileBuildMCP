@@ -76,7 +76,7 @@ async function resolveExecutablePath(
   return path.join(binPath, executableName);
 }
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.build-run-result';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.build-run-result';
 
 function createRunSpmInvocationRequest(
   resolvedPath: string,

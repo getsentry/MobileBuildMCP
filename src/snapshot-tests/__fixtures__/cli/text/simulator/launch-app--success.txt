@@ -7,9 +7,9 @@
 ✅ App launched successfully
   ├ Process ID: <PID>
   └ Files:
-     ├ Runtime Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log
-     └ OSLog: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log
+     ├ Runtime Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log
+     └ OSLog: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log
 
 Next steps:
-1. Open Simulator app to see it: xcodebuildmcp simulator open
-2. Stop app in simulator: xcodebuildmcp simulator stop --simulator-id <UUID> --bundle-id io.sentry.calculatorapp
+1. Open Simulator app to see it: mobilebuildmcp simulator open
+2. Stop app in simulator: mobilebuildmcp simulator stop --simulator-id <UUID> --bundle-id io.sentry.calculatorapp

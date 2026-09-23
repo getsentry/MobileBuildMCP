@@ -271,7 +271,7 @@ function buildDaemonEnvOverrides(opts: InvokeOptions): Record<string, string> | 
   if (!opts.logLevel) {
     return undefined;
   }
-  return { XCODEBUILDMCP_DAEMON_LOG_LEVEL: opts.logLevel };
+  return { MOBILEBUILDMCP_DAEMON_LOG_LEVEL: opts.logLevel };
 }
 
 function getErrorKind(error: unknown): string {
@@ -314,7 +314,7 @@ export class DefaultToolInvoker implements ToolInvoker {
         handlerContext: opts.handlerContext,
         onStructuredOutput: opts.onStructuredOutput,
         code: 'TOOL_NOT_FOUND',
-        message: `Tool not found: Unknown tool '${toolName}'. Run 'xcodebuildmcp tools' to see available tools.`,
+        message: `Tool not found: Unknown tool '${toolName}'. Run 'mobilebuildmcp tools' to see available tools.`,
       });
       return;
     }
@@ -389,7 +389,7 @@ export class DefaultToolInvoker implements ToolInvoker {
           handlerContext: opts.handlerContext,
           onStructuredOutput: opts.onStructuredOutput,
           code: 'DAEMON_AUTO_START_FAILED',
-          message: `Daemon auto-start failed: ${error instanceof Error ? error.message : String(error)}\n\nYou can try starting the daemon manually:\n  xcodebuildmcp daemon start`,
+          message: `Daemon auto-start failed: ${error instanceof Error ? error.message : String(error)}\n\nYou can try starting the daemon manually:\n  mobilebuildmcp daemon start`,
         });
         return;
       }
@@ -428,7 +428,7 @@ export class DefaultToolInvoker implements ToolInvoker {
             handlerContext: opts.handlerContext,
             onStructuredOutput: opts.onStructuredOutput,
             code: 'DAEMON_RESTART_FAILED',
-            message: `Daemon restart failed after protocol mismatch: ${retryError instanceof Error ? retryError.message : String(retryError)}\n\nTry restarting manually:\n  xcodebuildmcp daemon stop && xcodebuildmcp daemon start`,
+            message: `Daemon restart failed after protocol mismatch: ${retryError instanceof Error ? retryError.message : String(retryError)}\n\nTry restarting manually:\n  mobilebuildmcp daemon stop && mobilebuildmcp daemon start`,
           });
           return;
         }

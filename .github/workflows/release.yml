@@ -141,8 +141,8 @@ jobs:
           NPM_TAG: ${{ steps.resolve_npm_tag.outputs.NPM_TAG }}
         run: |
           # Skip if this exact version is already published (idempotent reruns)
-          if npm view xcodebuildmcp@"$VERSION" version >/dev/null 2>&1; then
-            echo "✅ xcodebuildmcp@$VERSION already on NPM. Skipping publish."
+          if npm view mobilebuildmcp@"$VERSION" version >/dev/null 2>&1; then
+            echo "✅ mobilebuildmcp@$VERSION already on NPM. Skipping publish."
             exit 0
           fi
           echo "📦 Publishing to NPM with tag: $NPM_TAG"
@@ -156,7 +156,7 @@ jobs:
           name: Release v${{ steps.get_version.outputs.VERSION }}
           body_path: github-release-body.md
           files: |
-            xcodebuildmcp-${{ steps.get_version.outputs.VERSION }}.tgz
+            mobilebuildmcp-${{ steps.get_version.outputs.VERSION }}.tgz
           draft: false
           prerelease: ${{ contains(steps.get_version.outputs.VERSION, '-') }}
 
@@ -171,7 +171,7 @@ jobs:
           else
             echo "🎉 Production release completed!"
             echo "Version: $VERSION"
-            echo "📦 NPM: https://www.npmjs.com/package/xcodebuildmcp/v/$VERSION"
+            echo "📦 NPM: https://www.npmjs.com/package/mobilebuildmcp/v/$VERSION"
             echo "📚 MCP Registry: publish attempted in separate job (mcp_registry)"
           fi
 
@@ -180,7 +180,6 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     env:
-      MCP_DNS_PRIVATE_KEY: ${{ secrets.MCP_DNS_PRIVATE_KEY }}
       VERSION: ${{ needs.release.outputs.version }}
     steps:
       - name: Checkout code
@@ -192,20 +191,12 @@ jobs:
         run: |
           echo "🚢 MCP publish for version: $VERSION"
 
-      - name: Missing secret — skip MCP publish
-        if: env.MCP_DNS_PRIVATE_KEY == ''
-        run: |
-          echo "⚠️ Skipping MCP Registry publish: secrets.MCP_DNS_PRIVATE_KEY is not set."
-          echo "This is optional and does not affect the release."
-
       - name: Setup Go (for MCP Publisher)
-        if: env.MCP_DNS_PRIVATE_KEY != ''
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
       - name: Install MCP Publisher
-        if: env.MCP_DNS_PRIVATE_KEY != ''
         run: |
           echo "📥 Fetching MCP Publisher"
           git clone https://github.com/modelcontextprotocol/registry publisher-repo
@@ -215,14 +206,12 @@ jobs:
           cd ..
           chmod +x mcp-publisher
 
-      - name: Login to MCP Registry (DNS)
-        if: env.MCP_DNS_PRIVATE_KEY != ''
+      - name: Login to MCP Registry (GitHub OIDC)
         run: |
-          echo "🔐 Using DNS authentication for com.xcodebuildmcp/* namespace"
-          ./mcp-publisher login dns --domain xcodebuildmcp.com --private-key "${MCP_DNS_PRIVATE_KEY}"
+          echo "🔐 Using GitHub OIDC authentication for io.github.getsentry/* namespace"
+          ./mcp-publisher login github-oidc
 
       - name: Publish to MCP Registry (best-effort)
-        if: env.MCP_DNS_PRIVATE_KEY != ''
         run: |
           echo "🚢 Publishing to MCP Registry with retries..."
           attempts=0
@@ -274,16 +263,16 @@ jobs:
         env:
           VERSION: ${{ needs.release.outputs.version }}
         run: |
-          npm run verify:portable -- --archive "dist/portable/xcodebuildmcp-${VERSION}-darwin-${{ matrix.arch }}.tar.gz"
+          npm run verify:portable -- --archive "dist/portable/mobilebuildmcp-${VERSION}-darwin-${{ matrix.arch }}.tar.gz"
 
       - name: Upload arch artifact
         uses: actions/upload-artifact@v4
         with:
           name: portable-${{ matrix.arch }}
           path: |
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}.tar.gz
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}.tar.gz.sha256
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}.tar.gz
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-${{ matrix.arch }}.tar.gz.sha256
 
   build_universal_and_verify:
     needs: [release, build_and_package_macos]
@@ -317,10 +306,10 @@ jobs:
         env:
           VERSION: ${{ needs.release.outputs.version }}
         run: |
-          ARM64_TGZ="dist/portable/arm64/xcodebuildmcp-${VERSION}-darwin-arm64.tar.gz"
-          X64_TGZ="dist/portable/x64/xcodebuildmcp-${VERSION}-darwin-x64.tar.gz"
-          ARM64_ROOT="dist/portable/unpacked/arm64/xcodebuildmcp-${VERSION}-darwin-arm64"
-          X64_ROOT="dist/portable/unpacked/x64/xcodebuildmcp-${VERSION}-darwin-x64"
+          ARM64_TGZ="dist/portable/arm64/mobilebuildmcp-${VERSION}-darwin-arm64.tar.gz"
+          X64_TGZ="dist/portable/x64/mobilebuildmcp-${VERSION}-darwin-x64.tar.gz"
+          ARM64_ROOT="dist/portable/unpacked/arm64/mobilebuildmcp-${VERSION}-darwin-arm64"
+          X64_ROOT="dist/portable/unpacked/x64/mobilebuildmcp-${VERSION}-darwin-x64"
           mkdir -p dist/portable/unpacked/arm64 dist/portable/unpacked/x64
           tar -xzf "$ARM64_TGZ" -C dist/portable/unpacked/arm64
           tar -xzf "$X64_TGZ" -C dist/portable/unpacked/x64
@@ -340,16 +329,16 @@ jobs:
         env:
           VERSION: ${{ needs.release.outputs.version }}
         run: |
-          npm run verify:portable -- --archive "dist/portable/xcodebuildmcp-${VERSION}-darwin-universal.tar.gz"
+          npm run verify:portable -- --archive "dist/portable/mobilebuildmcp-${VERSION}-darwin-universal.tar.gz"
 
       - name: Upload universal artifact
         uses: actions/upload-artifact@v4
         with:
           name: portable-universal
           path: |
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-universal
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-universal.tar.gz
-            dist/portable/xcodebuildmcp-${{ needs.release.outputs.version }}-darwin-universal.tar.gz.sha256
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-universal
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-universal.tar.gz
+            dist/portable/mobilebuildmcp-${{ needs.release.outputs.version }}-darwin-universal.tar.gz.sha256
 
   publish_portable_assets:
     if: github.event_name == 'push'
@@ -381,12 +370,12 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           gh release upload "v${VERSION}" \
-            dist/portable/arm64/xcodebuildmcp-${VERSION}-darwin-arm64.tar.gz \
-            dist/portable/arm64/xcodebuildmcp-${VERSION}-darwin-arm64.tar.gz.sha256 \
-            dist/portable/x64/xcodebuildmcp-${VERSION}-darwin-x64.tar.gz \
-            dist/portable/x64/xcodebuildmcp-${VERSION}-darwin-x64.tar.gz.sha256 \
-            dist/portable/universal/xcodebuildmcp-${VERSION}-darwin-universal.tar.gz \
-            dist/portable/universal/xcodebuildmcp-${VERSION}-darwin-universal.tar.gz.sha256 \
+            dist/portable/arm64/mobilebuildmcp-${VERSION}-darwin-arm64.tar.gz \
+            dist/portable/arm64/mobilebuildmcp-${VERSION}-darwin-arm64.tar.gz.sha256 \
+            dist/portable/x64/mobilebuildmcp-${VERSION}-darwin-x64.tar.gz \
+            dist/portable/x64/mobilebuildmcp-${VERSION}-darwin-x64.tar.gz.sha256 \
+            dist/portable/universal/mobilebuildmcp-${VERSION}-darwin-universal.tar.gz \
+            dist/portable/universal/mobilebuildmcp-${VERSION}-darwin-universal.tar.gz.sha256 \
             --clobber \
             --repo "$REPOSITORY"
 
@@ -428,14 +417,14 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           FORMULA_BASE_URL="https://github.com/${REPOSITORY}/releases/download/v${VERSION}"
-          ARM64_SHA="$(awk '{print $1}' dist/portable/arm64/xcodebuildmcp-${VERSION}-darwin-arm64.tar.gz.sha256)"
-          X64_SHA="$(awk '{print $1}' dist/portable/x64/xcodebuildmcp-${VERSION}-darwin-x64.tar.gz.sha256)"
+          ARM64_SHA="$(awk '{print $1}' dist/portable/arm64/mobilebuildmcp-${VERSION}-darwin-arm64.tar.gz.sha256)"
+          X64_SHA="$(awk '{print $1}' dist/portable/x64/mobilebuildmcp-${VERSION}-darwin-x64.tar.gz.sha256)"
           npm run homebrew:formula -- \
             --version "$VERSION" \
             --arm64-sha "$ARM64_SHA" \
             --x64-sha "$X64_SHA" \
             --base-url "$FORMULA_BASE_URL" \
-            --out dist/homebrew/Formula/xcodebuildmcp.rb
+            --out dist/homebrew/Formula/mobilebuildmcp.rb
 
       - name: Configure SSH for tap repository
         if: env.HOMEBREW_TAP_DEPLOY_KEY != ''
@@ -451,7 +440,7 @@ jobs:
         run: |
           git clone git@github.com:${REPOSITORY_OWNER}/homebrew-xcodebuildmcp.git tap-repo
           mkdir -p tap-repo/Formula
-          cp dist/homebrew/Formula/xcodebuildmcp.rb tap-repo/Formula/xcodebuildmcp.rb
+          cp dist/homebrew/Formula/mobilebuildmcp.rb tap-repo/Formula/mobilebuildmcp.rb
           cd tap-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -463,10 +452,10 @@ jobs:
             git checkout "$DEFAULT_BRANCH"
             git pull --ff-only origin "$DEFAULT_BRANCH"
           fi
-          git add Formula/xcodebuildmcp.rb
+          git add Formula/mobilebuildmcp.rb
           if git diff --cached --quiet; then
             echo "Formula already up to date; nothing to push."
             exit 0
           fi
-          git commit -m "xcodebuildmcp ${VERSION}"
+          git commit -m "mobilebuildmcp ${VERSION}"
           git push origin "$DEFAULT_BRANCH"

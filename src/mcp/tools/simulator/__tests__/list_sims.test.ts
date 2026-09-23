@@ -133,7 +133,7 @@ describe('list_sims tool', () => {
       expect(text).toContain('iPhone 15');
       expect(text).toContain('Shutdown');
       expect(result.structuredOutput).toEqual({
-        schema: 'xcodebuildmcp.output.simulator-list',
+        schema: 'mobilebuildmcp.output.simulator-list',
         schemaVersion: '2',
         result: {
           kind: 'simulator-list',
@@ -213,7 +213,7 @@ describe('list_sims tool', () => {
       expect(text).toContain('Failed to list simulators: Command failed');
       expect(result.isError).toBe(true);
       expect(result.structuredOutput).toEqual({
-        schema: 'xcodebuildmcp.output.simulator-list',
+        schema: 'mobilebuildmcp.output.simulator-list',
         schemaVersion: '2',
         result: {
           kind: 'simulator-list',

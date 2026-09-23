@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.coverage-result",
+  "schema": "mobilebuildmcp.output.coverage-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -177,6 +177,6 @@
     }
   },
   "nextSteps": [
-    "View overall coverage: xcodebuildmcp coverage get-coverage-report --xcresult-path <TMPDIR>/TestResults.xcresult"
+    "View overall coverage: mobilebuildmcp coverage get-coverage-report --xcresult-path <TMPDIR>/TestResults.xcresult"
   ]
 }

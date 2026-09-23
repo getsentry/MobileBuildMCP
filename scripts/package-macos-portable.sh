@@ -238,18 +238,18 @@ while [[ -L "$SOURCE" ]]; do
 done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 RESOURCE_ROOT="$(cd "$SCRIPT_DIR" && pwd)"
-export XCODEBUILDMCP_RESOURCE_ROOT="$RESOURCE_ROOT"
+export MOBILEBUILDMCP_RESOURCE_ROOT="$RESOURCE_ROOT"
 export DYLD_FRAMEWORK_PATH="$RESOURCE_ROOT/bundled/Frameworks${DYLD_FRAMEWORK_PATH:+:$DYLD_FRAMEWORK_PATH}"
 EOF
 
-  cat > "$libexec_dir/xcodebuildmcp" <<'EOF'
+  cat > "$libexec_dir/mobilebuildmcp" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 exec "$ROOT/node-runtime" "$ROOT/build/cli.js" "$@"
 EOF
 
-  cat > "$bin_dir/xcodebuildmcp" <<'EOF'
+  cat > "$bin_dir/mobilebuildmcp" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 SOURCE="${BASH_SOURCE[0]}"
@@ -260,10 +260,10 @@ while [[ -L "$SOURCE" ]]; do
 done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 source "$SCRIPT_DIR/../libexec/_resolve-resource-root.sh"
-exec "$RESOURCE_ROOT/xcodebuildmcp" "$@"
+exec "$RESOURCE_ROOT/mobilebuildmcp" "$@"
 EOF
 
-  cat > "$bin_dir/xcodebuildmcp-doctor" <<'EOF'
+  cat > "$bin_dir/mobilebuildmcp-doctor" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 SOURCE="${BASH_SOURCE[0]}"
@@ -274,14 +274,14 @@ while [[ -L "$SOURCE" ]]; do
 done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 source "$SCRIPT_DIR/../libexec/_resolve-resource-root.sh"
-exec "$RESOURCE_ROOT/xcodebuildmcp" doctor "$@"
+exec "$RESOURCE_ROOT/mobilebuildmcp" doctor "$@"
 EOF
 
   chmod +x \
     "$libexec_dir/_resolve-resource-root.sh" \
-    "$libexec_dir/xcodebuildmcp" \
-    "$bin_dir/xcodebuildmcp" \
-    "$bin_dir/xcodebuildmcp-doctor"
+    "$libexec_dir/mobilebuildmcp" \
+    "$bin_dir/mobilebuildmcp" \
+    "$bin_dir/mobilebuildmcp-doctor"
 }
 
 create_tarball_and_checksum() {
@@ -309,7 +309,7 @@ if [[ "$UNIVERSAL" == "true" ]]; then
     exit 1
   fi
 
-  UNIVERSAL_ROOT="$DIST_DIR/xcodebuildmcp-$VERSION-darwin-universal"
+  UNIVERSAL_ROOT="$DIST_DIR/mobilebuildmcp-$VERSION-darwin-universal"
   if [[ -d "$UNIVERSAL_ROOT" ]]; then
     rm -r "$UNIVERSAL_ROOT"
   fi
@@ -329,7 +329,7 @@ if [[ "$UNIVERSAL" == "true" ]]; then
   chmod +x "$UNIVERSAL_ROOT/libexec/node-runtime"
 
   write_wrapper_scripts "$UNIVERSAL_ROOT"
-  create_tarball_and_checksum "$UNIVERSAL_ROOT" "xcodebuildmcp-$VERSION-darwin-universal"
+  create_tarball_and_checksum "$UNIVERSAL_ROOT" "mobilebuildmcp-$VERSION-darwin-universal"
   exit 0
 fi
 
@@ -355,7 +355,7 @@ npm run build:tsup
 AXE_FORCE_REMOTE=1 npm run bundle:axe
 verify_axe_assets
 
-PORTABLE_ROOT="$DIST_DIR/xcodebuildmcp-$VERSION-darwin-$ARCH"
+PORTABLE_ROOT="$DIST_DIR/mobilebuildmcp-$VERSION-darwin-$ARCH"
 if [[ -d "$PORTABLE_ROOT" ]]; then
   rm -r "$PORTABLE_ROOT"
 fi
@@ -373,4 +373,4 @@ cp "$PROJECT_ROOT/package-lock.json" "$PORTABLE_ROOT/libexec/package-lock.json"
 npm ci --omit=dev --ignore-scripts --prefix "$PORTABLE_ROOT/libexec"
 
 write_wrapper_scripts "$PORTABLE_ROOT"
-create_tarball_and_checksum "$PORTABLE_ROOT" "xcodebuildmcp-$VERSION-darwin-$ARCH"
+create_tarball_and_checksum "$PORTABLE_ROOT" "mobilebuildmcp-$VERSION-darwin-$ARCH"

@@ -306,7 +306,7 @@ export function analyzeClaudeJsonl(text: string, options: AnalyzeOptions): Trans
   );
   const toolAnalysis =
     options.toolAnalysis ??
-    defaultToolAnalysisConfig(options.mcpToolPrefix ?? 'mcp__xcodebuildmcp-dev__');
+    defaultToolAnalysisConfig(options.mcpToolPrefix ?? 'mcp__mobilebuildmcp-dev__');
   let records = 0;
   let claudeDurationSeconds = 0;
   let claudeApiDurationSeconds = 0;

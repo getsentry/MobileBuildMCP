@@ -25,8 +25,8 @@ describe('toStructuredEnvelope', () => {
       ],
     };
 
-    expect(toStructuredEnvelope(result, 'xcodebuildmcp.output.device-list', '1')).toEqual({
-      schema: 'xcodebuildmcp.output.device-list',
+    expect(toStructuredEnvelope(result, 'mobilebuildmcp.output.device-list', '1')).toEqual({
+      schema: 'mobilebuildmcp.output.device-list',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -43,8 +43,8 @@ describe('toStructuredEnvelope', () => {
       error: 'Build failed',
     };
 
-    expect(toStructuredEnvelope(result, 'xcodebuildmcp.output.build-result', '1')).toEqual({
-      schema: 'xcodebuildmcp.output.build-result',
+    expect(toStructuredEnvelope(result, 'mobilebuildmcp.output.build-result', '1')).toEqual({
+      schema: 'mobilebuildmcp.output.build-result',
       schemaVersion: '1',
       didError: true,
       error: 'Build failed',
@@ -61,11 +61,11 @@ describe('toStructuredEnvelope', () => {
     };
 
     expect(
-      toStructuredEnvelope(result, 'xcodebuildmcp.output.device-list', '1', {
+      toStructuredEnvelope(result, 'mobilebuildmcp.output.device-list', '1', {
         nextSteps: [],
       }),
     ).toEqual({
-      schema: 'xcodebuildmcp.output.device-list',
+      schema: 'mobilebuildmcp.output.device-list',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -81,7 +81,7 @@ describe('toStructuredEnvelope', () => {
     };
 
     expect(
-      toStructuredEnvelope(result, 'xcodebuildmcp.output.error', '1', {
+      toStructuredEnvelope(result, 'mobilebuildmcp.output.error', '1', {
         nextSteps: [
           {
             label: 'Retry build',
@@ -91,7 +91,7 @@ describe('toStructuredEnvelope', () => {
         ],
       }),
     ).toEqual({
-      schema: 'xcodebuildmcp.output.error',
+      schema: 'mobilebuildmcp.output.error',
       schemaVersion: '1',
       didError: true,
       error: 'Build failed',
@@ -159,8 +159,8 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    expect(toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2')).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+    expect(toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2')).toEqual({
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -234,7 +234,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as { capture: { targets: string[]; text: string[] } };
 
     expect(data.capture.targets).toEqual(
@@ -260,7 +260,7 @@ describe('toStructuredEnvelope', () => {
       waitMatch: { predicate: 'exists', matches },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as { waitMatch: { matches: string[] } };
 
     expect(data.waitMatch.matches).toHaveLength(COMPACT_RUNTIME_TARGET_LIMIT);
@@ -312,7 +312,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as {
       capture: { targets: string[]; scroll: string[]; text?: string[] };
     };
@@ -338,8 +338,8 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    expect(toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2')).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+    expect(toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2')).toEqual({
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -416,7 +416,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
 
     expect(envelope.data).toMatchObject({
       capture: {
@@ -471,7 +471,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as { capture: { targets: string[] } };
 
     expect(data.capture.targets).toEqual([
@@ -520,7 +520,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as { capture: { targets: string[] } };
 
     expect(data.capture.targets).toEqual([
@@ -561,8 +561,8 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    expect(toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2')).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+    expect(toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2')).toEqual({
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: true,
       error: 'The wait selector matched multiple runtime UI elements.',
@@ -605,7 +605,7 @@ describe('toStructuredEnvelope', () => {
       },
     };
 
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
     const data = envelope.data as {
       uiError: { candidates: string[]; message: string; elementRef: string };
     };
@@ -662,11 +662,11 @@ describe('toStructuredEnvelope', () => {
     };
 
     expect(
-      toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2', {
+      toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2', {
         runtimeSnapshot: 'full',
       }),
     ).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: true,
       error: 'The wait selector matched multiple runtime UI elements.',

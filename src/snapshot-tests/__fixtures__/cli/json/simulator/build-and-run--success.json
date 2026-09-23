@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -21,9 +21,9 @@
       "bundleId": "io.sentry.calculatorapp",
       "processId": 99999,
       "simulatorId": "<UUID>",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_sim_<TIMESTAMP>_pid<PID>.log",
-      "runtimeLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log",
-      "osLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_sim_<TIMESTAMP>_pid<PID>.log",
+      "runtimeLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log",
+      "osLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],
@@ -31,6 +31,6 @@
     }
   },
   "nextSteps": [
-    "Stop app in simulator: xcodebuildmcp simulator stop --simulator-id <UUID> --bundle-id io.sentry.calculatorapp"
+    "Stop app in simulator: mobilebuildmcp simulator stop --simulator-id <UUID> --bundle-id io.sentry.calculatorapp"
   ]
 }

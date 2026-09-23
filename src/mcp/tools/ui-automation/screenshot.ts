@@ -230,7 +230,7 @@ export function createScreenshotExecutor(
     const uuidUtils = dependencies.uuidUtils ?? { v4: uuidv4 };
     const { simulatorId } = params;
 
-    const runtime = process.env.XCODEBUILDMCP_RUNTIME;
+    const runtime = process.env.MOBILEBUILDMCP_RUNTIME;
     const defaultFormat = runtime === 'cli' || runtime === 'daemon' ? 'path' : 'base64';
     const returnFormat = params.returnFormat ?? defaultFormat;
     const tempDir = pathUtils.tmpdir();

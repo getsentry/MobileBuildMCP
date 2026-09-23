@@ -297,7 +297,7 @@ describe('UI action no-op next steps', () => {
     const { ctx } = createMockToolHandlerContext();
     const result = createCaptureSuccessResult(simulatorId, { capture: snapshot });
     setCaptureStructuredOutput(ctx, result);
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
 
     expect(snapshot.elements.find((element) => element.ref === rowRef)?.actions).toContain('tap');
     expect(compactTargets(envelope).some((target) => target.startsWith(`${rowRef}|tap|`))).toBe(
@@ -336,7 +336,7 @@ describe('UI action no-op next steps', () => {
     const { ctx } = createMockToolHandlerContext();
     const result = createCaptureSuccessResult(simulatorId, { capture: snapshot });
     setCaptureStructuredOutput(ctx, result);
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
 
     expect(snapshot.elements.find((element) => element.ref === savedRowRef)?.actions).toContain(
       'tap',
@@ -393,7 +393,7 @@ describe('UI action no-op next steps', () => {
         params: { simulatorId, elementRef: savedRow?.ref },
       },
     ]);
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.ui-action-result', '2', {
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.ui-action-result', '2', {
       nextSteps: ctx.nextSteps,
     });
     expect(

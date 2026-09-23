@@ -35,5 +35,5 @@ Tips
 ✅ Wait completed; runtime UI snapshot refreshed with <ELEMENT_COUNT> elements, <LIKELY_TARGET_COUNT> likely targets, and <SCROLL_AREA_COUNT> scroll areas.
 
 Next steps:
-1. Capture a fresh runtime UI snapshot: xcodebuildmcp ui-automation snapshot-ui --simulator-id <UUID>
-2. Wait until the UI is settled: xcodebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled
+1. Capture a fresh runtime UI snapshot: mobilebuildmcp ui-automation snapshot-ui --simulator-id <UUID>
+2. Wait until the UI is settled: mobilebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled

@@ -62,7 +62,7 @@ function statusFragment(
 function daemonResult(text: string, opts?: Partial<DaemonToolResult>): DaemonToolResult {
   return {
     structuredOutput: {
-      schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+      schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
       schemaVersion: '2',
       result: {
         kind: 'xcode-bridge-call-result',
@@ -80,7 +80,7 @@ function daemonResult(text: string, opts?: Partial<DaemonToolResult>): DaemonToo
 
 function structuredTextOutput(text: string): StructuredToolOutput {
   return {
-    schema: 'xcodebuildmcp.output.debug-command-result',
+    schema: 'mobilebuildmcp.output.debug-command-result',
     schemaVersion: '1',
     result: {
       kind: 'debug-command-result',
@@ -216,7 +216,7 @@ describe('DefaultToolInvoker CLI routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
       },
     );
 
@@ -246,7 +246,7 @@ describe('DefaultToolInvoker CLI routing', () => {
     const response = await invokeAndFinalize(invoker, 'missing-tool', {}, { runtime: 'cli' });
 
     expect(response.isError).toBe(true);
-    expect(response.structuredOutput?.schema).toBe('xcodebuildmcp.output.error');
+    expect(response.structuredOutput?.schema).toBe('mobilebuildmcp.output.error');
     expect(response.structuredOutput?.result).toEqual(
       expect.objectContaining({
         kind: 'error',
@@ -263,7 +263,7 @@ describe('DefaultToolInvoker CLI routing', () => {
     const handler = vi.fn(async (_params, ctx) => {
       ctx.emit(statusFragment('info', 'Working'));
       ctx.structuredOutput = {
-        schema: 'xcodebuildmcp.output.simulator-list',
+        schema: 'mobilebuildmcp.output.simulator-list',
         schemaVersion: '1',
         result: {
           kind: 'simulator-list',
@@ -306,7 +306,7 @@ describe('DefaultToolInvoker CLI routing', () => {
       }),
     );
     expect(progressEvents).toEqual([{ kind: 'infrastructure' }]);
-    expect(structuredOutputs).toEqual(['xcodebuildmcp.output.simulator-list']);
+    expect(structuredOutputs).toEqual(['mobilebuildmcp.output.simulator-list']);
   });
 
   it('sets explicit structured error output when direct handlers throw', async () => {
@@ -393,14 +393,14 @@ describe('DefaultToolInvoker CLI routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
       },
     );
 
     expect(ensureDaemonRunning).toHaveBeenCalledWith(
       expect.objectContaining({
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
         env: undefined,
       }),
@@ -438,7 +438,7 @@ describe('DefaultToolInvoker CLI routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
       },
     );
@@ -447,7 +447,7 @@ describe('DefaultToolInvoker CLI routing', () => {
     expect(response.content[0].text).toContain(
       'Daemon restart failed after protocol mismatch: registry metadata changed',
     );
-    expect(forceStopDaemon).toHaveBeenCalledWith('/tmp/xcodebuildmcp.sock');
+    expect(forceStopDaemon).toHaveBeenCalledWith('/tmp/mobilebuildmcp.sock');
     expect(ensureDaemonRunning).not.toHaveBeenCalled();
     expect(directHandler).not.toHaveBeenCalled();
   });
@@ -479,7 +479,7 @@ describe('DefaultToolInvoker CLI routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
       },
     );
@@ -518,7 +518,7 @@ describe('DefaultToolInvoker xcode-ide dynamic routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
         cliExposedWorkflowIds: ['simulator', 'xcode-ide'],
       },
@@ -526,7 +526,7 @@ describe('DefaultToolInvoker xcode-ide dynamic routing', () => {
 
     expect(ensureDaemonRunning).toHaveBeenCalledWith(
       expect.objectContaining({
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
         env: undefined,
       }),
@@ -541,7 +541,7 @@ describe('DefaultToolInvoker xcode-ide dynamic routing', () => {
       daemonResult('Remote tool failed', {
         isError: true,
         structuredOutput: {
-          schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+          schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
           schemaVersion: '2',
           result: {
             kind: 'xcode-bridge-call-result',
@@ -572,7 +572,7 @@ describe('DefaultToolInvoker xcode-ide dynamic routing', () => {
       { value: 'hello' },
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
         workspaceRoot: '/repo',
         cliExposedWorkflowIds: ['simulator', 'xcode-ide'],
       },
@@ -666,7 +666,7 @@ describe('DefaultToolInvoker next steps post-processing', () => {
     const text = response.content.map((c) => (c.type === 'text' ? c.text : '')).join('\n');
     expect(text).toContain('Next steps:');
     expect(text).toContain('Take screenshot');
-    expect(text).toContain('xcodebuildmcp ui-automation screenshot --simulator-id 123');
+    expect(text).toContain('mobilebuildmcp ui-automation screenshot --simulator-id 123');
   });
 
   it('prefers the current workflow when normalizing duplicate next-step tool names', async () => {
@@ -709,8 +709,8 @@ describe('DefaultToolInvoker next steps post-processing', () => {
     const response = await invokeAndFinalize(invoker, 'snapshot-ui', {}, { runtime: 'cli' });
 
     const text = response.content.map((c) => (c.type === 'text' ? c.text : '')).join('\n');
-    expect(text).toContain('xcodebuildmcp ui-automation screenshot --simulator-id 123');
-    expect(text).not.toContain('xcodebuildmcp simulator screenshot --simulator-id 123');
+    expect(text).toContain('mobilebuildmcp ui-automation screenshot --simulator-id 123');
+    expect(text).not.toContain('mobilebuildmcp simulator screenshot --simulator-id 123');
   });
 
   it('injects manifest template next steps from dynamic nextStepParams when response omits nextSteps', async () => {
@@ -901,7 +901,7 @@ describe('DefaultToolInvoker next steps post-processing', () => {
       {},
       {
         runtime: 'cli',
-        socketPath: '/tmp/xcodebuildmcp.sock',
+        socketPath: '/tmp/mobilebuildmcp.sock',
       },
     );
 
@@ -1112,7 +1112,7 @@ describe('DefaultToolInvoker next steps post-processing', () => {
       ctx.emit(invocationFragment);
       ctx.emit(diagnosticFragment);
       ctx.structuredOutput = {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1',
         result: {
           kind: 'build-result',

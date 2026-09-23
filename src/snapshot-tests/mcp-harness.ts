@@ -145,10 +145,10 @@ export async function createMcpSnapshotHarness(
     cwd: opts.cwd,
     env: createSnapshotHarnessEnv({
       ...(opts.env ?? {}),
-      XCODEBUILDMCP_ENABLED_WORKFLOWS: enabledWorkflows.join(','),
-      XCODEBUILDMCP_DISABLE_SESSION_DEFAULTS: String(opts.disableSessionDefaults ?? true),
-      XCODEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
-      XCODEBUILDMCP_TEST_FORCE_TOOL_EXPOSURE: 'sync_xcode_defaults',
+      MOBILEBUILDMCP_ENABLED_WORKFLOWS: enabledWorkflows.join(','),
+      MOBILEBUILDMCP_DISABLE_SESSION_DEFAULTS: String(opts.disableSessionDefaults ?? true),
+      MOBILEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
+      MOBILEBUILDMCP_TEST_FORCE_TOOL_EXPOSURE: 'sync_xcode_defaults',
     }),
     stderr: 'pipe',
   });

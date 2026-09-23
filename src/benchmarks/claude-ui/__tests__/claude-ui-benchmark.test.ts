@@ -16,7 +16,7 @@ import {
 import { analyzeClaudeJsonl } from '../transcript.ts';
 import type { BenchmarkConfig, BenchmarkRunMetadata } from '../types.ts';
 
-const toolPrefix = 'mcp__xcodebuildmcp-dev__';
+const toolPrefix = 'mcp__mobilebuildmcp-dev__';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 
 function line(value: unknown): string {
@@ -38,7 +38,7 @@ function runMetadata(
       promptPath: '/tmp/run/prompt.md',
       mcpConfigPath: '/tmp/run/mcp-config.json',
       mcpWorkspaceDirectory: '/tmp/run/mcp-workspace',
-      mcpWorkspaceConfigPath: '/tmp/run/mcp-workspace/.xcodebuildmcp/config.yaml',
+      mcpWorkspaceConfigPath: '/tmp/run/mcp-workspace/.mobilebuildmcp/config.yaml',
       claudeJsonlPath: '/tmp/run/claude.jsonl',
       claudeStderrPath: '/tmp/run/claude.stderr',
       claudeCommandLogPath: '/tmp/run/claude-command.log',
@@ -121,12 +121,12 @@ describe('Claude UI benchmark analysis', () => {
     ]);
 
     for (const prompt of [contacts, reminders, weather]) {
-      expect(prompt).not.toContain('Use only the XcodeBuildMCP MCP tools');
+      expect(prompt).not.toContain('Use only the MobileBuildMCP MCP tools');
     }
 
     expect(contacts).toContain('First name: `MCP`');
     expect(contacts).toContain('Last name: `Contact Benchmark`');
-    expect(contacts).toContain('Organization: `XcodeBuildMCP Benchmark`');
+    expect(contacts).toContain('Organization: `MobileBuildMCP Benchmark`');
     expect(contacts).toContain('Phone: `555-010-4242`');
     expect(contacts).toContain('Email: `mcp.contact.benchmark@example.com`');
 

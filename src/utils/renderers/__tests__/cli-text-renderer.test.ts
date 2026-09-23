@@ -25,7 +25,7 @@ function buildOutput(
   };
 
   return {
-    schema: 'xcodebuildmcp.output.build-result',
+    schema: 'mobilebuildmcp.output.build-result',
     schemaVersion: '1.0.0',
     result,
   };
@@ -509,7 +509,7 @@ describe('cli-text-renderer', () => {
     const renderer = createCliTextRenderer({ interactive: false });
 
     renderer.setStructuredOutput({
-      schema: 'xcodebuildmcp.output.build-run-result',
+      schema: 'mobilebuildmcp.output.build-run-result',
       schemaVersion: '1.0.0',
       result: {
         kind: 'build-run-result',
@@ -572,7 +572,7 @@ describe('cli-text-renderer', () => {
   it('renders structured output for non-streaming app-path results', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.app-path',
+        schema: 'mobilebuildmcp.output.app-path',
         schemaVersion: '1.0.0',
         result: {
           kind: 'app-path',
@@ -591,7 +591,7 @@ describe('cli-text-renderer', () => {
   it('renders runtime UI snapshots as compact target lists', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -646,7 +646,7 @@ describe('cli-text-renderer', () => {
   it('renders suppressed runtime evidence without callable refs', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         renderHints: { runtimeSnapshot: { suppressedTargetRefs: ['e2'] } },
         result: {
@@ -700,7 +700,7 @@ describe('cli-text-renderer', () => {
   it('renders unchanged runtime UI snapshots compactly', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -728,7 +728,7 @@ describe('cli-text-renderer', () => {
   it('orders useful runtime targets before chrome controls in compact output', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -823,7 +823,7 @@ describe('cli-text-renderer', () => {
   it('orders unselected segmented controls before already-selected controls in compact output', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -876,7 +876,7 @@ describe('cli-text-renderer', () => {
   it('does not list static text as a likely runtime target when only low-level actions are present', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -929,7 +929,7 @@ describe('cli-text-renderer', () => {
   it('renders runtime UI snapshot scroll areas separately from likely targets', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         result: {
           kind: 'capture-result',
@@ -983,7 +983,7 @@ describe('cli-text-renderer', () => {
   it('renders wait_for_ui output with wait-specific text', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         renderHints: { headerTitle: 'Wait for UI' },
         result: {
@@ -1038,7 +1038,7 @@ describe('cli-text-renderer', () => {
   it('renders static wait matches with no primary action', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.capture-result',
+        schema: 'mobilebuildmcp.output.capture-result',
         schemaVersion: '2',
         renderHints: { headerTitle: 'Wait for UI' },
         result: {
@@ -1093,7 +1093,7 @@ describe('cli-text-renderer', () => {
   it('renders typed UI action recovery hints', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.ui-action-result',
+        schema: 'mobilebuildmcp.output.ui-action-result',
         schemaVersion: '2',
         result: {
           kind: 'ui-action-result',
@@ -1138,7 +1138,7 @@ describe('cli-text-renderer', () => {
     const output = renderCliTextTranscript({
       filePathRenderStyle: 'tree',
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.app-path',
+        schema: 'mobilebuildmcp.output.app-path',
         schemaVersion: '1.0.0',
         result: {
           kind: 'app-path',
@@ -1156,7 +1156,7 @@ describe('cli-text-renderer', () => {
   it('renders structured-only non-build diagnostics with a short top-level error summary', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.scheme-list',
+        schema: 'mobilebuildmcp.output.scheme-list',
         schemaVersion: '1.0.0',
         result: {
           kind: 'scheme-list',
@@ -1199,7 +1199,7 @@ describe('cli-text-renderer', () => {
   it('renders clean-style build results when no live xcodebuild output was seen', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-result',
@@ -1247,7 +1247,7 @@ describe('cli-text-renderer', () => {
   it('renders structured-only build-run-result with request and no fragments', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-run-result',
+        schema: 'mobilebuildmcp.output.build-run-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-run-result',
@@ -1277,7 +1277,7 @@ describe('cli-text-renderer', () => {
     const output = renderCliTextTranscript({
       includeHeaderDetails: false,
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.build-run-result',
+        schema: 'mobilebuildmcp.output.build-run-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'build-run-result',
@@ -1306,7 +1306,7 @@ describe('cli-text-renderer', () => {
   it('renders structured-only test-result with request and no fragments', () => {
     const output = renderCliTextTranscript({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',
@@ -1358,7 +1358,7 @@ describe('cli-text-renderer', () => {
         },
       ],
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.test-result',
+        schema: 'mobilebuildmcp.output.test-result',
         schemaVersion: '1.0.0',
         result: {
           kind: 'test-result',

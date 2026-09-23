@@ -5,7 +5,7 @@ names:
   cli: key-sequence
 description: Press hardware keys using AXe HID key codes. Prefer type_text for text entry. Common values include 40 Return/Enter, 42 Backspace, 43 Tab, and 44 Space.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: '2'
 routing:
   stateful: true

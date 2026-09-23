@@ -4,7 +4,7 @@
 ✅ Build succeeded. (⏱️ <DURATION>)
   ├ Bundle ID: io.sentry.MCPTest.macOS
   └ Files:
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_macos_<TIMESTAMP>_pid<PID>.log — Build Logs
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_macos_<TIMESTAMP>_pid<PID>.log — Build Logs
 
 Next steps:
 1. Get built macOS app path: get_mac_app_path({ scheme: "MCPTest", derivedDataPath: "<TMPDIR>/DerivedData" })

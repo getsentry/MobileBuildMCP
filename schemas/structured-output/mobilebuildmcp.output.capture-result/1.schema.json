@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.capture-result/1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "$defs": {
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ]
+    },
+    "accessibilityNode": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "type": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/accessibilityNode"
+          }
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "custom_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "AXFrame": {
+          "type": "string"
+        },
+        "AXUniqueId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role_description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "AXLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "content_required": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "help": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "AXValue": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subrole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pid": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "frame",
+        "type",
+        "role",
+        "children",
+        "enabled",
+        "custom_actions"
+      ]
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.capture-result"
+    },
+    "schemaVersion": {
+      "const": "1"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/statusSummary"
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "simulatorId": {
+              "type": "string"
+            },
+            "screenshotPath": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "simulatorId"
+          ]
+        },
+        "capture": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "format": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "format",
+                "width",
+                "height"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "ui-hierarchy"
+                },
+                "uiHierarchy": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/accessibilityNode"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "uiHierarchy"
+              ]
+            }
+          ]
+        },
+        "diagnostics": {
+          "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/basicDiagnostics"
+        }
+      },
+      "required": [
+        "summary",
+        "artifacts"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "schemaVersion",
+    "didError",
+    "error",
+    "data"
+  ]
+}

@@ -46,7 +46,7 @@ export function scheduleSimulatorDefaultsRefresh(
  *
  * Contract (do not change without understanding the team-sharing model):
  * - `simulatorName` is the CANONICAL, machine-portable selector. Project
- *   config (`.xcodebuildmcp/config.yaml`) is commonly committed to SCM and
+ *   config (`.mobilebuildmcp/config.yaml`) is commonly committed to SCM and
  *   shared across a team, and simulator UDIDs differ per machine even for
  *   identically-named simulators.
  * - `simulatorId` is a machine-local materialization of that name. When a

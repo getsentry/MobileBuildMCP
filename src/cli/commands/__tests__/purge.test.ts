@@ -15,7 +15,7 @@ import {
 import { runPurgeCommand } from '../purge.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../../../utils/log-paths.ts';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -47,12 +47,12 @@ function captureOutput(): { chunks: string[]; write: (text: string) => void } {
 
 describe('purge command', () => {
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-purge-cli-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-purge-cli-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
   });
 
   afterEach(() => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     rmSync(appDir, { recursive: true, force: true });
   });
 
@@ -64,7 +64,7 @@ describe('purge command', () => {
 
     await runPurgeCommand({}, { currentWorkspaceKey, isTTY: false, now, write: output.write });
 
-    expect(output.chunks.join('')).toContain('XcodeBuildMCP storage report');
+    expect(output.chunks.join('')).toContain('MobileBuildMCP storage report');
     expect(output.chunks.join('')).toContain(currentWorkspaceKey);
     expect(existsSync(logPath)).toBe(true);
   });
@@ -200,7 +200,7 @@ describe('purge command', () => {
         { delete: true, scope: 'all', classes: 'logs', confirm: 'delete' },
         { currentWorkspaceKey, isTTY: false, now, write: output.write },
       ),
-    ).rejects.toThrow('Destructive purge requires --confirm delete-xcodebuildmcp-storage');
+    ).rejects.toThrow('Destructive purge requires --confirm delete-mobilebuildmcp-storage');
     expect(existsSync(logPath)).toBe(true);
   });
 
@@ -234,7 +234,7 @@ describe('purge command', () => {
   it('rejects delete confirmation in dry-run mode', async () => {
     await expect(
       runPurgeCommand(
-        { dryRun: true, classes: 'logs', confirm: 'delete-xcodebuildmcp-storage' },
+        { dryRun: true, classes: 'logs', confirm: 'delete-mobilebuildmcp-storage' },
         { currentWorkspaceKey, isTTY: false, now, write: captureOutput().write },
       ),
     ).rejects.toThrow('--dry-run cannot be combined with --confirm.');

@@ -30,14 +30,14 @@ function mapXcodeEnvForMcpBridge(env: NodeJS.ProcessEnv): Record<string, string>
     }
   }
 
-  if (typeof env.XCODEBUILDMCP_XCODE_PID === 'string' && mapped.MCP_XCODE_PID === undefined) {
-    mapped.MCP_XCODE_PID = env.XCODEBUILDMCP_XCODE_PID;
+  if (typeof env.MOBILEBUILDMCP_XCODE_PID === 'string' && mapped.MCP_XCODE_PID === undefined) {
+    mapped.MCP_XCODE_PID = env.MOBILEBUILDMCP_XCODE_PID;
   }
   if (
-    typeof env.XCODEBUILDMCP_XCODE_SESSION_ID === 'string' &&
+    typeof env.MOBILEBUILDMCP_XCODE_SESSION_ID === 'string' &&
     mapped.MCP_XCODE_SESSION_ID === undefined
   ) {
-    mapped.MCP_XCODE_SESSION_ID = env.XCODEBUILDMCP_XCODE_SESSION_ID;
+    mapped.MCP_XCODE_SESSION_ID = env.MOBILEBUILDMCP_XCODE_SESSION_ID;
   }
 
   return mapped;
@@ -53,7 +53,7 @@ async function main(): Promise<void> {
     env: mapXcodeEnvForMcpBridge(process.env),
   });
 
-  const client = new Client({ name: 'xcodebuildmcp-probe', version: '0.0.0' });
+  const client = new Client({ name: 'mobilebuildmcp-probe', version: '0.0.0' });
   await client.connect(transport, { timeout: 15_000 });
 
   const serverInfo = client.getServerVersion();

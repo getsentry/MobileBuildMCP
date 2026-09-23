@@ -9,10 +9,10 @@
   ├ Process ID: <PID>
   └ Files:
      ├ App Path: <TMPDIR>/spm/.build/<TARGET_TRIPLE>/debug/spm
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log
 
 Output
   Hello, world!
 
 Next steps:
-1. Stop Swift package run: xcodebuildmcp swift-package stop
+1. Stop Swift package run: mobilebuildmcp swift-package stop

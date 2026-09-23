@@ -6,5 +6,5 @@
 ✅ Key press (code: 4) simulated successfully.
 
 Next steps:
-1. Batch same-screen taps: xcodebuildmcp ui-automation batch --json '{"simulatorId":"<UUID>","steps":[{"action":"tap","elementRef":"<REF>"},{"action":"tap","elementRef":"<REF>"}]}'
-2. Tap an elementRef: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>
+1. Batch same-screen taps: mobilebuildmcp ui-automation batch --json '{"simulatorId":"<UUID>","steps":[{"action":"tap","elementRef":"<REF>"},{"action":"tap","elementRef":"<REF>"}]}'
+2. Tap an elementRef: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>

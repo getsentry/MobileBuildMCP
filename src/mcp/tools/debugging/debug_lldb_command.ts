@@ -52,7 +52,7 @@ function createDebugCommandResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugLldbCommandResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-command-result',
+    schema: 'mobilebuildmcp.output.debug-command-result',
     schemaVersion: '2',
   };
 }

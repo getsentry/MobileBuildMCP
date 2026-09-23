@@ -1,6 +1,6 @@
 id: session-status
 module: mcp/resources/session-status
 name: session-status
-uri: xcodebuildmcp://session-status
+uri: mobilebuildmcp://session-status
 description: Runtime session state for log capture and debugging
 mimeType: application/json

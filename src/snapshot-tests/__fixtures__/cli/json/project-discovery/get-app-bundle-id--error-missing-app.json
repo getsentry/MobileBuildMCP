@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.bundle-id",
+  "schema": "mobilebuildmcp.output.bundle-id",
   "schemaVersion": "2",
   "didError": true,
   "error": "Failed to get bundle ID.",

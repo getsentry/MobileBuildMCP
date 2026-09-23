@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.app-path",
+  "schema": "mobilebuildmcp.output.app-path",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -18,7 +18,7 @@
     }
   },
   "nextSteps": [
-    "Get bundle ID: xcodebuildmcp macos get-macos-bundle-id --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app",
-    "Launch app: xcodebuildmcp macos launch --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app"
+    "Get bundle ID: mobilebuildmcp macos get-macos-bundle-id --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app",
+    "Launch app: mobilebuildmcp macos launch --app-path <TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app"
   ]
 }

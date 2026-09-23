@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.coverage-result",
+  "schema": "mobilebuildmcp.output.coverage-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -25,6 +25,6 @@
     ]
   },
   "nextSteps": [
-    "View file-level coverage: xcodebuildmcp coverage get-file-coverage --xcresult-path <TMPDIR>/TestResults.xcresult"
+    "View file-level coverage: mobilebuildmcp coverage get-file-coverage --xcresult-path <TMPDIR>/TestResults.xcresult"
   ]
 }

@@ -24,7 +24,7 @@ function createTool(overrides: Partial<ToolDefinition> = {}): ToolDefinition {
 }
 
 async function createSocketPath(): Promise<string> {
-  const directory = await mkdtemp(path.join(tmpdir(), 'xcodebuildmcp-daemon-conditions-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'mobilebuildmcp-daemon-conditions-'));
   return path.join(directory, 'daemon.sock');
 }
 
@@ -66,7 +66,7 @@ describe('daemon conditional next steps', () => {
           test_sim: { testProductsPath: '/tmp/App.xctestproducts' },
         };
         ctx.structuredOutput = {
-          schema: 'xcodebuildmcp.output.simulator-list',
+          schema: 'mobilebuildmcp.output.simulator-list',
           schemaVersion: '1',
           result: {
             kind: 'simulator-list',

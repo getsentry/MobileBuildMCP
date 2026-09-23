@@ -9,7 +9,7 @@ description: >-
   Optional distance is a normalized stroke fraction greater than 0 and up to 1.
   Example input: {"withinElementRef":"e7","direction":"up","distance":0.7}.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: "2"
 routing:
   stateful: true

@@ -6,7 +6,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
       "global": {"description":"Activate the global unnamed defaults profile.","type":"boolean"},
-      "persist": {"description":"Persist activeSessionDefaultsProfile to .xcodebuildmcp/config.yaml.","type":"boolean"},
+      "persist": {"description":"Persist activeSessionDefaultsProfile to .mobilebuildmcp/config.yaml.","type":"boolean"},
       "profile": {"description":"Activate a named session defaults profile (example: ios or watch).","minLength":1,"type":"string"}
     },
     "type": "object"
@@ -59,7 +59,7 @@
         "type": "array"
       }
     },
-    "$id": "https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.session-profile/2.registration.schema.json",
+    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.session-profile/2.registration.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
       {
@@ -83,7 +83,7 @@
             "type": ["string","null"]
           },
           "nextSteps": {"$ref":"#/$defs/nextSteps"},
-          "schema": {"const":"xcodebuildmcp.output.session-profile"},
+          "schema": {"const":"mobilebuildmcp.output.session-profile"},
           "schemaVersion": {"const":"2"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],
@@ -108,7 +108,7 @@
           },
           "didError": {"const":true},
           "error": {"minLength":1,"type":"string"},
-          "schema": {"const":"xcodebuildmcp.output.error"},
+          "schema": {"const":"mobilebuildmcp.output.error"},
           "schemaVersion": {"const":"1"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],

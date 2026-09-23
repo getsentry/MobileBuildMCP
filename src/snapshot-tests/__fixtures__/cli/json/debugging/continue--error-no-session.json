@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.debug-session-action",
+  "schema": "mobilebuildmcp.output.debug-session-action",
   "schemaVersion": "2",
   "didError": true,
   "error": "Failed to resume debugger.",

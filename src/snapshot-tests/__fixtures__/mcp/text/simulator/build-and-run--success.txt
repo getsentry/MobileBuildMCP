@@ -14,7 +14,7 @@
   ├ Bundle ID: io.sentry.calculatorapp
   ├ Process ID: <PID>
   └ Files:
-     ├── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/
+     ├── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/
      │   ├── build_run_sim_<TIMESTAMP>_pid<PID>.log — Build Logs
      │   ├── io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log — Runtime Logs
      │   └── io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log — OSLog

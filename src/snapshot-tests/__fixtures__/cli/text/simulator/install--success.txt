@@ -7,5 +7,5 @@
 ✅ App installed successfully
 
 Next steps:
-1. Open the Simulator app: xcodebuildmcp simulator open
-2. Launch the app: xcodebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id io.sentry.calculatorapp
+1. Open the Simulator app: mobilebuildmcp simulator open
+2. Launch the app: mobilebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id io.sentry.calculatorapp

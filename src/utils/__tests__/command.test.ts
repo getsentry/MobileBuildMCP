@@ -29,7 +29,7 @@ describe('defaultExecutor', () => {
   });
 
   it('treats a leading-dash executable as a command name when shell execution is requested', async () => {
-    const executableDirectory = await mkdtemp(join(tmpdir(), 'xcodebuildmcp-command-'));
+    const executableDirectory = await mkdtemp(join(tmpdir(), 'mobilebuildmcp-command-'));
     const executablePath = join(executableDirectory, '-c');
     await writeFile(executablePath, '#!/bin/sh\nprintf "%s\\n" "$@"\n', 'utf8');
     await chmod(executablePath, 0o700);
@@ -53,7 +53,7 @@ describe('defaultExecutor', () => {
   it('returns an exit response when a shell-mode executable is missing', async () => {
     const executor = __getRealCommandExecutor();
     const result = await executor(
-      ['xcodebuildmcp-command-that-does-not-exist'],
+      ['mobilebuildmcp-command-that-does-not-exist'],
       'Missing Shell Executable Test',
       true,
     );

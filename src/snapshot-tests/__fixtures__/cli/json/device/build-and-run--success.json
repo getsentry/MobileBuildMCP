@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -22,7 +22,7 @@
       "bundleId": "io.sentry.calculatorapp",
       "processId": 99999,
       "deviceId": "<UUID>",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],
@@ -30,6 +30,6 @@
     }
   },
   "nextSteps": [
-    "Stop app on device: xcodebuildmcp device stop --device-id <UUID> --process-id <PID>"
+    "Stop app on device: mobilebuildmcp device stop --device-id <UUID> --process-id <PID>"
   ]
 }

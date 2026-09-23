@@ -61,9 +61,9 @@ export async function buildXcodeToolsBridgeStatus(
     bridgePid: args.clientStatus.bridgePid,
     proxiedToolCount: args.proxiedToolCount,
     lastError: args.lastError ?? args.clientStatus.lastError,
-    xcodePid: process.env.XCODEBUILDMCP_XCODE_PID ?? process.env.MCP_XCODE_PID ?? null,
+    xcodePid: process.env.MOBILEBUILDMCP_XCODE_PID ?? process.env.MCP_XCODE_PID ?? null,
     xcodeSessionId:
-      process.env.XCODEBUILDMCP_XCODE_SESSION_ID ?? process.env.MCP_XCODE_SESSION_ID ?? null,
+      process.env.MOBILEBUILDMCP_XCODE_SESSION_ID ?? process.env.MCP_XCODE_SESSION_ID ?? null,
   };
 }
 

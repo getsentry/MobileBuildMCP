@@ -3,4 +3,4 @@
 
 ✅ Build succeeded. (⏱️ <DURATION>)
   └ Files:
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_spm_<TIMESTAMP>_pid<PID>.log — Build Logs
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_spm_<TIMESTAMP>_pid<PID>.log — Build Logs

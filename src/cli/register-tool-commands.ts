@@ -97,7 +97,7 @@ function createBufferedHandlerContext(
   };
 }
 
-const UI_ACTION_RESULT_SCHEMA = 'xcodebuildmcp.output.ui-action-result';
+const UI_ACTION_RESULT_SCHEMA = 'mobilebuildmcp.output.ui-action-result';
 const UI_ACTION_RESULT_VERBOSE_SCHEMA_VERSION = '3';
 
 function writeJsonOutput(
@@ -423,7 +423,7 @@ function registerToolSubcommand(
         return;
       }
 
-      const restoreCliOutputFormat = setEnvScoped('XCODEBUILDMCP_CLI_OUTPUT_FORMAT', outputFormat);
+      const restoreCliOutputFormat = setEnvScoped('MOBILEBUILDMCP_CLI_OUTPUT_FORMAT', outputFormat);
 
       try {
         let renderStrategy: 'cli-text' | 'raw' | 'text';

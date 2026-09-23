@@ -5,7 +5,7 @@ names:
   cli: gesture
 description: Simulator gesture preset.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: "2"
 routing:
   stateful: true

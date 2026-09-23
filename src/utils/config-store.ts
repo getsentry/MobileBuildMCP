@@ -186,77 +186,85 @@ function readEnvConfig(env: NodeJS.ProcessEnv): RuntimeConfigOverrides {
   setIfDefined(
     config,
     'enabledWorkflows',
-    parseEnabledWorkflows(env.XCODEBUILDMCP_ENABLED_WORKFLOWS),
+    parseEnabledWorkflows(env.MOBILEBUILDMCP_ENABLED_WORKFLOWS),
   );
 
-  setIfDefined(config, 'debug', parseBoolean(env.XCODEBUILDMCP_DEBUG));
-  setIfDefined(config, 'sentryDisabled', parseBoolean(env.XCODEBUILDMCP_SENTRY_DISABLED));
+  setIfDefined(config, 'debug', parseBoolean(env.MOBILEBUILDMCP_DEBUG));
+  setIfDefined(config, 'sentryDisabled', parseBoolean(env.MOBILEBUILDMCP_SENTRY_DISABLED));
 
   setIfDefined(
     config,
     'experimentalWorkflowDiscovery',
-    parseBoolean(env.XCODEBUILDMCP_EXPERIMENTAL_WORKFLOW_DISCOVERY),
+    parseBoolean(env.MOBILEBUILDMCP_EXPERIMENTAL_WORKFLOW_DISCOVERY),
   );
 
   setIfDefined(
     config,
     'disableSessionDefaults',
-    parseBoolean(env.XCODEBUILDMCP_DISABLE_SESSION_DEFAULTS),
+    parseBoolean(env.MOBILEBUILDMCP_DISABLE_SESSION_DEFAULTS),
   );
 
   setIfDefined(
     config,
     'disableXcodeAutoSync',
-    parseBoolean(env.XCODEBUILDMCP_DISABLE_XCODE_AUTO_SYNC),
+    parseBoolean(env.MOBILEBUILDMCP_DISABLE_XCODE_AUTO_SYNC),
   );
 
-  setIfDefined(config, 'showTestTiming', parseBoolean(env.XCODEBUILDMCP_SHOW_TEST_TIMING));
+  setIfDefined(config, 'showTestTiming', parseBoolean(env.MOBILEBUILDMCP_SHOW_TEST_TIMING));
 
   setIfDefined(
     config,
     'filePathRenderStyle',
-    parseFilePathRenderStyle(env.XCODEBUILDMCP_FILE_PATH_RENDER_STYLE),
+    parseFilePathRenderStyle(env.MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE),
   );
 
   setIfDefined(
     config,
     'uiDebuggerGuardMode',
-    parseUiDebuggerGuardMode(env.XCODEBUILDMCP_UI_DEBUGGER_GUARD_MODE),
+    parseUiDebuggerGuardMode(env.MOBILEBUILDMCP_UI_DEBUGGER_GUARD_MODE),
   );
 
   setIfDefined(config, 'incrementalBuildsEnabled', parseBoolean(env.INCREMENTAL_BUILDS_ENABLED));
 
-  const axePath = env.XCODEBUILDMCP_AXE_PATH ?? env.AXE_PATH;
+  const axePath = env.MOBILEBUILDMCP_AXE_PATH ?? env.AXE_PATH;
   if (axePath) config.axePath = axePath;
 
-  const axeSourcePath = env.XCODEBUILDMCP_AXE_SOURCE_PATH ?? env.AXE_SOURCE_PATH;
+  const axeSourcePath = env.MOBILEBUILDMCP_AXE_SOURCE_PATH ?? env.AXE_SOURCE_PATH;
   if (axeSourcePath) config.axeSourcePath = axeSourcePath;
 
-  const iosTemplatePath = env.XCODEBUILDMCP_IOS_TEMPLATE_PATH;
+  const iosTemplatePath = env.MOBILEBUILDMCP_IOS_TEMPLATE_PATH;
   if (iosTemplatePath) config.iosTemplatePath = iosTemplatePath;
 
-  const macosTemplatePath = env.XCODEBUILDMCP_MACOS_TEMPLATE_PATH;
+  const macosTemplatePath = env.MOBILEBUILDMCP_MACOS_TEMPLATE_PATH;
   if (macosTemplatePath) config.macosTemplatePath = macosTemplatePath;
 
   const iosTemplateVersion =
-    env.XCODEBUILD_MCP_IOS_TEMPLATE_VERSION ?? env.XCODEBUILD_MCP_TEMPLATE_VERSION;
+    env.MOBILEBUILD_MCP_IOS_TEMPLATE_VERSION ?? env.MOBILEBUILD_MCP_TEMPLATE_VERSION;
   if (iosTemplateVersion) config.iosTemplateVersion = iosTemplateVersion;
 
   const macosTemplateVersion =
-    env.XCODEBUILD_MCP_MACOS_TEMPLATE_VERSION ?? env.XCODEBUILD_MCP_TEMPLATE_VERSION;
+    env.MOBILEBUILD_MCP_MACOS_TEMPLATE_VERSION ?? env.MOBILEBUILD_MCP_TEMPLATE_VERSION;
   if (macosTemplateVersion) config.macosTemplateVersion = macosTemplateVersion;
 
-  setIfDefined(config, 'debuggerBackend', parseDebuggerBackend(env.XCODEBUILDMCP_DEBUGGER_BACKEND));
+  setIfDefined(
+    config,
+    'debuggerBackend',
+    parseDebuggerBackend(env.MOBILEBUILDMCP_DEBUGGER_BACKEND),
+  );
 
   setIfDefined(
     config,
     'dapRequestTimeoutMs',
-    parsePositiveInt(env.XCODEBUILDMCP_DAP_REQUEST_TIMEOUT_MS),
+    parsePositiveInt(env.MOBILEBUILDMCP_DAP_REQUEST_TIMEOUT_MS),
   );
 
-  setIfDefined(config, 'dapLogEvents', parseBoolean(env.XCODEBUILDMCP_DAP_LOG_EVENTS));
+  setIfDefined(config, 'dapLogEvents', parseBoolean(env.MOBILEBUILDMCP_DAP_LOG_EVENTS));
 
-  setIfDefined(config, 'launchJsonWaitMs', parseNonNegativeInt(env.XBMCP_LAUNCH_JSON_WAIT_MS));
+  setIfDefined(
+    config,
+    'launchJsonWaitMs',
+    parseNonNegativeInt(env.MOBILEBUILDMCP_LAUNCH_JSON_WAIT_MS),
+  );
 
   return config;
 }
@@ -280,21 +288,21 @@ function readEnvSessionDefaults(env: NodeJS.ProcessEnv): Partial<SessionDefaults
     }
   }
 
-  setString('workspacePath', env.XCODEBUILDMCP_WORKSPACE_PATH);
-  setString('projectPath', env.XCODEBUILDMCP_PROJECT_PATH);
-  setString('scheme', env.XCODEBUILDMCP_SCHEME);
-  setString('configuration', env.XCODEBUILDMCP_CONFIGURATION);
-  setString('simulatorName', env.XCODEBUILDMCP_SIMULATOR_NAME);
-  setString('simulatorId', env.XCODEBUILDMCP_SIMULATOR_ID);
-  setString('deviceId', env.XCODEBUILDMCP_DEVICE_ID);
-  setString('derivedDataPath', env.XCODEBUILDMCP_DERIVED_DATA_PATH);
-  setString('platform', env.XCODEBUILDMCP_PLATFORM);
-  setString('bundleId', env.XCODEBUILDMCP_BUNDLE_ID);
-  setBool('useLatestOS', env.XCODEBUILDMCP_USE_LATEST_OS);
-  setBool('suppressWarnings', env.XCODEBUILDMCP_SUPPRESS_WARNINGS);
-  setBool('preferXcodebuild', env.XCODEBUILDMCP_PREFER_XCODEBUILD);
+  setString('workspacePath', env.MOBILEBUILDMCP_WORKSPACE_PATH);
+  setString('projectPath', env.MOBILEBUILDMCP_PROJECT_PATH);
+  setString('scheme', env.MOBILEBUILDMCP_SCHEME);
+  setString('configuration', env.MOBILEBUILDMCP_CONFIGURATION);
+  setString('simulatorName', env.MOBILEBUILDMCP_SIMULATOR_NAME);
+  setString('simulatorId', env.MOBILEBUILDMCP_SIMULATOR_ID);
+  setString('deviceId', env.MOBILEBUILDMCP_DEVICE_ID);
+  setString('derivedDataPath', env.MOBILEBUILDMCP_DERIVED_DATA_PATH);
+  setString('platform', env.MOBILEBUILDMCP_PLATFORM);
+  setString('bundleId', env.MOBILEBUILDMCP_BUNDLE_ID);
+  setBool('useLatestOS', env.MOBILEBUILDMCP_USE_LATEST_OS);
+  setBool('suppressWarnings', env.MOBILEBUILDMCP_SUPPRESS_WARNINGS);
+  setBool('preferXcodebuild', env.MOBILEBUILDMCP_PREFER_XCODEBUILD);
 
-  const simulatorPlatform = env.XCODEBUILDMCP_SIMULATOR_PLATFORM;
+  const simulatorPlatform = env.MOBILEBUILDMCP_SIMULATOR_PLATFORM;
   if (simulatorPlatform) {
     const valid = ['iOS Simulator', 'watchOS Simulator', 'tvOS Simulator', 'visionOS Simulator'];
     if (valid.includes(simulatorPlatform)) {
@@ -303,7 +311,7 @@ function readEnvSessionDefaults(env: NodeJS.ProcessEnv): Partial<SessionDefaults
     }
   }
 
-  const arch = env.XCODEBUILDMCP_ARCH;
+  const arch = env.MOBILEBUILDMCP_ARCH;
   if (arch === 'arm64' || arch === 'x86_64') {
     defaults.arch = arch;
     hasAny = true;

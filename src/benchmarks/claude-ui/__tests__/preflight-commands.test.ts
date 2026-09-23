@@ -1,6 +1,6 @@
 import { preflightCommandsWithFocusResign } from '../preflight-commands.ts';
 
-const HEADLESS_ENV_VAR = 'XCODEBUILDMCP_HEADLESS_LAUNCH';
+const HEADLESS_ENV_VAR = 'MOBILEBUILDMCP_HEADLESS_LAUNCH';
 
 describe('Claude UI benchmark preflight commands', () => {
   let previousHeadlessValue: string | undefined;

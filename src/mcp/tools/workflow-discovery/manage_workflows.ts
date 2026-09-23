@@ -22,7 +22,7 @@ const manageWorkflowsSchema = z.preprocess(nullifyEmptyStrings, baseSchemaObject
 export type ManageWorkflowsParams = z.infer<typeof manageWorkflowsSchema>;
 type ManageWorkflowsResult = WorkflowSelectionDomainResult;
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.workflow-selection';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.workflow-selection';
 
 function createManageWorkflowsResult(
   enabledWorkflows: string[],

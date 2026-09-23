@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.debug-variables-result",
+  "schema": "mobilebuildmcp.output.debug-variables-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

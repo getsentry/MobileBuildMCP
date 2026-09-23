@@ -227,7 +227,7 @@ async function fetchLatestReleaseFromGitHub(
       response = await fetch(url, {
         headers: {
           Accept: 'application/vnd.github+json',
-          'User-Agent': `xcodebuildmcp/${pkgVersion}`,
+          'User-Agent': `mobilebuildmcp/${pkgVersion}`,
         },
         signal: controller.signal,
       });
@@ -298,7 +298,7 @@ async function defaultFetchReleaseNotesForTag(
       response = await fetch(url, {
         headers: {
           Accept: 'application/vnd.github+json',
-          'User-Agent': `xcodebuildmcp/${deps.currentVersion}`,
+          'User-Agent': `mobilebuildmcp/${deps.currentVersion}`,
         },
         signal: controller.signal,
       });
@@ -471,7 +471,7 @@ export async function runUpgradeCommand(
   const isTTY = d.isInteractive();
 
   if (isTTY) {
-    clack.intro('XcodeBuildMCP Upgrade');
+    clack.intro('MobileBuildMCP Upgrade');
   }
 
   const installMethod = d.detectInstallMethod();
@@ -690,7 +690,7 @@ async function executeUpgrade(
 export function registerUpgradeCommand(app: Argv): void {
   app.command(
     'upgrade',
-    'Check for updates and upgrade XcodeBuildMCP',
+    'Check for updates and upgrade MobileBuildMCP',
     (yargs) =>
       yargs
         .option('check', {

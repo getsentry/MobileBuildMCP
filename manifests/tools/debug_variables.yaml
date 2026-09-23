@@ -5,7 +5,7 @@ names:
   cli: variables
 description: Get frame variables.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-variables-result
+  schema: mobilebuildmcp.output.debug-variables-result
   version: "2"
 routing:
   stateful: true

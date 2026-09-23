@@ -42,7 +42,7 @@ function prepareSnapshotHarnessOptions(
     return { invocationOptions: options };
   }
 
-  const ownedSocketDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-snapshot-daemon-'));
+  const ownedSocketDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-snapshot-daemon-'));
   return {
     invocationOptions: {
       ...options,

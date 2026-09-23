@@ -39,7 +39,7 @@ function createCatalog(tools: ToolDefinition[]): ToolCatalog {
 }
 
 async function createSocketPath(): Promise<string> {
-  const directory = await mkdtemp(path.join(tmpdir(), 'xcodebuildmcp-daemon-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'mobilebuildmcp-daemon-'));
   return path.join(directory, 'daemon.sock');
 }
 
@@ -100,7 +100,7 @@ describe('daemon tool.invoke streaming', () => {
         ctx.nextStepConditionKeys = ['build_artifact_available'];
         ctx.nextSteps = [{ label: 'Open the build log' }];
         ctx.structuredOutput = {
-          schema: 'xcodebuildmcp.output.simulator-list',
+          schema: 'mobilebuildmcp.output.simulator-list',
           schemaVersion: '1',
           result: {
             kind: 'simulator-list',
@@ -143,7 +143,7 @@ describe('daemon tool.invoke streaming', () => {
     expect(progress).toEqual(['status', 'process-line']);
     expect(result).toEqual({
       structuredOutput: {
-        schema: 'xcodebuildmcp.output.simulator-list',
+        schema: 'mobilebuildmcp.output.simulator-list',
         schemaVersion: '1',
         result: {
           kind: 'simulator-list',
@@ -251,7 +251,7 @@ describe('daemon tool.invoke streaming', () => {
 
     expect(result.isError).toBe(true);
     expect(result.structuredOutput).toEqual({
-      schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+      schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
       schemaVersion: '3',
       result: {
         kind: 'xcode-bridge-call-result',

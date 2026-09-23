@@ -3,12 +3,12 @@ import * as path from 'node:path';
 import {
   getWorkspaceFilesystemLayout,
   getWorkspacesDir,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 
 describe('log paths', () => {
   afterEach(() => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
   });
 
   it('rejects relative path segment workspace keys', () => {
@@ -21,8 +21,8 @@ describe('log paths', () => {
   });
 
   it('builds the workspace-first filesystem layout', () => {
-    const appDir = path.join('/tmp', 'xcodebuildmcp-app');
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    const appDir = path.join('/tmp', 'mobilebuildmcp-app');
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
 
     const layout = getWorkspaceFilesystemLayout('workspace-a');
 

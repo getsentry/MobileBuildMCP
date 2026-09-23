@@ -29,7 +29,7 @@ export interface YargsAppOptions {
 export function buildYargsApp(opts: YargsAppOptions): ReturnType<typeof yargs> {
   const app = yargs(hideBin(process.argv))
     .scriptName('')
-    .usage('Usage: xcodebuildmcp <command> [options]')
+    .usage('Usage: mobilebuildmcp <command> [options]')
     .strict()
     .recommendCommands()
     .wrap(Math.min(120, yargs().terminalWidth()))
@@ -73,9 +73,9 @@ export function buildYargsApp(opts: YargsAppOptions): ReturnType<typeof yargs> {
     .alias('v', 'version')
     .demandCommand(1, '')
     .epilogue(
-      `Run 'xcodebuildmcp mcp' to start the MCP server.\n` +
-        `Run 'xcodebuildmcp tools' to see all available tools.\n` +
-        `Run 'xcodebuildmcp <workflow> <tool> --help' for tool-specific help.`,
+      `Run 'mobilebuildmcp mcp' to start the MCP server.\n` +
+        `Run 'mobilebuildmcp tools' to see all available tools.\n` +
+        `Run 'mobilebuildmcp <workflow> <tool> --help' for tool-specific help.`,
     );
 
   // Register command groups with workspace context

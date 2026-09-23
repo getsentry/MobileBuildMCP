@@ -49,7 +49,7 @@ const doctorSchema = z.object({
 type DoctorParams = z.infer<typeof doctorSchema>;
 type DoctorResult = DoctorReportDomainResult;
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.doctor-report';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.doctor-report';
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -234,7 +234,7 @@ async function collectDoctorData(params: DoctorParams, deps: DoctorDependencies)
         makefileExists,
       },
       mise: {
-        running_under_mise: Boolean(process.env.XCODEBUILDMCP_RUNNING_UNDER_MISE),
+        running_under_mise: Boolean(process.env.MOBILEBUILDMCP_RUNNING_UNDER_MISE),
         available: binaryStatus['mise'].available,
       },
       debugger: {
@@ -498,8 +498,8 @@ function renderDoctorItems(items: DoctorRenderItem[]): string {
  * Run the doctor tool and return the results.
  */
 export async function runDoctor(params: DoctorParams, deps: DoctorDependencies) {
-  const prevSilence = process.env.XCODEBUILDMCP_SILENCE_LOGS;
-  process.env.XCODEBUILDMCP_SILENCE_LOGS = 'true';
+  const prevSilence = process.env.MOBILEBUILDMCP_SILENCE_LOGS;
+  process.env.MOBILEBUILDMCP_SILENCE_LOGS = 'true';
   log('info', `${LOG_PREFIX}: Running doctor tool`);
   try {
     const {
@@ -512,7 +512,7 @@ export async function runDoctor(params: DoctorParams, deps: DoctorDependencies) 
     } = await collectDoctorData(params, deps);
 
     const items: DoctorRenderItem[] = [
-      doctorHeader('XcodeBuildMCP Doctor', [
+      doctorHeader('MobileBuildMCP Doctor', [
         { label: 'Generated', value: doctorInfo.timestamp },
         { label: 'Server Version', value: doctorInfo.serverVersion },
         {
@@ -630,7 +630,7 @@ export async function runDoctor(params: DoctorParams, deps: DoctorDependencies) 
     ];
     if (dapSelected && !lldbDapAvailable) {
       debuggerLines.push(
-        'Warning: DAP backend selected but lldb-dap not available. Set XCODEBUILDMCP_DEBUGGER_BACKEND=lldb-cli to use the CLI backend.',
+        'Warning: DAP backend selected but lldb-dap not available. Set MOBILEBUILDMCP_DEBUGGER_BACKEND=lldb-cli to use the CLI backend.',
       );
     }
     items.push(doctorSection('Debugger Backend (DAP)', debuggerLines));
@@ -734,9 +734,9 @@ export async function runDoctor(params: DoctorParams, deps: DoctorDependencies) 
     };
   } finally {
     if (prevSilence === undefined) {
-      delete process.env.XCODEBUILDMCP_SILENCE_LOGS;
+      delete process.env.MOBILEBUILDMCP_SILENCE_LOGS;
     } else {
-      process.env.XCODEBUILDMCP_SILENCE_LOGS = prevSilence;
+      process.env.MOBILEBUILDMCP_SILENCE_LOGS = prevSilence;
     }
   }
 }

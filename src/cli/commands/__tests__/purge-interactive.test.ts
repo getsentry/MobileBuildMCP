@@ -11,7 +11,7 @@ import {
 import { runPurgeCommand } from '../purge.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../../../utils/log-paths.ts';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -43,12 +43,12 @@ function captureOutput(): { chunks: string[]; write: (text: string) => void } {
 
 describe('purge interactive command', () => {
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-purge-interactive-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-purge-interactive-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
   });
 
   afterEach(() => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     rmSync(appDir, { recursive: true, force: true });
   });
 

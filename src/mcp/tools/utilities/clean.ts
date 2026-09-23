@@ -67,7 +67,7 @@ type CleanResult = ToolDomainResultBase & {
   diagnostics: BasicDiagnostics;
 };
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.build-result';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.build-result';
 
 const PLATFORM_MAP: Record<string, XcodePlatform> = {
   macOS: XcodePlatform.macOS,

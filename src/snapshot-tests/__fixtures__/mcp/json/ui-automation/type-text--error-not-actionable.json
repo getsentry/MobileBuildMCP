@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.ui-action-result",
+  "schema": "mobilebuildmcp.output.ui-action-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Element ref '<REF>' does not support 'typeText'.",

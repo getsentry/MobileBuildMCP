@@ -9,7 +9,7 @@ import {
 describe('workspace identity', () => {
   it('uses the project root when a project config path is available', () => {
     const workspaceRoot = path.join('/repo', 'app');
-    const projectConfigPath = path.join(workspaceRoot, '.xcodebuildmcp', 'config.yaml');
+    const projectConfigPath = path.join(workspaceRoot, '.mobilebuildmcp', 'config.yaml');
 
     expect(resolveWorkspaceRoot({ cwd: '/elsewhere', projectConfigPath })).toBe(workspaceRoot);
     expect(resolveWorkspaceIdentity({ cwd: '/elsewhere', projectConfigPath })).toEqual({

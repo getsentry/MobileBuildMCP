@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.test-result",
+  "schema": "mobilebuildmcp.output.test-result",
   "schemaVersion": "3",
   "didError": false,
   "error": null,
@@ -16,9 +16,9 @@
     },
     "artifacts": {
       "deviceId": "<UUID>",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/test_device_<TIMESTAMP>_pid<PID>.log",
-      "xcresultPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/result-bundles/test_device_<TIMESTAMP>_pid<PID>.xcresult",
-      "testProductsPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/test-products/test_device_<TIMESTAMP>_pid<PID>.xctestproducts"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/test_device_<TIMESTAMP>_pid<PID>.log",
+      "xcresultPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/result-bundles/test_device_<TIMESTAMP>_pid<PID>.xcresult",
+      "testProductsPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/test-products/test_device_<TIMESTAMP>_pid<PID>.xctestproducts"
     },
     "tests": {
       "selected": [

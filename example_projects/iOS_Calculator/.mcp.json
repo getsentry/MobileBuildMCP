@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "XcodeBuildMCP": {
+    "MobileBuildMCP": {
       "type": "stdio",
       "command": "node",
       "args": [

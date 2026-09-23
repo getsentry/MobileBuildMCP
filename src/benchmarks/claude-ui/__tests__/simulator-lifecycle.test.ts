@@ -19,11 +19,11 @@ import {
 } from '../simulator-lifecycle.ts';
 import type { BenchmarkConfig } from '../types.ts';
 
-const HEADLESS_ENV_VAR = 'XCODEBUILDMCP_HEADLESS_LAUNCH';
+const HEADLESS_ENV_VAR = 'MOBILEBUILDMCP_HEADLESS_LAUNCH';
 
 interface ClaudeMcpConfig {
   mcpServers: {
-    'xcodebuildmcp-dev': {
+    'mobilebuildmcp-dev': {
       env: Record<string, string>;
     };
   };
@@ -407,7 +407,7 @@ describe('Claude UI temporary simulator lifecycle', () => {
     const mcpWorkspaceDirectory = path.join(directory, 'mcp-workspace');
     const mcpWorkspaceConfigPath = path.join(
       mcpWorkspaceDirectory,
-      '.xcodebuildmcp',
+      '.mobilebuildmcp',
       'config.yaml',
     );
     await writeMcpConfig({
@@ -430,16 +430,16 @@ describe('Claude UI temporary simulator lifecycle', () => {
       await readFile(mcpWorkspaceConfigPath, 'utf8'),
     ) as IsolatedMcpWorkspaceConfig;
 
-    expect(mcpConfig.mcpServers['xcodebuildmcp-dev'].env).toMatchObject({
-      XCODEBUILDMCP_CWD: mcpWorkspaceDirectory,
-      XCODEBUILDMCP_DEBUG: 'true',
-      XCODEBUILDMCP_SENTRY_DISABLED: 'true',
+    expect(mcpConfig.mcpServers['mobilebuildmcp-dev'].env).toMatchObject({
+      MOBILEBUILDMCP_CWD: mcpWorkspaceDirectory,
+      MOBILEBUILDMCP_DEBUG: 'true',
+      MOBILEBUILDMCP_SENTRY_DISABLED: 'true',
     });
-    expect(mcpConfig.mcpServers['xcodebuildmcp-dev'].env).not.toHaveProperty(
-      'XCODEBUILDMCP_SIMULATOR_ID',
+    expect(mcpConfig.mcpServers['mobilebuildmcp-dev'].env).not.toHaveProperty(
+      'MOBILEBUILDMCP_SIMULATOR_ID',
     );
-    expect(mcpConfig.mcpServers['xcodebuildmcp-dev'].env).not.toHaveProperty(
-      'XCODEBUILDMCP_SIMULATOR_NAME',
+    expect(mcpConfig.mcpServers['mobilebuildmcp-dev'].env).not.toHaveProperty(
+      'MOBILEBUILDMCP_SIMULATOR_NAME',
     );
     expect(isolatedConfig).toMatchObject({
       schemaVersion: 1,
@@ -458,18 +458,18 @@ describe('Claude UI temporary simulator lifecycle', () => {
     const env = claudeBenchmarkEnv({
       PATH: '/usr/bin',
       CLAUDE_CODE_TOKEN: 'token',
-      XCODEBUILDMCP_CWD: '/repo/example_projects/Weather',
-      XCODEBUILDMCP_SIMULATOR_ID: 'STALE-SIM',
-      XCODEBUILDMCP_PROJECT_PATH: 'Stale.xcodeproj',
-      XCODEBUILDMCP_DEBUG: 'false',
+      MOBILEBUILDMCP_CWD: '/repo/example_projects/Weather',
+      MOBILEBUILDMCP_SIMULATOR_ID: 'STALE-SIM',
+      MOBILEBUILDMCP_PROJECT_PATH: 'Stale.xcodeproj',
+      MOBILEBUILDMCP_DEBUG: 'false',
     });
 
     expect(env.PATH).toBe('/usr/bin');
     expect(env.CLAUDE_CODE_TOKEN).toBe('token');
-    expect(env.XCODEBUILDMCP_DEBUG).toBe('false');
-    expect(env).not.toHaveProperty('XCODEBUILDMCP_CWD');
-    expect(env).not.toHaveProperty('XCODEBUILDMCP_SIMULATOR_ID');
-    expect(env).not.toHaveProperty('XCODEBUILDMCP_PROJECT_PATH');
+    expect(env.MOBILEBUILDMCP_DEBUG).toBe('false');
+    expect(env).not.toHaveProperty('MOBILEBUILDMCP_CWD');
+    expect(env).not.toHaveProperty('MOBILEBUILDMCP_SIMULATOR_ID');
+    expect(env).not.toHaveProperty('MOBILEBUILDMCP_PROJECT_PATH');
   });
 
   it('resolves relative suite paths before writing the isolated MCP workspace config', async () => {
@@ -477,7 +477,7 @@ describe('Claude UI temporary simulator lifecycle', () => {
     const mcpWorkspaceDirectory = path.join(directory, 'mcp-workspace');
     const mcpWorkspaceConfigPath = path.join(
       mcpWorkspaceDirectory,
-      '.xcodebuildmcp',
+      '.mobilebuildmcp',
       'config.yaml',
     );
 

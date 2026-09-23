@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -10,11 +10,11 @@
       "target": "device"
     },
     "artifacts": {
-      "appPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphoneos/CalculatorApp.app",
+      "appPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphoneos/CalculatorApp.app",
       "bundleId": "io.sentry.calculatorapp",
       "processId": 99999,
       "deviceId": "<UUID>",
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],

@@ -5,7 +5,7 @@ import { formatStructuredEnvelopeFixture, normalizeStructuredEnvelope } from '..
 describe('normalizeStructuredEnvelope', () => {
   it('keeps suite-less simulator test cases while normalizing volatile durations', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: true,
       error: 'Tests failed',
@@ -20,7 +20,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: true,
       error: 'Tests failed',
@@ -33,7 +33,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('preserves non-temp xcresult paths in test result artifacts', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -50,9 +50,9 @@ describe('normalizeStructuredEnvelope', () => {
   });
 
   it('normalizes test result artifact paths under an injected temp directory', () => {
-    const tmpDir = '/__xcodebuildmcp_tmp__';
+    const tmpDir = '/__mobilebuildmcp_tmp__';
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -66,7 +66,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope, { tmpDir })).toEqual({
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -82,7 +82,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('keeps suite-less passed test cases for non-simulator results', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -93,7 +93,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -106,7 +106,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('sorts diagnostic test failures while normalizing volatile Swift Testing suite names', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '2',
       didError: true,
       error: 'Tests failed',
@@ -131,7 +131,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.test-result',
+      schema: 'mobilebuildmcp.output.test-result',
       schemaVersion: '2',
       didError: true,
       error: 'Tests failed',
@@ -158,7 +158,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes iOS and watchOS simulator runtime versions', () => {
     const envelope = {
-      schema: 'xcodebuildmcp.output.simulators-result',
+      schema: 'mobilebuildmcp.output.simulators-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -173,7 +173,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes UI element refs without hiding action content', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -200,7 +200,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -226,7 +226,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('preserves schema-constrained verbose runtime snapshot refs', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -246,7 +246,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -268,7 +268,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes Settings.app compact capture refs without hiding capture content', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -297,7 +297,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -328,7 +328,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes only volatile SpringBoard home compact capture count and transient open hint', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -351,7 +351,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.ui-action-result',
+      schema: 'mobilebuildmcp.output.ui-action-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -374,7 +374,7 @@ describe('normalizeStructuredEnvelope', () => {
     const runtimeRoot =
       '/Library/Developer/CoreSimulator/Volumes/iOS_23E244/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot';
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.debug-stack-result',
+      schema: 'mobilebuildmcp.output.debug-stack-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -414,7 +414,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.debug-stack-result',
+      schema: 'mobilebuildmcp.output.debug-stack-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -457,7 +457,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('trims volatile system debug stack frame prefixes while preserving app launch frames', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.debug-stack-result',
+      schema: 'mobilebuildmcp.output.debug-stack-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -505,7 +505,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.debug-stack-result',
+      schema: 'mobilebuildmcp.output.debug-stack-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -549,7 +549,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes volatile runtime snapshot timestamps', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -577,7 +577,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.capture-result',
+      schema: 'mobilebuildmcp.output.capture-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -607,7 +607,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes and sorts SwiftPM build progress lines in stderr arrays', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.build-run-result',
+      schema: 'mobilebuildmcp.output.build-run-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -624,7 +624,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.build-run-result',
+      schema: 'mobilebuildmcp.output.build-run-result',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -643,7 +643,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes volatile build settings entry values without dropping entries', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.build-settings',
+      schema: 'mobilebuildmcp.output.build-settings',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -689,7 +689,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.build-settings',
+      schema: 'mobilebuildmcp.output.build-settings',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -725,7 +725,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes physical device connection state without hiding device identity', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.device-list',
+      schema: 'mobilebuildmcp.output.device-list',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -744,7 +744,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.device-list',
+      schema: 'mobilebuildmcp.output.device-list',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -765,7 +765,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('compacts frame objects emitted with y before x', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.ui-snapshot',
+      schema: 'mobilebuildmcp.output.ui-snapshot',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -781,7 +781,7 @@ describe('normalizeStructuredEnvelope', () => {
 
   it('normalizes volatile build settings PATH entry values without dropping the entry', () => {
     const envelope: StructuredOutputEnvelope<unknown> = {
-      schema: 'xcodebuildmcp.output.build-settings',
+      schema: 'mobilebuildmcp.output.build-settings',
       schemaVersion: '1',
       didError: false,
       error: null,
@@ -794,7 +794,7 @@ describe('normalizeStructuredEnvelope', () => {
     };
 
     expect(normalizeStructuredEnvelope(envelope)).toEqual({
-      schema: 'xcodebuildmcp.output.build-settings',
+      schema: 'mobilebuildmcp.output.build-settings',
       schemaVersion: '1',
       didError: false,
       error: null,

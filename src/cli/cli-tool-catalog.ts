@@ -84,7 +84,7 @@ type DynamicBridgeTool = {
 };
 
 function getBridgeDiscoveryTimeoutMs(quickMode: boolean): number {
-  const configured = process.env.XCODEBUILDMCP_XCODE_IDE_DISCOVERY_TIMEOUT_MS;
+  const configured = process.env.MOBILEBUILDMCP_XCODE_IDE_DISCOVERY_TIMEOUT_MS;
   if (configured !== undefined) {
     const parsed = Number(configured);
     if (Number.isFinite(parsed) && parsed > 0) {

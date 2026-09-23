@@ -39,7 +39,7 @@ const PREFIX_NAME_JSON = JSON.stringify({
 
 type Call = { command: string[] };
 
-const HEADLESS_ENV_VAR = 'XCODEBUILDMCP_HEADLESS_LAUNCH';
+const HEADLESS_ENV_VAR = 'MOBILEBUILDMCP_HEADLESS_LAUNCH';
 const originalHeadlessValue = process.env[HEADLESS_ENV_VAR];
 
 function makeFifoExecutor(
@@ -192,7 +192,7 @@ describe('sendKeyboardShortcut', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error).toContain('foreground');
-      expect(result.error).toContain('XCODEBUILDMCP_HEADLESS_LAUNCH');
+      expect(result.error).toContain('MOBILEBUILDMCP_HEADLESS_LAUNCH');
     }
     expect(calls).toHaveLength(1);
   });

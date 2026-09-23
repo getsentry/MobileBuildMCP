@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.scaffold-result",
+  "schema": "mobilebuildmcp.output.scaffold-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -16,7 +16,7 @@
   },
   "nextSteps": [
     "Important: Before working on the project make sure to read the README.md file in the workspace root directory.",
-    "Build for macOS: xcodebuildmcp macos build --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp",
-    "Build & Run on macOS: xcodebuildmcp macos build-and-run --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp"
+    "Build for macOS: mobilebuildmcp macos build --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp",
+    "Build & Run on macOS: mobilebuildmcp macos build-and-run --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp"
   ]
 }

@@ -9,5 +9,5 @@ export const bundledParserPath = path.join(
   repoRoot,
   'benchmarks/claude-ui/parse_claude_conversation.py',
 );
-export const serverName = 'xcodebuildmcp-dev';
+export const serverName = 'mobilebuildmcp-dev';
 export const mcpToolPrefix = `mcp__${serverName}__`;

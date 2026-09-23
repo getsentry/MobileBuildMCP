@@ -22,7 +22,7 @@ const schemaObj = z.object({});
 type Params = z.infer<typeof schemaObj>;
 type SyncXcodeDefaultsResult = SessionDefaultsDomainResult;
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.session-defaults';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.session-defaults';
 
 interface SyncXcodeDefaultsContext {
   executor: CommandExecutor;

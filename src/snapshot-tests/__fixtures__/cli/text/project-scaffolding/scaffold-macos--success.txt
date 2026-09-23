@@ -10,5 +10,5 @@
 
 Next steps:
 1. Important: Before working on the project make sure to read the README.md file in the workspace root directory.
-2. Build for macOS: xcodebuildmcp macos build --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp
-3. Build & Run on macOS: xcodebuildmcp macos build-and-run --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp
+2. Build for macOS: mobilebuildmcp macos build --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp
+3. Build & Run on macOS: mobilebuildmcp macos build-and-run --workspace-path <TMPDIR>/macos/SnapshotTestMacApp.xcworkspace --scheme SnapshotTestMacApp

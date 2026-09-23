@@ -20,7 +20,7 @@ import {
 } from './purge-ui.ts';
 import { runInteractivePurge } from './purge-interactive.ts';
 
-const DELETE_CONFIRMATION = 'delete-xcodebuildmcp-storage';
+const DELETE_CONFIRMATION = 'delete-mobilebuildmcp-storage';
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 type PurgeMode = 'report' | 'dry-run' | 'delete' | 'interactive';
@@ -317,7 +317,7 @@ export async function runPurgeCommand(
 export function registerPurgeCommand(app: Argv, opts: { currentWorkspaceKey: string }): void {
   app.command(
     'purge',
-    'Report and clean XcodeBuildMCP workspace storage',
+    'Report and clean MobileBuildMCP workspace storage',
     (yargs) =>
       yargs
         .option('report', {

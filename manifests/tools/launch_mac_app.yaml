@@ -5,7 +5,7 @@ names:
   cli: launch
 description: Launch macOS app.
 outputSchema:
-  schema: xcodebuildmcp.output.launch-result
+  schema: mobilebuildmcp.output.launch-result
   version: "2"
 annotations:
   title: Launch macOS App

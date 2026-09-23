@@ -493,7 +493,7 @@ function normalizeValue(
 function normalizeXcodeBridgeCallEnvelope(
   envelope: StructuredOutputEnvelope<unknown>,
 ): StructuredOutputEnvelope<unknown> {
-  if (envelope.schema !== 'xcodebuildmcp.output.xcode-bridge-call-result') {
+  if (envelope.schema !== 'mobilebuildmcp.output.xcode-bridge-call-result') {
     return envelope;
   }
 

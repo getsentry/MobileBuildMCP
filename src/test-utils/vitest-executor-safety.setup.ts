@@ -27,7 +27,7 @@ import {
 } from './mock-executors.ts';
 import { setXcodebuildLogDirOverrideForTests } from '../utils/xcodebuild-log-capture.ts';
 import { resetWorkspaceFilesystemLifecycleStateForTests } from '../utils/workspace-filesystem-lifecycle.ts';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../utils/log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../utils/log-paths.ts';
 
 let xcodebuildLogDir: string | null = null;
 let appDir: string | null = null;
@@ -36,9 +36,9 @@ beforeEach(() => {
   __setTestCommandExecutorOverride(createNoopExecutor());
   __setTestFileSystemExecutorOverride(createNoopFileSystemExecutor());
   __setTestInteractiveSpawnerOverride(createNoopInteractiveSpawner());
-  appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-test-app-dir-'));
-  setXcodeBuildMCPAppDirOverrideForTests(appDir);
-  xcodebuildLogDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-test-logs-'));
+  appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-test-app-dir-'));
+  setMobileBuildMCPAppDirOverrideForTests(appDir);
+  xcodebuildLogDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-test-logs-'));
   setXcodebuildLogDirOverrideForTests(xcodebuildLogDir);
 });
 
@@ -46,7 +46,7 @@ afterEach(async () => {
   __clearTestExecutorOverrides();
   __clearTestInteractiveSpawnerOverride();
   setXcodebuildLogDirOverrideForTests(null);
-  setXcodeBuildMCPAppDirOverrideForTests(null);
+  setMobileBuildMCPAppDirOverrideForTests(null);
   resetWorkspaceFilesystemLifecycleStateForTests();
   if (xcodebuildLogDir) {
     await rm(xcodebuildLogDir, { recursive: true, force: true });

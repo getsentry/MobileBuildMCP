@@ -120,7 +120,7 @@ export async function sendKeyboardShortcut(
     return {
       success: false,
       error:
-        'Keyboard controls require a simulator frontend in the foreground, which is incompatible with XCODEBUILDMCP_HEADLESS_LAUNCH mode.',
+        'Keyboard controls require a simulator frontend in the foreground, which is incompatible with MOBILEBUILDMCP_HEADLESS_LAUNCH mode.',
     };
   }
 
@@ -151,7 +151,7 @@ export async function sendKeyboardShortcut(
     return {
       success: false,
       error:
-        'Keyboard controls require a simulator frontend in the foreground, which is incompatible with XCODEBUILDMCP_HEADLESS_LAUNCH mode.',
+        'Keyboard controls require a simulator frontend in the foreground, which is incompatible with MOBILEBUILDMCP_HEADLESS_LAUNCH mode.',
     };
   }
 

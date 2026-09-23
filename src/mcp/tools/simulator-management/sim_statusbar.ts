@@ -67,7 +67,7 @@ function createSimStatusbarResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: SimStatusbarResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.simulator-action-result',
+    schema: 'mobilebuildmcp.output.simulator-action-result',
     schemaVersion: '2',
   };
 }

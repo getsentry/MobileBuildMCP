@@ -42,7 +42,7 @@ export async function xcodeIdeListToolsLogic(params: Params): Promise<void> {
     ctx,
     executionContext,
     result,
-    'xcodebuildmcp.output.xcode-bridge-tool-list',
+    'mobilebuildmcp.output.xcode-bridge-tool-list',
     '3',
   );
 }

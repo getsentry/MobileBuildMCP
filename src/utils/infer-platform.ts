@@ -256,7 +256,7 @@ export async function inferPlatform(
 
   throw new Error(
     `Unable to determine the simulator platform for ${selector}. The simulator was not found ` +
-      `among available devices — its runtime may not be installed. Run 'xcodebuildmcp setup' to ` +
+      `among available devices — its runtime may not be installed. Run 'mobilebuildmcp setup' to ` +
       `select an available simulator, or use the simulator list tool to see installed simulators.`,
   );
 }

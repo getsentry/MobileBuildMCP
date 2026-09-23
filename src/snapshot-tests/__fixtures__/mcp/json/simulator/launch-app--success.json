@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.launch-result",
+  "schema": "mobilebuildmcp.output.launch-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -11,8 +11,8 @@
       "simulatorId": "<UUID>",
       "bundleId": "io.sentry.calculatorapp",
       "processId": 99999,
-      "runtimeLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log",
-      "osLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log"
+      "runtimeLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_<TIMESTAMP>_pid<PID>.log",
+      "osLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/io.sentry.calculatorapp_oslog_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],

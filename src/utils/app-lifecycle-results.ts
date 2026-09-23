@@ -6,9 +6,9 @@ import type {
 } from '../types/domain-results.ts';
 import { createBasicDiagnostics } from './diagnostics.ts';
 
-export const INSTALL_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.install-result';
-export const LAUNCH_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.launch-result';
-export const STOP_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.stop-result';
+export const INSTALL_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.install-result';
+export const LAUNCH_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.launch-result';
+export const STOP_RESULT_STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.stop-result';
 
 export type InstallResultArtifacts = InstallResultDomainResult['artifacts'];
 export type LaunchResultArtifacts = LaunchResultDomainResult['artifacts'];

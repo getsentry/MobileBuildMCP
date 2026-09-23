@@ -10,6 +10,6 @@
      └ App Path: <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
 
 Next steps:
-1. Get bundle ID: xcodebuildmcp device get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
-2. Install app on device: xcodebuildmcp device install --device-id DEVICE_UDID --app-path <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
-3. Launch app on device: xcodebuildmcp device launch --device-id DEVICE_UDID --bundle-id BUNDLE_ID
+1. Get bundle ID: mobilebuildmcp device get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
+2. Install app on device: mobilebuildmcp device install --device-id DEVICE_UDID --app-path <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
+3. Launch app on device: mobilebuildmcp device launch --device-id DEVICE_UDID --bundle-id BUNDLE_ID

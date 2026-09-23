@@ -28,7 +28,7 @@ function writeLine(text: string): void {
 export function registerDaemonCommands(app: Argv, opts: DaemonCommandsOptions): void {
   app.command(
     'daemon <action>',
-    'Manage the xcodebuildmcp daemon',
+    'Manage the mobilebuildmcp daemon',
     (yargs) => {
       return yargs
         .positional('action', {
@@ -181,10 +181,10 @@ async function handleStart(
 
   const envOverrides: Record<string, string> = {};
   if (logOpts.logPath) {
-    envOverrides.XCODEBUILDMCP_DAEMON_LOG_PATH = logOpts.logPath;
+    envOverrides.MOBILEBUILDMCP_DAEMON_LOG_PATH = logOpts.logPath;
   }
   if (logOpts.logLevel) {
-    envOverrides.XCODEBUILDMCP_DAEMON_LOG_LEVEL = logOpts.logLevel;
+    envOverrides.MOBILEBUILDMCP_DAEMON_LOG_LEVEL = logOpts.logLevel;
   }
 
   if (foreground) {

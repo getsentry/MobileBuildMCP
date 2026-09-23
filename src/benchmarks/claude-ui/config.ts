@@ -14,21 +14,21 @@ import type {
 } from './types.ts';
 
 export const sessionDefaultEnvNames: Record<string, string> = {
-  workspacePath: 'XCODEBUILDMCP_WORKSPACE_PATH',
-  projectPath: 'XCODEBUILDMCP_PROJECT_PATH',
-  scheme: 'XCODEBUILDMCP_SCHEME',
-  configuration: 'XCODEBUILDMCP_CONFIGURATION',
-  simulatorName: 'XCODEBUILDMCP_SIMULATOR_NAME',
-  simulatorId: 'XCODEBUILDMCP_SIMULATOR_ID',
-  simulatorPlatform: 'XCODEBUILDMCP_SIMULATOR_PLATFORM',
-  deviceId: 'XCODEBUILDMCP_DEVICE_ID',
-  derivedDataPath: 'XCODEBUILDMCP_DERIVED_DATA_PATH',
-  platform: 'XCODEBUILDMCP_PLATFORM',
-  bundleId: 'XCODEBUILDMCP_BUNDLE_ID',
-  arch: 'XCODEBUILDMCP_ARCH',
-  useLatestOS: 'XCODEBUILDMCP_USE_LATEST_OS',
-  suppressWarnings: 'XCODEBUILDMCP_SUPPRESS_WARNINGS',
-  preferXcodebuild: 'XCODEBUILDMCP_PREFER_XCODEBUILD',
+  workspacePath: 'MOBILEBUILDMCP_WORKSPACE_PATH',
+  projectPath: 'MOBILEBUILDMCP_PROJECT_PATH',
+  scheme: 'MOBILEBUILDMCP_SCHEME',
+  configuration: 'MOBILEBUILDMCP_CONFIGURATION',
+  simulatorName: 'MOBILEBUILDMCP_SIMULATOR_NAME',
+  simulatorId: 'MOBILEBUILDMCP_SIMULATOR_ID',
+  simulatorPlatform: 'MOBILEBUILDMCP_SIMULATOR_PLATFORM',
+  deviceId: 'MOBILEBUILDMCP_DEVICE_ID',
+  derivedDataPath: 'MOBILEBUILDMCP_DERIVED_DATA_PATH',
+  platform: 'MOBILEBUILDMCP_PLATFORM',
+  bundleId: 'MOBILEBUILDMCP_BUNDLE_ID',
+  arch: 'MOBILEBUILDMCP_ARCH',
+  useLatestOS: 'MOBILEBUILDMCP_USE_LATEST_OS',
+  suppressWarnings: 'MOBILEBUILDMCP_SUPPRESS_WARNINGS',
+  preferXcodebuild: 'MOBILEBUILDMCP_PREFER_XCODEBUILD',
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {

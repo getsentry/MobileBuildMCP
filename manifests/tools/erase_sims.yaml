@@ -5,7 +5,7 @@ names:
   cli: erase
 description: Erase simulator.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Erase Simulators

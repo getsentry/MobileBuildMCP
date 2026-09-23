@@ -70,23 +70,23 @@ if [[ -z "$VERSION" || -z "$ARM64_SHA" || -z "$X64_SHA" ]]; then
 fi
 
 if [[ -z "$BASE_URL" ]]; then
-  BASE_URL="https://github.com/getsentry/XcodeBuildMCP/releases/download/v$VERSION"
+  BASE_URL="https://github.com/getsentry/MobileBuildMCP/releases/download/v$VERSION"
 fi
 
 FORMULA_CONTENT="$(cat <<EOF
-class Xcodebuildmcp < Formula
+class Mobilebuildmcp < Formula
   desc "Model Context Protocol server for Xcode project workflows"
-  homepage "https://github.com/getsentry/XcodeBuildMCP"
+  homepage "https://github.com/getsentry/MobileBuildMCP"
   license "MIT"
   version "$VERSION"
 
   on_arm do
-    url "$BASE_URL/xcodebuildmcp-$VERSION-darwin-arm64.tar.gz"
+    url "$BASE_URL/mobilebuildmcp-$VERSION-darwin-arm64.tar.gz"
     sha256 "$ARM64_SHA"
   end
 
   on_intel do
-    url "$BASE_URL/xcodebuildmcp-$VERSION-darwin-x64.tar.gz"
+    url "$BASE_URL/mobilebuildmcp-$VERSION-darwin-x64.tar.gz"
     sha256 "$X64_SHA"
   end
 
@@ -95,7 +95,7 @@ class Xcodebuildmcp < Formula
   end
 
   test do
-    assert_match "xcodebuildmcp", shell_output("#{bin}/xcodebuildmcp --help")
+    assert_match "mobilebuildmcp", shell_output("#{bin}/mobilebuildmcp --help")
   end
 end
 EOF

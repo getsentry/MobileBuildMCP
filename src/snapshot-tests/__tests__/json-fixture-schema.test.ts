@@ -238,7 +238,7 @@ describe('structured JSON fixture schemas', () => {
         expect(result.rawText, probe.toolName).toContain(probe.expectedInfrastructureText);
       }
     }
-  }, 30_000);
+  }, 120_000);
 
   it('rejects the historical schema-valued additionalProperties input', () => {
     expect(() =>

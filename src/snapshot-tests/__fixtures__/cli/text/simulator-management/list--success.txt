@@ -46,7 +46,7 @@ Hints
   Before running boot/build/run tools, set the desired simulator identifier in session defaults.
 
 Next steps:
-1. Boot a simulator: xcodebuildmcp simulator-management boot --simulator-id UUID_FROM_ABOVE
-2. Open the simulator UI: xcodebuildmcp simulator-management open
-3. Build for simulator: xcodebuildmcp simulator build --scheme YOUR_SCHEME --simulator-id UUID_FROM_ABOVE
-4. Get app path: xcodebuildmcp simulator get-app-path --scheme YOUR_SCHEME --platform 'iOS Simulator' --simulator-id UUID_FROM_ABOVE
+1. Boot a simulator: mobilebuildmcp simulator-management boot --simulator-id UUID_FROM_ABOVE
+2. Open the simulator UI: mobilebuildmcp simulator-management open
+3. Build for simulator: mobilebuildmcp simulator build --scheme YOUR_SCHEME --simulator-id UUID_FROM_ABOVE
+4. Get app path: mobilebuildmcp simulator get-app-path --scheme YOUR_SCHEME --platform 'iOS Simulator' --simulator-id UUID_FROM_ABOVE

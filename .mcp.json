@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://mcp.sentry.dev/mcp"
     },
-    "xcodebuildmcp-dev": {
+    "mobilebuildmcp-dev": {
       "type": "stdio",
       "command": "node",
       "args": [
@@ -12,10 +12,10 @@
         "mcp"
       ],
       "env": {
-        "XCODEBUILDMCP_DEBUG": "true",
-        "XCODEBUILDMCP_SENTRY_DISABLED": "true",
-        "XCODEBUILDMCP_IOS_TEMPLATE_PATH": "../../../XcodeBuildMCP-iOS-Template",
-        "XCODEBUILDMCP_MACOS_TEMPLATE_PATH": "../../../XcodeBuildMCP-macOS-Template"
+        "MOBILEBUILDMCP_DEBUG": "true",
+        "MOBILEBUILDMCP_SENTRY_DISABLED": "true",
+        "MOBILEBUILDMCP_IOS_TEMPLATE_PATH": "../../../MobileBuildMCP-iOS-Template",
+        "MOBILEBUILDMCP_MACOS_TEMPLATE_PATH": "../../../MobileBuildMCP-macOS-Template"
       }
     }
   }

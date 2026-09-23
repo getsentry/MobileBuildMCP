@@ -21,7 +21,7 @@ import {
 } from '../purge-storage.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 import { getResultBundleCompletionMarkerPath } from '../result-bundle-path.ts';
 
@@ -58,12 +58,12 @@ function managedResultBundleName(name = 'test', pid = DEAD_PID): string {
 
 describe('purge storage', () => {
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-purge-storage-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-purge-storage-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
   });
 
   afterEach(async () => {
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     await rm(appDir, { recursive: true, force: true });
   });
 
@@ -430,7 +430,7 @@ describe('purge storage', () => {
     const layout = getWorkspaceFilesystemLayout('DemoApp-123456789abc');
     const tempMarker = path.join(
       layout.resultBundles,
-      `${managedResultBundleName('old')}.xcodebuildmcp-completed.1234_abcd1234.tmp`,
+      `${managedResultBundleName('old')}.mobilebuildmcp-completed.1234_abcd1234.tmp`,
     );
     writeFileWithMtime(tempMarker, 'tmp', now - 10 * DAY_MS);
 

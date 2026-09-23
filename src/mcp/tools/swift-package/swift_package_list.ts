@@ -18,7 +18,7 @@ export interface ProcessListDependencies {
   dateNow?: typeof Date.now;
 }
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.process-list';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.process-list';
 
 function setStructuredOutput(ctx: ToolHandlerContext, result: ProcessListDomainResult): void {
   ctx.structuredOutput = {

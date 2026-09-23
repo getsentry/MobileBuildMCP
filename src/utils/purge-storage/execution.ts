@@ -11,7 +11,7 @@ import {
 import {
   getTestProductsCompletionMarkerPath,
   isTestProductsCompletionMarkerTempName,
-  isXcodeBuildMCPManagedTestProductsName,
+  isMobileBuildMCPManagedTestProductsName,
 } from '../test-products-path.ts';
 import { isProtectedManagedTestProducts } from '../test-products-lifecycle.ts';
 import {
@@ -21,8 +21,8 @@ import {
   getWorkspaceLifecycleProtectedLogReason,
   isStaleXcodeIdeCallToolTransientDirectoryName,
   isWorkspaceLifecycleProtectedResultBundleDirectory,
-  isXcodeBuildMCPManagedLogName,
-  isXcodeBuildMCPManagedResultBundleName,
+  isMobileBuildMCPManagedLogName,
+  isMobileBuildMCPManagedResultBundleName,
   xcodeIdeCallToolTransientRoot,
   type WorkspaceLifecycleLogProtectionReason,
 } from '../workspace-filesystem-lifecycle.ts';
@@ -137,7 +137,7 @@ async function validateClassSpecificDeletionCandidate(
     case 'derivedData':
       return null;
     case 'logs': {
-      if (!isXcodeBuildMCPManagedLogName(name)) {
+      if (!isMobileBuildMCPManagedLogName(name)) {
         return 'log candidate is not a managed log';
       }
       const protectionReason = getWorkspaceLifecycleProtectedLogReason(
@@ -161,7 +161,7 @@ async function validateClassSpecificDeletionCandidate(
           ? null
           : 'result bundle temp marker candidate is not a file';
       }
-      if (!isXcodeBuildMCPManagedResultBundleName(name)) {
+      if (!isMobileBuildMCPManagedResultBundleName(name)) {
         return 'result bundle candidate is not managed';
       }
       if (
@@ -179,7 +179,7 @@ async function validateClassSpecificDeletionCandidate(
           ? null
           : 'test products temp marker candidate is not a file';
       }
-      if (!isXcodeBuildMCPManagedTestProductsName(name)) {
+      if (!isMobileBuildMCPManagedTestProductsName(name)) {
         return 'test products candidate is not managed';
       }
       if (

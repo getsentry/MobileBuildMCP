@@ -18,7 +18,7 @@ describe('next-steps-renderer', () => {
       };
 
       const result = renderNextStep(step, 'cli');
-      expect(result).toBe('Open the Simulator app: xcodebuildmcp simulator open-sim');
+      expect(result).toBe('Open the Simulator app: mobilebuildmcp simulator open-sim');
     });
 
     it('should format step for CLI with workflow and params', () => {
@@ -32,7 +32,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStep(step, 'cli');
       expect(result).toBe(
-        'Install an app: xcodebuildmcp simulator install-app-sim --simulator-id ABC123 --app-path /path/to/app',
+        'Install an app: mobilebuildmcp simulator install-app-sim --simulator-id ABC123 --app-path /path/to/app',
       );
     });
 
@@ -47,7 +47,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStep(step, 'cli');
       expect(result).toBe(
-        'Install an app: xcodebuildmcp simulator install-app --simulator-id ABC123',
+        'Install an app: mobilebuildmcp simulator install-app --simulator-id ABC123',
       );
     });
 
@@ -57,7 +57,7 @@ describe('next-steps-renderer', () => {
         label: 'Open the Simulator app',
       };
 
-      expect(renderNextStep(step, 'cli')).toBe('Open the Simulator app: xcodebuildmcp open-sim');
+      expect(renderNextStep(step, 'cli')).toBe('Open the Simulator app: mobilebuildmcp open-sim');
     });
 
     it('should format step for CLI without workflow', () => {
@@ -69,7 +69,7 @@ describe('next-steps-renderer', () => {
       };
 
       const result = renderNextStep(step, 'cli');
-      expect(result).toBe('Open the Simulator app: xcodebuildmcp open-sim');
+      expect(result).toBe('Open the Simulator app: mobilebuildmcp open-sim');
     });
 
     it('should format step for CLI with boolean param (true)', () => {
@@ -81,7 +81,7 @@ describe('next-steps-renderer', () => {
       };
 
       const result = renderNextStep(step, 'cli');
-      expect(result).toBe('Do something: xcodebuildmcp some-tool --verbose');
+      expect(result).toBe('Do something: mobilebuildmcp some-tool --verbose');
     });
 
     it('should format step for CLI with boolean param (false)', () => {
@@ -93,7 +93,7 @@ describe('next-steps-renderer', () => {
       };
 
       const result = renderNextStep(step, 'cli');
-      expect(result).toBe('Do something: xcodebuildmcp some-tool');
+      expect(result).toBe('Do something: mobilebuildmcp some-tool');
     });
 
     it('should shell-escape CLI text params that start with a dash', () => {
@@ -107,7 +107,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStep(step, 'cli');
       expect(result).toBe(
-        "Run focused test: xcodebuildmcp simulator test --extra-arg '-only-testing:AppTests'",
+        "Run focused test: mobilebuildmcp simulator test --extra-arg '-only-testing:AppTests'",
       );
     });
 
@@ -126,7 +126,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStep(step, 'cli');
       expect(result).toBe(
-        "Launch app: xcodebuildmcp simulator launch-app --simulator-name 'Cam \"Debug\" App' --bundle-id 'com.example.$APP\\debug' --launch-arg 'line1\nline2'",
+        "Launch app: mobilebuildmcp simulator launch-app --simulator-name 'Cam \"Debug\" App' --bundle-id 'com.example.$APP\\debug' --launch-arg 'line1\nline2'",
       );
     });
 
@@ -147,7 +147,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStep(step, 'cli');
       expect(result).toBe(
-        'Batch same-screen taps: xcodebuildmcp ui-automation batch --json \'{"simulatorId":"ABC123","steps":[{"action":"tap","elementRef":"e1"},{"action":"tap","elementRef":"e2"}]}\'',
+        'Batch same-screen taps: mobilebuildmcp ui-automation batch --json \'{"simulatorId":"ABC123","steps":[{"action":"tap","elementRef":"e1"},{"action":"tap","elementRef":"e2"}]}\'',
       );
     });
 
@@ -235,7 +235,7 @@ describe('next-steps-renderer', () => {
       };
 
       expect(renderNextStep(step, 'cli')).toBe(
-        'Boot simulator: xcodebuildmcp simulator boot --simulator-id SIM-1',
+        'Boot simulator: mobilebuildmcp simulator boot --simulator-id SIM-1',
       );
     });
 
@@ -305,8 +305,8 @@ describe('next-steps-renderer', () => {
       const result = renderNextStepsSection(steps, 'cli');
       expect(result).toBe(
         'Next steps:\n' +
-          '1. Open Simulator: xcodebuildmcp open-sim\n' +
-          '2. Install app: xcodebuildmcp install-app-sim --simulator-id X',
+          '1. Open Simulator: mobilebuildmcp open-sim\n' +
+          '2. Install app: mobilebuildmcp install-app-sim --simulator-id X',
       );
     });
 
@@ -345,7 +345,7 @@ describe('next-steps-renderer', () => {
 
       const result = renderNextStepsSection(steps, 'cli');
       expect(result).toContain('1. Take a look at the screenshot');
-      expect(result).toContain('2. Open simulator: xcodebuildmcp open-sim');
+      expect(result).toContain('2. Open simulator: mobilebuildmcp open-sim');
     });
 
     it('should not throw when cliTool is absent and tool name contains underscores (regression for #226)', () => {
@@ -368,8 +368,8 @@ describe('next-steps-renderer', () => {
 
       expect(() => renderNextStepsSection(steps, 'cli')).not.toThrow();
       const result = renderNextStepsSection(steps, 'cli');
-      expect(result).toContain('xcodebuildmcp tap-coordinate');
-      expect(result).toContain('xcodebuildmcp take-screenshot');
+      expect(result).toContain('mobilebuildmcp tap-coordinate');
+      expect(result).toContain('mobilebuildmcp take-screenshot');
     });
   });
 });

@@ -5,7 +5,7 @@ names:
   cli: list
 description: List connected devices.
 outputSchema:
-  schema: xcodebuildmcp.output.device-list
+  schema: mobilebuildmcp.output.device-list
   version: "2"
 annotations:
   title: List Devices

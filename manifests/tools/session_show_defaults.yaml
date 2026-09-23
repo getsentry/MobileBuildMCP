@@ -5,7 +5,7 @@ names:
   cli: show-defaults
 description: Show current active defaults. Required before your first build/run/test call in a session — do not assume defaults are configured.
 outputSchema:
-  schema: xcodebuildmcp.output.session-defaults
+  schema: mobilebuildmcp.output.session-defaults
   version: "2"
 annotations:
   title: Show Session Defaults

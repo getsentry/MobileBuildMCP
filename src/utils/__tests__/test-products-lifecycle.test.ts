@@ -9,7 +9,7 @@ import {
 } from '../test-products-lifecycle.ts';
 import {
   getTestProductsCompletionMarkerPath,
-  isXcodeBuildMCPManagedTestProductsName,
+  isMobileBuildMCPManagedTestProductsName,
 } from '../test-products-path.ts';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -33,7 +33,7 @@ describe('test products lifecycle', () => {
   let root: string;
 
   beforeEach(() => {
-    root = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-test-products-lifecycle-'));
+    root = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-test-products-lifecycle-'));
   });
 
   afterEach(async () => {
@@ -73,7 +73,7 @@ describe('test products lifecycle', () => {
     const live = path.join(root, managedName('live', process.pid));
     writeTestProducts(live, now - 4 * DAY_MS);
 
-    expect(isXcodeBuildMCPManagedTestProductsName(path.basename(live))).toBe(true);
+    expect(isMobileBuildMCPManagedTestProductsName(path.basename(live))).toBe(true);
     expect(
       await pruneManagedTestProductsDirectory({ testProductsDir: root, now, minVisibleMs: 0 }),
     ).toEqual({ scanned: 1, deleted: 0 });

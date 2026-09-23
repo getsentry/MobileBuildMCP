@@ -5,7 +5,7 @@ names:
   cli: stop
 description: Stop macOS app.
 outputSchema:
-  schema: xcodebuildmcp.output.stop-result
+  schema: mobilebuildmcp.output.stop-result
   version: "2"
 annotations:
   title: Stop macOS App

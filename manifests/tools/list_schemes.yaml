@@ -5,7 +5,7 @@ names:
   cli: list-schemes
 description: List Xcode schemes.
 outputSchema:
-  schema: xcodebuildmcp.output.scheme-list
+  schema: mobilebuildmcp.output.scheme-list
   version: "2"
 annotations:
   title: List Schemes

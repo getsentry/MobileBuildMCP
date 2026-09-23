@@ -44,7 +44,7 @@ const simulatorsResource: ResourceManifestEntry = {
   id: 'simulators',
   module: 'mcp/resources/simulators',
   name: 'simulators',
-  uri: 'xcodebuildmcp://simulators',
+  uri: 'mobilebuildmcp://simulators',
   description: 'Available iOS simulators with their UUIDs and states',
   mimeType: 'text/plain',
   availability: { mcp: true },
@@ -55,7 +55,7 @@ const xcodeIdeStateResource: ResourceManifestEntry = {
   id: 'xcode-ide-state',
   module: 'mcp/resources/xcode-ide-state',
   name: 'xcode-ide-state',
-  uri: 'xcodebuildmcp://xcode-ide-state',
+  uri: 'mobilebuildmcp://xcode-ide-state',
   description: "Current Xcode IDE selection (scheme and simulator) from Xcode's UI state",
   mimeType: 'application/json',
   availability: { mcp: true },
@@ -111,7 +111,7 @@ describe('resources', () => {
       const resources = await loadResources(ctx);
 
       expect(resources.size).toBeGreaterThan(0);
-      expect(resources.has('xcodebuildmcp://simulators')).toBe(true);
+      expect(resources.has('mobilebuildmcp://simulators')).toBe(true);
     });
 
     it('should validate resource structure', async () => {
@@ -130,14 +130,14 @@ describe('resources', () => {
       const ctx = createTestContext({ runningUnderXcode: false });
       const resources = await loadResources(ctx);
 
-      expect(resources.has('xcodebuildmcp://xcode-ide-state')).toBe(false);
+      expect(resources.has('mobilebuildmcp://xcode-ide-state')).toBe(false);
     });
 
     it('should include xcode-ide-state when running under Xcode', async () => {
       const ctx = createTestContext({ runningUnderXcode: true });
       const resources = await loadResources(ctx);
 
-      expect(resources.has('xcodebuildmcp://xcode-ide-state')).toBe(true);
+      expect(resources.has('mobilebuildmcp://xcode-ide-state')).toBe(true);
     });
   });
 
@@ -149,7 +149,7 @@ describe('resources', () => {
       expect(result).toBe(true);
       expect(registeredResources.length).toBeGreaterThan(0);
 
-      const simResource = registeredResources.find((r) => r.uri === 'xcodebuildmcp://simulators');
+      const simResource = registeredResources.find((r) => r.uri === 'mobilebuildmcp://simulators');
       expect(typeof simResource?.handler).toBe('function');
       expect(simResource?.metadata.title).toBe(
         'Available iOS simulators with their UUIDs and states',
@@ -164,7 +164,7 @@ describe('resources', () => {
 
       expect(result).toBe(true);
 
-      const simResource = registeredResources.find((r) => r.uri === 'xcodebuildmcp://simulators');
+      const simResource = registeredResources.find((r) => r.uri === 'mobilebuildmcp://simulators');
       expect(typeof simResource?.handler).toBe('function');
     });
 
@@ -173,7 +173,7 @@ describe('resources', () => {
       await registerResources(mockServer, ctx);
 
       const xcodeResource = registeredResources.find(
-        (r) => r.uri === 'xcodebuildmcp://xcode-ide-state',
+        (r) => r.uri === 'mobilebuildmcp://xcode-ide-state',
       );
       expect(xcodeResource).toBeUndefined();
     });
@@ -186,7 +186,7 @@ describe('resources', () => {
 
       expect(Array.isArray(resources)).toBe(true);
       expect(resources.length).toBeGreaterThan(0);
-      expect(resources).toContain('xcodebuildmcp://simulators');
+      expect(resources).toContain('mobilebuildmcp://simulators');
     });
 
     it('should return unique URIs', async () => {

@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.bundle-id",
+  "schema": "mobilebuildmcp.output.bundle-id",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -10,7 +10,7 @@
     }
   },
   "nextSteps": [
-    "Launch the app: xcodebuildmcp macos launch --app-path <TMPDIR>/BundleTest.app",
-    "Build again: xcodebuildmcp macos build --scheme SCHEME_NAME"
+    "Launch the app: mobilebuildmcp macos launch --app-path <TMPDIR>/BundleTest.app",
+    "Build again: mobilebuildmcp macos build --scheme SCHEME_NAME"
   ]
 }

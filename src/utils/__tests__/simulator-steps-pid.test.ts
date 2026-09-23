@@ -70,7 +70,7 @@ describe.sequential('launchSimulatorAppWithLogging PID resolution', () => {
   beforeEach(() => {
     nextPid = 90000;
     trackedChildren.clear();
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-oslog-launch-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-oslog-launch-'));
     logDir = path.join(registryDir, 'logs');
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setSimulatorLogDirOverrideForTests(logDir);

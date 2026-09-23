@@ -7,7 +7,7 @@ import { getMcpOutputSchemaForRegistration } from '../../core/structured-output-
 let harness: McpTestHarness;
 
 const COMMON_DEFS_REF =
-  'https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json';
+  'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json';
 
 function expectSelfContainedOutputSchema(outputSchema: unknown): void {
   expect(outputSchema).toBeDefined();
@@ -80,10 +80,10 @@ describe('MCP Discovery (e2e)', () => {
   it('representative native tools advertise self-contained output schemas', async () => {
     const result = await harness.client.listTools();
     const expectedSchemas = new Map([
-      ['list_sims', { schema: 'xcodebuildmcp.output.simulator-list', version: '2' }],
-      ['build_sim', { schema: 'xcodebuildmcp.output.build-result', version: '3' }],
-      ['session_show_defaults', { schema: 'xcodebuildmcp.output.session-defaults', version: '2' }],
-      ['show_build_settings', { schema: 'xcodebuildmcp.output.build-settings', version: '2' }],
+      ['list_sims', { schema: 'mobilebuildmcp.output.simulator-list', version: '2' }],
+      ['build_sim', { schema: 'mobilebuildmcp.output.build-result', version: '3' }],
+      ['session_show_defaults', { schema: 'mobilebuildmcp.output.session-defaults', version: '2' }],
+      ['show_build_settings', { schema: 'mobilebuildmcp.output.build-settings', version: '2' }],
     ]);
 
     for (const [toolName, schemaInfo] of expectedSchemas) {

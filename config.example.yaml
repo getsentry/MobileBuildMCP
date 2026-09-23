@@ -22,7 +22,7 @@ sessionDefaults:
   useLatestOS: true
   arch: 'arm64'
   suppressWarnings: false
-  derivedDataPath: './.derivedData' # optional; overrides isolated XcodeBuildMCP-managed DerivedData
+  derivedDataPath: './.derivedData' # optional; overrides isolated MobileBuildMCP-managed DerivedData
   preferXcodebuild: false
   platform: 'iOS'
   bundleId: 'io.sentry.myapp'

@@ -26,7 +26,7 @@ export async function resolveLldbDapCommand(opts: {
     }
     const message = error instanceof Error ? error.message : String(error);
     throw new DependencyError(
-      'DAP backend selected but lldb-dap not found. Ensure Xcode is installed and xcrun can locate lldb-dap, or set XCODEBUILDMCP_DEBUGGER_BACKEND=lldb-cli.',
+      'DAP backend selected but lldb-dap not found. Ensure Xcode is installed and xcrun can locate lldb-dap, or set MOBILEBUILDMCP_DEBUGGER_BACKEND=lldb-cli.',
       message,
     );
   }

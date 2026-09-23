@@ -1,7 +1,7 @@
 import { DEFAULT_IDLE_CHECK_INTERVAL_MS, parseIdleTimeoutEnv } from '../utils/idle-timeout.ts';
 import type { DaemonActivitySnapshot } from './activity-registry.ts';
 
-export const DAEMON_IDLE_TIMEOUT_ENV_KEY = 'XCODEBUILDMCP_DAEMON_IDLE_TIMEOUT_MS';
+export const DAEMON_IDLE_TIMEOUT_ENV_KEY = 'MOBILEBUILDMCP_DAEMON_IDLE_TIMEOUT_MS';
 export const DEFAULT_DAEMON_IDLE_TIMEOUT_MS = 10 * 60 * 1000;
 export const DEFAULT_DAEMON_IDLE_CHECK_INTERVAL_MS = DEFAULT_IDLE_CHECK_INTERVAL_MS;
 

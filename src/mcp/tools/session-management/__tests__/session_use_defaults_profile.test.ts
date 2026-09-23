@@ -22,7 +22,7 @@ describe('session-use-defaults-profile tool', () => {
   });
 
   const cwd = '/repo';
-  const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
+  const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
 
   it('exports handler and schema', () => {
     expect(typeof handler).toBe('function');

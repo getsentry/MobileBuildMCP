@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSyn
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
 import {
   assertOwnedXcodeIdeArtifactPath,
   assertOwnedXcodeIdeWorkspaceRoot,
@@ -11,13 +11,13 @@ import {
 const temporaryDirectories: string[] = [];
 
 function createTemporaryDirectory(): string {
-  const directory = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-artifact-cleanup-test-'));
+  const directory = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-artifact-cleanup-test-'));
   temporaryDirectories.push(directory);
   return directory;
 }
 
 afterEach(() => {
-  setXcodeBuildMCPAppDirOverrideForTests(null);
+  setMobileBuildMCPAppDirOverrideForTests(null);
   for (const directory of temporaryDirectories.splice(0)) {
     rmSync(directory, { recursive: true, force: true });
   }
@@ -65,7 +65,7 @@ describe('Xcode IDE workspace ownership validation', () => {
     const appDirectory = createTemporaryDirectory();
     const workspaceKey = 'snapshot-workspace-123';
     const workspaceRoot = join(appDirectory, 'workspaces', workspaceKey);
-    setXcodeBuildMCPAppDirOverrideForTests(appDirectory);
+    setMobileBuildMCPAppDirOverrideForTests(appDirectory);
     mkdirSync(workspaceRoot, { recursive: true });
 
     expect(assertOwnedXcodeIdeWorkspaceRoot(workspaceRoot, workspaceKey)).toBe(workspaceRoot);
@@ -74,7 +74,7 @@ describe('Xcode IDE workspace ownership validation', () => {
   it('rejects a workspace directory outside the configured workspaces root', () => {
     const appDirectory = createTemporaryDirectory();
     const outsideRoot = createTemporaryDirectory();
-    setXcodeBuildMCPAppDirOverrideForTests(appDirectory);
+    setMobileBuildMCPAppDirOverrideForTests(appDirectory);
 
     expect(() => assertOwnedXcodeIdeWorkspaceRoot(outsideRoot, 'snapshot-workspace-123')).toThrow(
       'Refusing to delete unowned Xcode IDE workspace',
@@ -86,7 +86,7 @@ describe('Xcode IDE workspace ownership validation', () => {
     const targetRoot = createTemporaryDirectory();
     const workspaceKey = 'snapshot-workspace-123';
     const workspaceRoot = join(appDirectory, 'workspaces', workspaceKey);
-    setXcodeBuildMCPAppDirOverrideForTests(appDirectory);
+    setMobileBuildMCPAppDirOverrideForTests(appDirectory);
     mkdirSync(join(appDirectory, 'workspaces'), { recursive: true });
     symlinkSync(targetRoot, workspaceRoot);
 

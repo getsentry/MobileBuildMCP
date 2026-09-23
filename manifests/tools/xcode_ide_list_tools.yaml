@@ -5,7 +5,7 @@ names:
   cli: list-tools
 description: "Lists Xcode-IDE-only MCP capabilities (Use for: SwiftUI previews image capture, code snippet execution, issue Navigator/build logs, and window/tab context)."
 outputSchema:
-  schema: xcodebuildmcp.output.xcode-bridge-tool-list
+  schema: mobilebuildmcp.output.xcode-bridge-tool-list
   version: "3"
 routing:
   stateful: true

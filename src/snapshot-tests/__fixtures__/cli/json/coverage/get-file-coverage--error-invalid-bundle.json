@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.coverage-result",
+  "schema": "mobilebuildmcp.output.coverage-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Failed to get file coverage.",

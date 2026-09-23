@@ -5,7 +5,7 @@ names:
   cli: bridge-sync
 description: One-shot connect + tools/list sync (manual retry; avoids background prompt spam).
 outputSchema:
-  schema: xcodebuildmcp.output.xcode-bridge-sync
+  schema: mobilebuildmcp.output.xcode-bridge-sync
   version: "2"
 predicates:
   - debugEnabled

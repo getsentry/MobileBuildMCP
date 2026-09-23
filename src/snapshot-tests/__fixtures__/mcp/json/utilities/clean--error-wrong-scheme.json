@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-result",
+  "schema": "mobilebuildmcp.output.build-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Clean failed.",

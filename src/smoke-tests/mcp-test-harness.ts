@@ -103,7 +103,7 @@ export async function createMcpTestHarness(opts?: McpTestHarnessOptions): Promis
   sessionStore.clear();
 
   const mockFs = createMockFileSystemExecutor();
-  const logDir = await mkdtemp(join(tmpdir(), 'xcodebuildmcp-smoke-logs-'));
+  const logDir = await mkdtemp(join(tmpdir(), 'mobilebuildmcp-smoke-logs-'));
 
   setXcodebuildLogDirOverrideForTests(logDir);
 

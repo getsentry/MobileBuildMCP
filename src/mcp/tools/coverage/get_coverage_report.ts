@@ -119,7 +119,7 @@ function createCoverageReportResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: GetCoverageReportResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.coverage-result',
+    schema: 'mobilebuildmcp.output.coverage-result',
     schemaVersion: '2',
   };
 }

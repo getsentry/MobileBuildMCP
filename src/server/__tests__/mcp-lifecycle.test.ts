@@ -59,7 +59,7 @@ function createTrackedChild(pid = 777): ChildProcess {
 
 describe('mcp lifecycle coordinator', () => {
   beforeEach(async () => {
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-mcp-lifecycle-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-mcp-lifecycle-'));
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setRuntimeInstanceForTests({
       instanceId: 'mcp-lifecycle-test',
@@ -204,7 +204,7 @@ describe('mcp lifecycle coordinator', () => {
 
 describe('mcp lifecycle snapshot', () => {
   beforeEach(async () => {
-    registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-mcp-lifecycle-'));
+    registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-mcp-lifecycle-'));
     setSimulatorLaunchOsLogRegistryDirOverrideForTests(registryDir);
     setRuntimeInstanceForTests({
       instanceId: 'mcp-lifecycle-test',

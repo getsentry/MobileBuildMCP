@@ -100,7 +100,7 @@ function createListSchemesErrorResult(
 function setStructuredOutput(ctx: ToolHandlerContext, result: ListSchemesResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.scheme-list',
+    schema: 'mobilebuildmcp.output.scheme-list',
     schemaVersion: '2',
   };
 }

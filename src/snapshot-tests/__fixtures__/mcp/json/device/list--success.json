@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.device-list",
+  "schema": "mobilebuildmcp.output.device-list",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

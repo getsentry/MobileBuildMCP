@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json",
   "type": "object",
   "additionalProperties": false,
   "properties": {},
@@ -88,13 +88,13 @@
         "warnings": {
           "type": "array",
           "items": {
-            "$ref": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
+            "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
           }
         },
         "errors": {
           "type": "array",
           "items": {
-            "$ref": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
+            "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
           }
         },
         "rawOutput": {
@@ -139,19 +139,19 @@
         "warnings": {
           "type": "array",
           "items": {
-            "$ref": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
+            "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
           }
         },
         "errors": {
           "type": "array",
           "items": {
-            "$ref": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
+            "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/diagnosticEntry"
           }
         },
         "testFailures": {
           "type": "array",
           "items": {
-            "$ref": "https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json#/$defs/testFailureEntry"
+            "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/testFailureEntry"
           }
         },
         "rawOutput": {

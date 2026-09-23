@@ -1,3 +1,3 @@
 # AGENTS.md
 
-- If using XcodeBuildMCP, use the installed XcodeBuildMCP skill before calling XcodeBuildMCP tools.
+- If using MobileBuildMCP, use the installed MobileBuildMCP skill before calling MobileBuildMCP tools.

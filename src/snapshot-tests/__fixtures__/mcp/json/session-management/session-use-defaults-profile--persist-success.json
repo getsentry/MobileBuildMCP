@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.session-profile",
+  "schema": "mobilebuildmcp.output.session-profile",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

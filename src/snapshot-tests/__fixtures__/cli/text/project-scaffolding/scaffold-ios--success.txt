@@ -10,5 +10,5 @@
 
 Next steps:
 1. Important: Before working on the project make sure to read the README.md file in the workspace root directory.
-2. Build for simulator: xcodebuildmcp simulator build --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'
-3. Build and run on simulator: xcodebuildmcp simulator build-and-run --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'
+2. Build for simulator: mobilebuildmcp simulator build --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'
+3. Build and run on simulator: mobilebuildmcp simulator build-and-run --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'

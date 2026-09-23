@@ -5,7 +5,7 @@ import { getWorkspaceFilesystemLayout } from '../log-paths.ts';
 import {
   getTestProductsCompletionMarkerPath,
   isTestProductsCompletionMarkerTempName,
-  isXcodeBuildMCPManagedTestProductsName,
+  isMobileBuildMCPManagedTestProductsName,
 } from '../test-products-path.ts';
 import { isProtectedManagedTestProducts } from '../test-products-lifecycle.ts';
 import { describeFsError, errorMessage, isEnoent, scanPath } from './scan.ts';
@@ -114,7 +114,7 @@ export async function collectTestProductsCandidates(
       );
       continue;
     }
-    if (!entry.isDirectory() || !isXcodeBuildMCPManagedTestProductsName(entry.name)) {
+    if (!entry.isDirectory() || !isMobileBuildMCPManagedTestProductsName(entry.name)) {
       continue;
     }
 

@@ -9,7 +9,7 @@ export default defineConfig({
     maxWorkers: 1,
     env: {
       NODE_OPTIONS: '--max-old-space-size=4096',
-      XCODEBUILDMCP_HEADLESS_LAUNCH: '1',
+      MOBILEBUILDMCP_HEADLESS_LAUNCH: '1',
     },
     testTimeout: 120000,
     hookTimeout: 120000,

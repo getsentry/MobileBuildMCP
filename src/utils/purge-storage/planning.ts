@@ -13,8 +13,8 @@ import {
   getWorkspaceLifecycleProtectedLogReason,
   isStaleXcodeIdeCallToolTransientDirectoryName,
   isWorkspaceLifecycleProtectedResultBundleDirectory,
-  isXcodeBuildMCPManagedLogName,
-  isXcodeBuildMCPManagedResultBundleName,
+  isMobileBuildMCPManagedLogName,
+  isMobileBuildMCPManagedResultBundleName,
   xcodeIdeCallToolTransientRoot,
   type WorkspaceLifecycleLogProtectionReason,
 } from '../workspace-filesystem-lifecycle.ts';
@@ -240,7 +240,7 @@ async function collectLogCandidates(
   const { entries, error } = await readManagedDir(layout.logs);
   const protectedPaths = await collectWorkspaceLifecycleProtectedLogPaths({ workspaceKey });
   const candidates = entries
-    .filter((entry) => entry.isFile() && isXcodeBuildMCPManagedLogName(entry.name))
+    .filter((entry) => entry.isFile() && isMobileBuildMCPManagedLogName(entry.name))
     .map((entry) => ({ name: entry.name, path: path.join(layout.logs, entry.name) }));
 
   const planned = await Promise.all(
@@ -304,7 +304,7 @@ async function collectResultBundleCandidates(
   const layout = getWorkspaceFilesystemLayout(workspaceKey);
   const { entries, error } = await readManagedDir(layout.resultBundles);
   const candidates = entries
-    .filter((entry) => entry.isDirectory() && isXcodeBuildMCPManagedResultBundleName(entry.name))
+    .filter((entry) => entry.isDirectory() && isMobileBuildMCPManagedResultBundleName(entry.name))
     .map((entry) => ({
       name: entry.name,
       bundlePath: path.join(layout.resultBundles, entry.name),

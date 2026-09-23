@@ -1,6 +1,6 @@
 id: doctor
 module: mcp/resources/doctor
 name: doctor
-uri: xcodebuildmcp://doctor
+uri: mobilebuildmcp://doctor
 description: Comprehensive development environment diagnostic information and configuration status
 mimeType: text/plain

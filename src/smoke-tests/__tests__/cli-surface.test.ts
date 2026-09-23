@@ -41,7 +41,7 @@ describe('CLI Surface (e2e)', () => {
     it('--help shows usage info', () => {
       const output = run('--help');
       expect(output).toContain('Usage:');
-      expect(output).toContain('xcodebuildmcp');
+      expect(output).toContain('mobilebuildmcp');
       expect(output).toContain('Commands:');
     });
 
@@ -59,7 +59,7 @@ describe('CLI Surface (e2e)', () => {
 
     it('purge --help shows storage management options', () => {
       const output = run('purge --help');
-      expect(output).toContain('Report and clean XcodeBuildMCP workspace storage');
+      expect(output).toContain('Report and clean MobileBuildMCP workspace storage');
       expect(output).toContain('--dry-run');
       expect(output).toContain('--delete');
     });

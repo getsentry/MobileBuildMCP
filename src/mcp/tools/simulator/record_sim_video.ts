@@ -92,7 +92,7 @@ function createRecordSimVideoResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: RecordSimVideoResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.capture-result',
+    schema: 'mobilebuildmcp.output.capture-result',
     schemaVersion: '2',
   };
 }

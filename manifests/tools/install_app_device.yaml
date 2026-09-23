@@ -5,7 +5,7 @@ names:
   cli: install
 description: Install app on device.
 outputSchema:
-  schema: xcodebuildmcp.output.install-result
+  schema: mobilebuildmcp.output.install-result
   version: "2"
 annotations:
   title: Install App Device

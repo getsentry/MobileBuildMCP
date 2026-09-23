@@ -5,7 +5,7 @@ names:
   cli: list
 description: List SwiftPM processes.
 outputSchema:
-  schema: xcodebuildmcp.output.process-list
+  schema: mobilebuildmcp.output.process-list
   version: "2"
 routing:
   stateful: true

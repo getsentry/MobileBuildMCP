@@ -36,7 +36,7 @@ export function registerCoverageSnapshotSuite(runtime: SnapshotRuntime): void {
 
     async function createCoverageResultBundle(): Promise<string> {
       const configuredSimulator =
-        process.env.XCODEBUILDMCP_SNAPSHOT_SIMULATOR_ID ?? DEFAULT_SIMULATOR;
+        process.env.MOBILEBUILDMCP_SNAPSHOT_SIMULATOR_ID ?? DEFAULT_SIMULATOR;
       const simulatorId = await resolveSimulatorId(configuredSimulator);
       await ensureSimulatorBooted(simulatorId, cleanup);
 

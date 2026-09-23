@@ -363,7 +363,7 @@ CHANGELOG_VALIDATION_TEMP=""
 CHANGELOG_RENAMED_ON_DISK=false
 
 if $DRY_RUN; then
-  CHANGELOG_VALIDATION_TEMP=$(mktemp "${TMPDIR:-/tmp}/xcodebuildmcp-changelog-validation.XXXXXX")
+  CHANGELOG_VALIDATION_TEMP=$(mktemp "${TMPDIR:-/tmp}/mobilebuildmcp-changelog-validation.XXXXXX")
   if prepare_changelog_for_release_notes "$CHANGELOG_PATH" "$CHANGELOG_VALIDATION_TEMP" "$VERSION"; then
     CHANGELOG_FOR_VALIDATION="$CHANGELOG_VALIDATION_TEMP"
     echo "ℹ️  Dry-run: prepared release changelog from [Unreleased] in a temp file."
@@ -391,7 +391,7 @@ fi
 
 echo ""
 echo "🧾 Validating CHANGELOG release notes for v$VERSION..."
-RELEASE_NOTES_TMP=$(mktemp "${TMPDIR:-/tmp}/xcodebuildmcp-release-notes.XXXXXX")
+RELEASE_NOTES_TMP=$(mktemp "${TMPDIR:-/tmp}/mobilebuildmcp-release-notes.XXXXXX")
 node scripts/generate-github-release-notes.mjs --version "$VERSION" --changelog "$CHANGELOG_FOR_VALIDATION" --out "$RELEASE_NOTES_TMP"
 rm "$RELEASE_NOTES_TMP"
 if [[ -n "$CHANGELOG_VALIDATION_TEMP" ]]; then
@@ -507,10 +507,10 @@ if [[ -n "$RUN_ID" ]]; then
   if [[ $WATCH_EXIT -eq 0 ]]; then
     echo ""
     echo "✅ Release v$VERSION completed successfully!"
-    echo "📦 View on NPM: https://www.npmjs.com/package/xcodebuildmcp/v/$VERSION"
-    echo "🎉 View release: https://github.com/getsentry/XcodeBuildMCP/releases/tag/v$VERSION"
+    echo "📦 View on NPM: https://www.npmjs.com/package/mobilebuildmcp/v/$VERSION"
+    echo "🎉 View release: https://github.com/getsentry/MobileBuildMCP/releases/tag/v$VERSION"
     # MCP Registry verification link
-    echo "🔎 Verify MCP Registry: https://registry.modelcontextprotocol.io/v0/servers?search=com.xcodebuildmcp/XcodeBuildMCP&version=latest"
+    echo "🔎 Verify MCP Registry: https://registry.modelcontextprotocol.io/v0/servers?search=io.github.getsentry/mobilebuildmcp&version=latest"
   else
     echo ""
     echo "❌ CI workflow monitoring failed!"
@@ -529,7 +529,7 @@ if [[ -n "$RUN_ID" ]]; then
     if [ "$RELEASE_JOB_CONCLUSION" = "success" ]; then
       echo "⚠️ Workflow reported failure, but primary 'release' job concluded SUCCESS."
       echo "✅ Treating release as successful. Tag v$VERSION is kept."
-      echo "📦 Verify on NPM: https://www.npmjs.com/package/xcodebuildmcp/v/$VERSION"
+      echo "📦 Verify on NPM: https://www.npmjs.com/package/mobilebuildmcp/v/$VERSION"
       exit 0
     fi
     echo "🧹 Cleaning up tags only (keeping version commit)..."
@@ -556,5 +556,5 @@ if [[ -n "$RUN_ID" ]]; then
   fi
 else
   echo "⚠️  Could not find workflow run. Please check manually:"
-  echo "https://github.com/getsentry/XcodeBuildMCP/actions"
+  echo "https://github.com/getsentry/MobileBuildMCP/actions"
 fi

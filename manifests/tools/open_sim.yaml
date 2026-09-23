@@ -5,7 +5,7 @@ names:
   cli: open
 description: Open the simulator frontend for visibility and manual workflows. Not required before simulator build-and-run (build_run_sim).
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Open Simulator

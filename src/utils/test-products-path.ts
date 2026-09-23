@@ -6,7 +6,7 @@ import { log } from './logger.ts';
 import { getRuntimeInstanceIfConfigured } from './runtime-instance.ts';
 import { workspaceKeyForRoot } from './workspace-identity.ts';
 
-export const TEST_PRODUCTS_COMPLETION_MARKER_SUFFIX = '.xcodebuildmcp-completed';
+export const TEST_PRODUCTS_COMPLETION_MARKER_SUFFIX = '.mobilebuildmcp-completed';
 
 const ISO_TIMESTAMP_PATTERN = '\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}-\\d{3}Z';
 const SUFFIX_PATTERN = '[a-f0-9]{8}';
@@ -19,7 +19,7 @@ function resolveWorkspaceKey(): string {
   return getRuntimeInstanceIfConfigured()?.workspaceKey ?? workspaceKeyForRoot(process.cwd());
 }
 
-export function isXcodeBuildMCPManagedTestProductsName(fileName: string): boolean {
+export function isMobileBuildMCPManagedTestProductsName(fileName: string): boolean {
   return TEST_PRODUCTS_NAME_PATTERN.test(fileName);
 }
 

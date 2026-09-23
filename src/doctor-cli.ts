@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * XcodeBuildMCP Doctor CLI
+ * MobileBuildMCP Doctor CLI
  *
  * This standalone script runs the doctor tool and outputs the results
  * to the console. It's designed to be run directly via npx or mise.
@@ -19,7 +19,7 @@ function shouldUseNonRedactedOutput(argv: string[]): boolean {
 async function runDoctor(): Promise<void> {
   try {
     // Using console.error to avoid linting issues as it's allowed by the project's linting rules
-    console.error(`Running XcodeBuildMCP Doctor (v${version})...`);
+    console.error(`Running MobileBuildMCP Doctor (v${version})...`);
     console.error('Collecting system information and checking dependencies...\n');
 
     await bootstrapRuntime({ runtime: 'cli' });

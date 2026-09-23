@@ -90,7 +90,7 @@ function writeLog(name: string, mtimeMs: number): string {
 
 describe('log retention', () => {
   beforeEach(() => {
-    logDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-log-retention-'));
+    logDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-log-retention-'));
     resetWorkspaceFilesystemLifecycleStateForTests();
   });
 
@@ -298,7 +298,7 @@ describe('log retention', () => {
 
   it('allows concurrent sweeps for different log directories', async () => {
     const now = Date.UTC(2026, 4, 2, 12);
-    const otherLogDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-log-retention-other-'));
+    const otherLogDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-log-retention-other-'));
     try {
       const oldLog = writeLog(
         managedXcodebuildLogName('old-a', 1234, 'abcdef12'),
@@ -338,7 +338,7 @@ describe('log retention', () => {
 
   it('protects OSLog registry paths without mutating registry records', async () => {
     const now = Date.UTC(2026, 4, 2, 12);
-    const registryDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-oslog-protect-'));
+    const registryDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-oslog-protect-'));
     const protectedLog = writeLog(
       managedSimulatorLogName('io.sentry.app_oslog', process.pid, 'abcdef12', process.pid),
       now - 4 * 24 * 60 * 60 * 1000,

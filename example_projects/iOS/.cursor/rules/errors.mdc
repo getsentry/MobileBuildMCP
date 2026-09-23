@@ -3,4 +3,4 @@ description:
 globs: 
 alwaysApply: true
 ---
-Please don't fix any code errors unless reported by XcodeBuildMCP server tool responses.
+Please don't fix any code errors unless reported by MobileBuildMCP server tool responses.

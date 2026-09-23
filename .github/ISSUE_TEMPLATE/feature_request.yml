@@ -1,18 +1,18 @@
 name: Feature Request
-description: Suggest a new feature for XcodeBuildMCP
+description: Suggest a new feature for MobileBuildMCP
 title: '[Feature]: '
 labels: ['enhancement']
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature for XcodeBuildMCP!
+        Thanks for suggesting a new feature for MobileBuildMCP!
 
   - type: textarea
     id: feature-description
     attributes:
       label: Feature Description
-      description: Describe the new capability you'd like to add to XcodeBuildMCP
+      description: Describe the new capability you'd like to add to MobileBuildMCP
       placeholder: I would like the AI assistant to be able to...
     validations:
       required: true

@@ -40,7 +40,7 @@ const schemaObj = sessionDefaultsSchema.extend({
   persist: z
     .boolean()
     .optional()
-    .describe('Persist provided defaults to .xcodebuildmcp/config.yaml'),
+    .describe('Persist provided defaults to .mobilebuildmcp/config.yaml'),
 });
 
 const mcpSchemaObj = schemaObj.extend({
@@ -115,7 +115,7 @@ function createSessionDefaultsResult(error?: string): SessionSetDefaultsResult {
 function setStructuredOutput(ctx: ToolHandlerContext, result: SessionSetDefaultsResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.session-defaults',
+    schema: 'mobilebuildmcp.output.session-defaults',
     schemaVersion: '2',
   };
 }

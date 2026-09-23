@@ -6,6 +6,6 @@
 ✅ Simulator booted successfully
 
 Next steps:
-1. Open the Simulator app (makes it visible): xcodebuildmcp simulator-management open
-2. Install an app: xcodebuildmcp simulator install --simulator-id <UUID> --app-path PATH_TO_YOUR_APP
-3. Launch an app: xcodebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id YOUR_APP_BUNDLE_ID
+1. Open the Simulator app (makes it visible): mobilebuildmcp simulator-management open
+2. Install an app: mobilebuildmcp simulator install --simulator-id <UUID> --app-path PATH_TO_YOUR_APP
+3. Launch an app: mobilebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id YOUR_APP_BUNDLE_ID

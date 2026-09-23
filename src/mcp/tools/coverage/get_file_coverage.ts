@@ -128,7 +128,7 @@ function createFileCoverageResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: GetFileCoverageResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.coverage-result',
+    schema: 'mobilebuildmcp.output.coverage-result',
     schemaVersion: '2',
   };
 }

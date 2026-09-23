@@ -12,7 +12,7 @@ import {
   daemonDirForWorkspaceKey,
   setDaemonRunDirOverrideForTests,
 } from '../../daemon/socket-path.ts';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../../utils/log-paths.ts';
 
 const daemonPid = 123_456;
 
@@ -42,16 +42,16 @@ describe('daemon control', () => {
   let daemonRunDir: string;
 
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-daemon-control-app-'));
-    daemonRunDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-daemon-control-run-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-daemon-control-app-'));
+    daemonRunDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-daemon-control-run-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
     setDaemonRunDirOverrideForTests(daemonRunDir);
   });
 
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     setDaemonRunDirOverrideForTests(null);
     rmSync(appDir, { recursive: true, force: true });
     rmSync(daemonRunDir, { recursive: true, force: true });

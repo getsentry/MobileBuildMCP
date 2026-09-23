@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.stop-result",
+  "schema": "mobilebuildmcp.output.stop-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Swift package stop failed.",

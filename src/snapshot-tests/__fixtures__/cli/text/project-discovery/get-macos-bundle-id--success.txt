@@ -7,5 +7,5 @@
   └ com.test.snapshot
 
 Next steps:
-1. Launch the app: xcodebuildmcp macos launch --app-path <TMPDIR>/BundleTest.app
-2. Build again: xcodebuildmcp macos build --scheme SCHEME_NAME
+1. Launch the app: mobilebuildmcp macos launch --app-path <TMPDIR>/BundleTest.app
+2. Build again: mobilebuildmcp macos build --scheme SCHEME_NAME

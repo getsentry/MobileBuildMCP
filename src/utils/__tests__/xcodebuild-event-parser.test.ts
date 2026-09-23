@@ -538,7 +538,7 @@ describe('xcodebuild-event-parser', () => {
       ...xctestPassedLines,
       {
         source: 'stderr',
-        text: '/Volumes/Developer/XcodeBuildMCP/example_projects/iOS_Calculator/CalculatorAppTests/CalculatorAppTests.swift:52: error: -[CalculatorAppTests.CalculatorAppTests testCalculatorServiceFailure] : XCTAssertEqual failed: ("0") is not equal to ("999") - This test should fail - display should be 0, not 999\n',
+        text: '/Volumes/Developer/MobileBuildMCP/example_projects/iOS_Calculator/CalculatorAppTests/CalculatorAppTests.swift:52: error: -[CalculatorAppTests.CalculatorAppTests testCalculatorServiceFailure] : XCTAssertEqual failed: ("0") is not equal to ("999") - This test should fail - display should be 0, not 999\n',
       },
       {
         source: 'stdout',
@@ -546,7 +546,7 @@ describe('xcodebuild-event-parser', () => {
       },
       {
         source: 'stderr',
-        text: '/Volumes/Developer/XcodeBuildMCP/example_projects/iOS_Calculator/CalculatorAppTests/CalculatorAppTests.swift:286: error: -[CalculatorAppTests.IntentionalFailureTests test] : XCTAssertTrue failed - This test should fail to verify error reporting\n',
+        text: '/Volumes/Developer/MobileBuildMCP/example_projects/iOS_Calculator/CalculatorAppTests/CalculatorAppTests.swift:286: error: -[CalculatorAppTests.IntentionalFailureTests test] : XCTAssertTrue failed - This test should fail to verify error reporting\n',
       },
       {
         source: 'stdout',

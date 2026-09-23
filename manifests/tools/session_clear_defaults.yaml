@@ -5,7 +5,7 @@ names:
   cli: clear-defaults
 description: Clear session defaults for the active profile or a specified profile.
 outputSchema:
-  schema: xcodebuildmcp.output.session-defaults
+  schema: mobilebuildmcp.output.session-defaults
   version: "2"
 annotations:
   title: Clear Session Defaults

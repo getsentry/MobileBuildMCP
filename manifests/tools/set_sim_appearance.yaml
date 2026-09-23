@@ -5,7 +5,7 @@ names:
   cli: set-appearance
 description: Set sim appearance.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Set Simulator Appearance

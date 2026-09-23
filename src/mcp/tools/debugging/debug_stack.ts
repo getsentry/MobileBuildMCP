@@ -50,7 +50,7 @@ function createDebugStackResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugStackResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-stack-result',
+    schema: 'mobilebuildmcp.output.debug-stack-result',
     schemaVersion: '2',
   };
 }

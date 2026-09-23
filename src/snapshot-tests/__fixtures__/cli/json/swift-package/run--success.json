@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -18,7 +18,7 @@
       "packagePath": "<TMPDIR>/spm",
       "executablePath": "<TMPDIR>/spm/.build/<TARGET_TRIPLE>/debug/spm",
       "processId": 99999,
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log"
     },
     "output": {
       "stdout": [
@@ -43,6 +43,6 @@
     }
   },
   "nextSteps": [
-    "Stop Swift package run: xcodebuildmcp swift-package stop"
+    "Stop Swift package run: mobilebuildmcp swift-package stop"
   ]
 }

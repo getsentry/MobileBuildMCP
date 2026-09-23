@@ -5,7 +5,7 @@ names:
   cli: test
 description: Test on iOS sim.
 outputSchema:
-  schema: xcodebuildmcp.output.test-result
+  schema: mobilebuildmcp.output.test-result
   version: "3"
 predicates:
   - hideWhenXcodeAgentMode

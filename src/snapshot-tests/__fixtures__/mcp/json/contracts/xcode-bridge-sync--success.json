@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.xcode-bridge-sync",
+  "schema": "mobilebuildmcp.output.xcode-bridge-sync",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

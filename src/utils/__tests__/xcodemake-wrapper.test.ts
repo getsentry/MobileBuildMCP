@@ -46,7 +46,7 @@ describe('pinned xcodemake wrapper lifecycle', () => {
   let makeInvocationLog: string;
 
   beforeEach(() => {
-    temporaryDirectory = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-xcodemake-wrapper-'));
+    temporaryDirectory = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-xcodemake-wrapper-'));
     projectDirectory = path.join(temporaryDirectory, 'project');
     fakeBinDirectory = path.join(temporaryDirectory, 'bin');
     xcodebuildInvocationLog = path.join(temporaryDirectory, 'xcodebuild-invocations.log');
@@ -102,7 +102,7 @@ describe('pinned xcodemake wrapper lifecycle', () => {
     expect(fixtureChecksum).toBe(XCODEMAKE_SHA256);
 
     const derivedDataPath =
-      '/Users/developer/Library/Developer/XcodeBuildMCP/DerivedData/MyWorkspace-57a542dedf16';
+      '/Users/developer/Library/Developer/MobileBuildMCP/DerivedData/MyWorkspace-57a542dedf16';
     const initialArguments = [
       '-workspace',
       'MyWorkspace.xcworkspace',

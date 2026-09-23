@@ -5,8 +5,8 @@ import type { BreakpointInfo, BreakpointSpec, DebugExecutionState } from '../typ
 
 const DEFAULT_COMMAND_TIMEOUT_MS = 30_000;
 const DEFAULT_STARTUP_TIMEOUT_MS = 10_000;
-const LLDB_PROMPT = 'XCODEBUILDMCP_LLDB> ';
-const COMMAND_SENTINEL = '__XCODEBUILDMCP_DONE__';
+const LLDB_PROMPT = 'MOBILEBUILDMCP_LLDB> ';
+const COMMAND_SENTINEL = '__MOBILEBUILDMCP_DONE__';
 const COMMAND_SENTINEL_REGEX = new RegExp(`(^|\\r?\\n)${COMMAND_SENTINEL}(\\r?\\n)`);
 
 class LldbCliBackend implements DebuggerBackend {

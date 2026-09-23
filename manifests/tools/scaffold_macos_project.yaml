@@ -5,7 +5,7 @@ names:
   cli: scaffold-macos
 description: Scaffold macOS project.
 outputSchema:
-  schema: xcodebuildmcp.output.scaffold-result
+  schema: mobilebuildmcp.output.scaffold-result
   version: "2"
 predicates:
   - hideWhenXcodeAgentMode

@@ -25,8 +25,8 @@ import type {
   RuntimeSnapshotNextStepActionTarget,
 } from './runtime-next-steps.ts';
 
-const UI_ACTION_SCHEMA = 'xcodebuildmcp.output.ui-action-result';
-const CAPTURE_SCHEMA = 'xcodebuildmcp.output.capture-result';
+const UI_ACTION_SCHEMA = 'mobilebuildmcp.output.ui-action-result';
+const CAPTURE_SCHEMA = 'mobilebuildmcp.output.capture-result';
 const REFRESH_SNAPSHOT_RECOVERY_HINT =
   'Run snapshot_ui again and retry with a current element reference from the refreshed snapshot.';
 

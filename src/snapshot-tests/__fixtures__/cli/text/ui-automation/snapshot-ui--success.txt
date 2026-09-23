@@ -32,7 +32,7 @@ Tips
 ✅ Runtime UI snapshot captured with <ELEMENT_COUNT> elements, <LIKELY_TARGET_COUNT> likely targets, and <SCROLL_AREA_COUNT> scroll areas.
 
 Next steps:
-1. Refresh after layout changes: xcodebuildmcp ui-automation snapshot-ui --simulator-id <UUID>
-2. Wait for UI to settle: xcodebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled
-3. Batch same-screen taps: xcodebuildmcp ui-automation batch --json '{"simulatorId":"<UUID>","steps":[{"action":"tap","elementRef":"<REF>"},{"action":"tap","elementRef":"<REF>"}]}'
-4. Tap an elementRef: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>
+1. Refresh after layout changes: mobilebuildmcp ui-automation snapshot-ui --simulator-id <UUID>
+2. Wait for UI to settle: mobilebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled
+3. Batch same-screen taps: mobilebuildmcp ui-automation batch --json '{"simulatorId":"<UUID>","steps":[{"action":"tap","elementRef":"<REF>"},{"action":"tap","elementRef":"<REF>"}]}'
+4. Tap an elementRef: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>

@@ -8,7 +8,7 @@ import {
   type IdleTimeoutParseResult,
 } from '../utils/idle-timeout.ts';
 
-export const MCP_IDLE_TIMEOUT_ENV_KEY = 'XCODEBUILDMCP_MCP_IDLE_TIMEOUT_MS';
+export const MCP_IDLE_TIMEOUT_ENV_KEY = 'MOBILEBUILDMCP_MCP_IDLE_TIMEOUT_MS';
 export const DEFAULT_MCP_IDLE_TIMEOUT_MS = 0;
 export const DEFAULT_MCP_IDLE_CHECK_INTERVAL_MS = DEFAULT_IDLE_CHECK_INTERVAL_MS;
 export const MIN_MCP_IDLE_CHECK_INTERVAL_MS = 100;

@@ -10,4 +10,4 @@ Warnings (1):
 ✅ Hardware button 'home' pressed successfully.
 
 Next steps:
-1. Refresh after UI action: xcodebuildmcp ui-automation snapshot-ui --simulator-id <UUID>
+1. Refresh after UI action: mobilebuildmcp ui-automation snapshot-ui --simulator-id <UUID>

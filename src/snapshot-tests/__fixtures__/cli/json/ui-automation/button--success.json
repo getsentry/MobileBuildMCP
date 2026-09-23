@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.ui-action-result",
+  "schema": "mobilebuildmcp.output.ui-action-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -24,6 +24,6 @@
     }
   },
   "nextSteps": [
-    "Refresh after UI action: xcodebuildmcp ui-automation snapshot-ui --simulator-id <UUID>"
+    "Refresh after UI action: mobilebuildmcp ui-automation snapshot-ui --simulator-id <UUID>"
   ]
 }

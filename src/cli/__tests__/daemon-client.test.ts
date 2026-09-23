@@ -8,7 +8,7 @@ import { createFrameReader, writeFrame } from '../../daemon/framing.ts';
 import { DAEMON_PROTOCOL_VERSION } from '../../daemon/protocol.ts';
 
 async function createSocketPath(): Promise<string> {
-  const directory = await mkdtemp(path.join(tmpdir(), 'xcodebuildmcp-client-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'mobilebuildmcp-client-'));
   return path.join(directory, 'daemon.sock');
 }
 
@@ -83,7 +83,7 @@ describe('DaemonClient invokeTool streaming', () => {
           id: request.id,
           result: {
             structuredOutput: {
-              schema: 'xcodebuildmcp.output.simulator-list',
+              schema: 'mobilebuildmcp.output.simulator-list',
               schemaVersion: '1',
               result: {
                 kind: 'simulator-list',

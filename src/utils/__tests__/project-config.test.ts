@@ -11,8 +11,8 @@ import {
 } from '../project-config.ts';
 
 const cwd = '/repo';
-const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
-const configDir = path.join(cwd, '.xcodebuildmcp');
+const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
+const configDir = path.join(cwd, '.mobilebuildmcp');
 
 type MockWrite = { path: string; content: string };
 

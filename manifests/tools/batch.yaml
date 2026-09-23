@@ -6,7 +6,7 @@ names:
 description: >-
   UI automation batch for multiple same-screen elementRef taps, especially visible settings switches that can be toggled without intermediate assertions. The input key is steps, never commands, and each step is an object such as {"action":"tap","elementRef":"e1"}; do not pass raw command strings. Use refs from the latest snapshot_ui or wait_for_ui output, for example {"steps":[{"action":"tap","elementRef":"e1"},{"action":"tap","elementRef":"e2"}]}. Omit preDelay/postDelay for switch elementRefs; switches execute as touch down/up steps and reject delays.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: '2'
 routing:
   stateful: true

@@ -5,7 +5,7 @@ names:
   cli: snapshot-ui
 description: Capture a semantic rs/1 runtime UI snapshot with elementRef targets. Observe once, use tap for one target or batch for multiple same-screen targets, and refresh after navigation, scrolling, sheet changes, or obvious layout changes.
 outputSchema:
-  schema: xcodebuildmcp.output.capture-result
+  schema: mobilebuildmcp.output.capture-result
   version: '2'
 routing:
   stateful: true

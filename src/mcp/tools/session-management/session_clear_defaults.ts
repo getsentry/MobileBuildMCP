@@ -83,7 +83,7 @@ function createSessionDefaultsResult(error?: string): SessionClearDefaultsResult
 function setStructuredOutput(ctx: ToolHandlerContext, result: SessionClearDefaultsResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.session-defaults',
+    schema: 'mobilebuildmcp.output.session-defaults',
     schemaVersion: '2',
   };
 }

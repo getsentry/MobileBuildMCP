@@ -53,7 +53,7 @@ function setStructuredOutput(
 ): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.simulator-action-result',
+    schema: 'mobilebuildmcp.output.simulator-action-result',
     schemaVersion: '2',
   };
 }

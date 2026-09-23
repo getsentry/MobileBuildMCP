@@ -12,8 +12,8 @@ import { getConfig } from './config-store.ts';
  */
 export class TemplateManager {
   private static readonly GITHUB_ORG = 'getsentry';
-  private static readonly IOS_TEMPLATE_REPO = 'XcodeBuildMCP-iOS-Template';
-  private static readonly MACOS_TEMPLATE_REPO = 'XcodeBuildMCP-macOS-Template';
+  private static readonly IOS_TEMPLATE_REPO = 'MobileBuildMCP-iOS-Template';
+  private static readonly MACOS_TEMPLATE_REPO = 'MobileBuildMCP-macOS-Template';
 
   /**
    * Get the template path for a specific platform
@@ -77,7 +77,7 @@ export class TemplateManager {
     );
 
     // Create temp directory for download
-    const tempDir = join(tmpdir(), `xcodebuild-mcp-template-${randomUUID()}`);
+    const tempDir = join(tmpdir(), `mobilebuild-mcp-template-${randomUUID()}`);
     await fileSystemExecutor.mkdir(tempDir, { recursive: true });
 
     try {

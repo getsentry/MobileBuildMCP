@@ -5,7 +5,7 @@ names:
   cli: screenshot
 description: Capture screenshot.
 outputSchema:
-  schema: xcodebuildmcp.output.capture-result
+  schema: mobilebuildmcp.output.capture-result
   version: "2"
 annotations:
   title: Screenshot

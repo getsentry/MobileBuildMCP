@@ -23,13 +23,13 @@ function createPortableRoot(root: string) {
   mkdirSync(join(root, 'libexec', 'skills'), { recursive: true });
   mkdirSync(join(root, 'libexec', 'schemas', 'structured-output', '_defs'), { recursive: true });
   mkdirSync(
-    join(root, 'libexec', 'schemas', 'structured-output', 'xcodebuildmcp.output.session-defaults'),
+    join(root, 'libexec', 'schemas', 'structured-output', 'mobilebuildmcp.output.session-defaults'),
     { recursive: true },
   );
 
-  createExecutable(join(root, 'bin', 'xcodebuildmcp'));
-  createExecutable(join(root, 'bin', 'xcodebuildmcp-doctor'));
-  createExecutable(join(root, 'libexec', 'xcodebuildmcp'));
+  createExecutable(join(root, 'bin', 'mobilebuildmcp'));
+  createExecutable(join(root, 'bin', 'mobilebuildmcp-doctor'));
+  createExecutable(join(root, 'libexec', 'mobilebuildmcp'));
   createExecutable(join(root, 'libexec', 'node-runtime'));
   createExecutable(join(root, 'libexec', 'bundled', 'axe'));
   writeFileSync(
@@ -42,7 +42,7 @@ function createPortableRoot(root: string) {
       'libexec',
       'schemas',
       'structured-output',
-      'xcodebuildmcp.output.session-defaults',
+      'mobilebuildmcp.output.session-defaults',
       '1.schema.json',
     ),
     '{}',
@@ -53,7 +53,7 @@ describe('verify-portable-install.sh', () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = join(tmpdir(), `xbmcp-portable-verify-${process.pid}-${Date.now()}`);
+    tempDir = join(tmpdir(), `mobilebuildmcp-portable-verify-${process.pid}-${Date.now()}`);
     mkdirSync(tempDir, { recursive: true });
   });
 

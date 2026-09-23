@@ -15,7 +15,7 @@ describe('session-set-defaults tool', () => {
   });
 
   const cwd = '/repo';
-  const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
+  const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
 
   // Mock executor that simulates successful simulator lookup
   function createMockExecutor(): CommandExecutor {

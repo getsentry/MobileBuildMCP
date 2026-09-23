@@ -5,7 +5,7 @@ names:
   cli: doctor
 description: MCP environment info.
 outputSchema:
-  schema: xcodebuildmcp.output.doctor-report
+  schema: mobilebuildmcp.output.doctor-report
   version: "2"
 annotations:
   title: Doctor

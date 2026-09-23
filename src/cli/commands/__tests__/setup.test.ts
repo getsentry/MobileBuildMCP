@@ -10,7 +10,7 @@ import type { Prompter } from '../../interactive/prompts.ts';
 import { runSetupWizard } from '../setup.ts';
 
 const cwd = '/repo';
-const configPath = path.join(cwd, '.xcodebuildmcp', 'config.yaml');
+const configPath = path.join(cwd, '.mobilebuildmcp', 'config.yaml');
 
 function mockDeviceListJson(): string {
   return JSON.stringify({
@@ -663,7 +663,7 @@ describe('setup command', () => {
 
     const parsed = JSON.parse(result.mcpConfigJson!) as {
       mcpServers: {
-        XcodeBuildMCP: {
+        MobileBuildMCP: {
           command: string;
           args: string[];
           env: Record<string, string>;
@@ -671,15 +671,15 @@ describe('setup command', () => {
       };
     };
 
-    const serverConfig = parsed.mcpServers.XcodeBuildMCP;
+    const serverConfig = parsed.mcpServers.MobileBuildMCP;
     expect(serverConfig.command).toBe('npx');
-    expect(serverConfig.args).toEqual(['-y', 'xcodebuildmcp@latest', 'mcp']);
-    expect(serverConfig.env.XCODEBUILDMCP_ENABLED_WORKFLOWS).toBeDefined();
-    expect(serverConfig.env.XCODEBUILDMCP_WORKSPACE_PATH).toBe(path.join(cwd, 'App.xcworkspace'));
-    expect(serverConfig.env.XCODEBUILDMCP_SCHEME).toBe('App');
-    expect(serverConfig.env.XCODEBUILDMCP_DEVICE_ID).toBe('DEVICE-1');
-    expect(serverConfig.env.XCODEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
-    expect(serverConfig.env.XCODEBUILDMCP_SIMULATOR_NAME).toBe('iPhone 15');
+    expect(serverConfig.args).toEqual(['-y', 'mobilebuildmcp@latest', 'mcp']);
+    expect(serverConfig.env.MOBILEBUILDMCP_ENABLED_WORKFLOWS).toBeDefined();
+    expect(serverConfig.env.MOBILEBUILDMCP_WORKSPACE_PATH).toBe(path.join(cwd, 'App.xcworkspace'));
+    expect(serverConfig.env.MOBILEBUILDMCP_SCHEME).toBe('App');
+    expect(serverConfig.env.MOBILEBUILDMCP_DEVICE_ID).toBe('DEVICE-1');
+    expect(serverConfig.env.MOBILEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
+    expect(serverConfig.env.MOBILEBUILDMCP_SIMULATOR_NAME).toBe('iPhone 15');
   });
 
   it('does not require simulator or device defaults when selected workflows do not depend on them', async () => {
@@ -780,19 +780,19 @@ describe('setup command', () => {
 
     const parsed = JSON.parse(result.mcpConfigJson!) as {
       mcpServers: {
-        XcodeBuildMCP: {
+        MobileBuildMCP: {
           env: Record<string, string>;
         };
       };
     };
 
-    const env = parsed.mcpServers.XcodeBuildMCP.env;
-    expect(env.XCODEBUILDMCP_ENABLED_WORKFLOWS).toBe('device');
-    expect(env.XCODEBUILDMCP_WORKSPACE_PATH).toBe(path.join(cwd, 'App.xcworkspace'));
-    expect(env.XCODEBUILDMCP_SCHEME).toBe('App');
-    expect(env.XCODEBUILDMCP_DEVICE_ID).toBe('DEVICE-1');
-    expect(env.XCODEBUILDMCP_SIMULATOR_ID).toBeUndefined();
-    expect(env.XCODEBUILDMCP_SIMULATOR_NAME).toBeUndefined();
+    const env = parsed.mcpServers.MobileBuildMCP.env;
+    expect(env.MOBILEBUILDMCP_ENABLED_WORKFLOWS).toBe('device');
+    expect(env.MOBILEBUILDMCP_WORKSPACE_PATH).toBe(path.join(cwd, 'App.xcworkspace'));
+    expect(env.MOBILEBUILDMCP_SCHEME).toBe('App');
+    expect(env.MOBILEBUILDMCP_DEVICE_ID).toBe('DEVICE-1');
+    expect(env.MOBILEBUILDMCP_SIMULATOR_ID).toBeUndefined();
+    expect(env.MOBILEBUILDMCP_SIMULATOR_NAME).toBeUndefined();
   });
 
   it('allows clearing an existing simulator default when simulator workflows are enabled', async () => {
@@ -1417,7 +1417,7 @@ sessionDefaults:
     expect(parsed.sessionDefaults?.simulatorName).toBeUndefined();
   });
 
-  it('outputs XCODEBUILDMCP_PLATFORM=macOS and no simulator fields for macOS-only mcp-json', async () => {
+  it('outputs MOBILEBUILDMCP_PLATFORM=macOS and no simulator fields for macOS-only mcp-json', async () => {
     const fs = createMockFileSystemExecutor({
       existsSync: () => false,
       stat: async () => ({ isDirectory: () => true, mtimeMs: 0 }),
@@ -1454,16 +1454,16 @@ sessionDefaults:
 
     expect(result.mcpConfigJson).toBeDefined();
     const parsed = JSON.parse(result.mcpConfigJson!) as {
-      mcpServers: { XcodeBuildMCP: { env: Record<string, string> } };
+      mcpServers: { MobileBuildMCP: { env: Record<string, string> } };
     };
-    const env = parsed.mcpServers.XcodeBuildMCP.env;
+    const env = parsed.mcpServers.MobileBuildMCP.env;
 
-    expect(env.XCODEBUILDMCP_PLATFORM).toBe('macOS');
-    expect(env.XCODEBUILDMCP_SIMULATOR_ID).toBeUndefined();
-    expect(env.XCODEBUILDMCP_SIMULATOR_NAME).toBeUndefined();
+    expect(env.MOBILEBUILDMCP_PLATFORM).toBe('macOS');
+    expect(env.MOBILEBUILDMCP_SIMULATOR_ID).toBeUndefined();
+    expect(env.MOBILEBUILDMCP_SIMULATOR_NAME).toBeUndefined();
   });
 
-  it('outputs XCODEBUILDMCP_PLATFORM=iOS Simulator and simulator fields for iOS-only mcp-json', async () => {
+  it('outputs MOBILEBUILDMCP_PLATFORM=iOS Simulator and simulator fields for iOS-only mcp-json', async () => {
     const fs = createMockFileSystemExecutor({
       existsSync: () => false,
       stat: async () => ({ isDirectory: () => true, mtimeMs: 0 }),
@@ -1519,16 +1519,16 @@ sessionDefaults:
 
     expect(result.mcpConfigJson).toBeDefined();
     const parsed = JSON.parse(result.mcpConfigJson!) as {
-      mcpServers: { XcodeBuildMCP: { env: Record<string, string> } };
+      mcpServers: { MobileBuildMCP: { env: Record<string, string> } };
     };
-    const env = parsed.mcpServers.XcodeBuildMCP.env;
+    const env = parsed.mcpServers.MobileBuildMCP.env;
 
-    expect(env.XCODEBUILDMCP_PLATFORM).toBe('iOS Simulator');
-    expect(env.XCODEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
-    expect(env.XCODEBUILDMCP_SIMULATOR_NAME).toBe('iPhone 15');
+    expect(env.MOBILEBUILDMCP_PLATFORM).toBe('iOS Simulator');
+    expect(env.MOBILEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
+    expect(env.MOBILEBUILDMCP_SIMULATOR_NAME).toBe('iPhone 15');
   });
 
-  it('omits XCODEBUILDMCP_PLATFORM for multi-platform mcp-json', async () => {
+  it('omits MOBILEBUILDMCP_PLATFORM for multi-platform mcp-json', async () => {
     const fs = createMockFileSystemExecutor({
       existsSync: () => false,
       stat: async () => ({ isDirectory: () => true, mtimeMs: 0 }),
@@ -1584,12 +1584,12 @@ sessionDefaults:
 
     expect(result.mcpConfigJson).toBeDefined();
     const parsed = JSON.parse(result.mcpConfigJson!) as {
-      mcpServers: { XcodeBuildMCP: { env: Record<string, string> } };
+      mcpServers: { MobileBuildMCP: { env: Record<string, string> } };
     };
-    const env = parsed.mcpServers.XcodeBuildMCP.env;
+    const env = parsed.mcpServers.MobileBuildMCP.env;
 
-    expect(env.XCODEBUILDMCP_PLATFORM).toBeUndefined();
-    expect(env.XCODEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
+    expect(env.MOBILEBUILDMCP_PLATFORM).toBeUndefined();
+    expect(env.MOBILEBUILDMCP_SIMULATOR_ID).toBe('SIM-1');
   });
 
   it('clears stale deviceId, simulatorId, and simulatorName for macOS-only re-runs', async () => {

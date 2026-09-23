@@ -6,7 +6,7 @@ import { formatLogTimestamp, shortRandomSuffix } from './log-naming.ts';
 import { getRuntimeInstanceIfConfigured } from './runtime-instance.ts';
 import { workspaceKeyForRoot } from './workspace-identity.ts';
 
-export const RESULT_BUNDLE_COMPLETION_MARKER_SUFFIX = '.xcodebuildmcp-completed';
+export const RESULT_BUNDLE_COMPLETION_MARKER_SUFFIX = '.mobilebuildmcp-completed';
 
 export function isResultBundleCompletionMarkerTempName(name: string): boolean {
   return name.includes(`${RESULT_BUNDLE_COMPLETION_MARKER_SUFFIX}.`) && name.endsWith('.tmp');

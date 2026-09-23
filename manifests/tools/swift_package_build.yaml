@@ -5,7 +5,7 @@ names:
   cli: build
 description: swift package target build.
 outputSchema:
-  schema: xcodebuildmcp.output.build-result
+  schema: mobilebuildmcp.output.build-result
   version: "2"
 predicates:
   - hideWhenXcodeAgentMode

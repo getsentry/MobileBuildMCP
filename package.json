@@ -1,7 +1,7 @@
 {
-  "name": "xcodebuildmcp",
+  "name": "mobilebuildmcp",
   "version": "2.7.0",
-  "mcpName": "com.xcodebuildmcp/XcodeBuildMCP",
+  "mcpName": "io.github.getsentry/mobilebuildmcp",
   "iOSTemplateVersion": "v1.0.8",
   "macOSTemplateVersion": "v1.0.5",
   "type": "module",
@@ -10,8 +10,8 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "xcodebuildmcp": "build/cli.js",
-    "xcodebuildmcp-doctor": "build/doctor-cli.js"
+    "mobilebuildmcp": "build/cli.js",
+    "mobilebuildmcp-doctor": "build/doctor-cli.js"
   },
   "scripts": {
     "build": "wireit",
@@ -39,7 +39,7 @@
     "inspect": "npx @modelcontextprotocol/inspector@latest node build/cli.js mcp",
     "doctor": "node build/doctor-cli.js",
     "bench:claude-ui": "npm run build && npx tsx benchmarks/claude-ui/run.ts",
-    "bench:claude-ui:xcodebuildmcp": "npm run build && npx tsx benchmarks/claude-ui/run-directory.ts benchmarks/claude-ui/suites XcodeBuildMCP",
+    "bench:claude-ui:mobilebuildmcp": "npm run build && npx tsx benchmarks/claude-ui/run-directory.ts benchmarks/claude-ui/suites MobileBuildMCP",
     "bench:claude-ui:private": "npm run build && npx tsx benchmarks/claude-ui/run-directory.ts benchmarks/claude-ui/local/suites private",
     "bench:test-sim": "npx tsx scripts/benchmark-simulator-test.ts",
     "capture:xcodebuild": "npx tsx scripts/capture-xcodebuild-wrapper.ts",
@@ -79,14 +79,14 @@
     "simulator"
   ],
   "license": "MIT",
-  "description": "XcodeBuildMCP is a Model Context Protocol server that provides tools for Xcode project management, simulator management, and app utilities.",
+  "description": "MobileBuildMCP is a Model Context Protocol server that provides tools for Xcode project management, simulator management, and app utilities.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/getsentry/XcodeBuildMCP.git"
+    "url": "git+https://github.com/getsentry/MobileBuildMCP.git"
   },
-  "homepage": "https://www.xcodebuildmcp.com",
+  "homepage": "https://github.com/getsentry/MobileBuildMCP",
   "bugs": {
-    "url": "https://github.com/getsentry/XcodeBuildMCP/issues"
+    "url": "https://github.com/getsentry/MobileBuildMCP/issues"
   },
   "dependencies": {
     "@clack/prompts": "^1.0.1",

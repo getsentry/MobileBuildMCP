@@ -5,7 +5,7 @@ names:
   cli: remove-breakpoint
 description: Remove breakpoint.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-breakpoint-result
+  schema: mobilebuildmcp.output.debug-breakpoint-result
   version: "2"
 routing:
   stateful: true

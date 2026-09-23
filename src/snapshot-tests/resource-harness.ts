@@ -82,7 +82,7 @@ export async function invokeResource(resourceId: string): Promise<ResourceSnapsh
     args: [CLI_PATH, 'mcp'],
     env: createSnapshotHarnessEnv({
       NODE_ENV: 'test',
-      XCODEBUILDMCP_ENABLED_WORKFLOWS: '',
+      MOBILEBUILDMCP_ENABLED_WORKFLOWS: '',
     }),
     stderr: 'pipe',
   });

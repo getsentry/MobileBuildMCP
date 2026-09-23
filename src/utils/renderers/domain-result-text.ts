@@ -630,7 +630,7 @@ function createDoctorReportItems(
   result: Extract<ToolDomainResult, { kind: 'doctor-report' }>,
 ): TextRenderableItem[] {
   const items: TextRenderableItem[] = [
-    createHeader('XcodeBuildMCP Doctor', [
+    createHeader('MobileBuildMCP Doctor', [
       { label: 'Server Version', value: result.serverVersion },
     ]),
     createTable(

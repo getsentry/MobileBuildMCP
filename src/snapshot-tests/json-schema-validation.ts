@@ -8,7 +8,7 @@ import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 const FIXTURE_ROOT = path.resolve(process.cwd(), 'src/snapshot-tests/__fixtures__');
 const JSON_FIXTURE_BUCKETS = ['cli/json', 'mcp/json'] as const;
 const SCHEMA_ROOT = path.resolve(process.cwd(), 'schemas/structured-output');
-const SCHEMA_PATTERN = /^xcodebuildmcp\.output\.[a-z0-9-]+$/;
+const SCHEMA_PATTERN = /^mobilebuildmcp\.output\.[a-z0-9-]+$/;
 const SCHEMA_VERSION_PATTERN = /^[0-9]+$/;
 
 export interface JsonFixtureEnvelopeBootstrap {
@@ -261,11 +261,11 @@ function validateRegisteredOutputSchema(
   const validate = ajv.compile(tool.outputSchema);
   const routes = new Set<string>();
   collectEnvelopeRoutes(tool.outputSchema, routes);
-  if (!routes.has('xcodebuildmcp.output.error@1')) {
+  if (!routes.has('mobilebuildmcp.output.error@1')) {
     throw new Error(`${label}: standard error envelope branch is missing.`);
   }
 
-  const domainRoutes = [...routes].filter((route) => route !== 'xcodebuildmcp.output.error@1');
+  const domainRoutes = [...routes].filter((route) => route !== 'mobilebuildmcp.output.error@1');
   if (domainRoutes.length === 0) {
     throw new Error(`${label}: successful structured-output branch is missing.`);
   }
@@ -293,7 +293,7 @@ function validateRegisteredOutputSchema(
   }
 
   const standardError = {
-    schema: 'xcodebuildmcp.output.error',
+    schema: 'mobilebuildmcp.output.error',
     schemaVersion: '1',
     didError: true,
     error: 'Contract validation error',

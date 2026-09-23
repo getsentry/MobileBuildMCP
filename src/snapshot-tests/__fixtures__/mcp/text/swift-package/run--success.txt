@@ -6,7 +6,7 @@
   ├ Process ID: <PID>
   └ Files:
      ├── <TMPDIR>/spm/.build/<TARGET_TRIPLE>/debug/spm — App Path
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log — Build Logs
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_spm_<TIMESTAMP>_pid<PID>.log — Build Logs
 
 Output
   Hello, world!

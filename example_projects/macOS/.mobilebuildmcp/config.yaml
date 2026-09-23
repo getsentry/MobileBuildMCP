@@ -1,0 +1,11 @@
+schemaVersion: 1
+enabledWorkflows:
+  - macos
+debug: false
+sentryDisabled: true
+sessionDefaults:
+  projectPath: /Volumes/Developer/MobileBuildMCP/example_projects/macOS/MCPTest.xcodeproj
+  scheme: MCPTest
+setupPreferences:
+  platforms:
+    - macOS

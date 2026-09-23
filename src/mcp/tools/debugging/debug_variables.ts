@@ -49,7 +49,7 @@ function createDebugVariablesResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugVariablesResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-variables-result',
+    schema: 'mobilebuildmcp.output.debug-variables-result',
     schemaVersion: '2',
   };
 }

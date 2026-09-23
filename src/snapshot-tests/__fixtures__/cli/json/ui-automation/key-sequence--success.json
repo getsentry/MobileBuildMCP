@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.ui-action-result",
+  "schema": "mobilebuildmcp.output.ui-action-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -53,7 +53,7 @@
     }
   },
   "nextSteps": [
-    "Batch same-screen taps: xcodebuildmcp ui-automation batch --json '{\"simulatorId\":\"<UUID>\",\"steps\":[{\"action\":\"tap\",\"elementRef\":\"<REF>\"},{\"action\":\"tap\",\"elementRef\":\"<REF>\"}]}'",
-    "Tap an elementRef: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>"
+    "Batch same-screen taps: mobilebuildmcp ui-automation batch --json '{\"simulatorId\":\"<UUID>\",\"steps\":[{\"action\":\"tap\",\"elementRef\":\"<REF>\"},{\"action\":\"tap\",\"elementRef\":\"<REF>\"}]}'",
+    "Tap an elementRef: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>"
   ]
 }

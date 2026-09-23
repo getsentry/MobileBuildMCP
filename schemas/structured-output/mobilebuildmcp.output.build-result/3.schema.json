@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.build-result/3.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/errorConsistency"
+    }
+  ],
+  "$defs": {
+    "buildInvocationRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "buildForTesting": { "type": "boolean" },
+        "scheme": { "type": "string" },
+        "workspacePath": { "type": "string" },
+        "projectPath": { "type": "string" },
+        "packagePath": { "type": "string" },
+        "targetName": { "type": "string" },
+        "configuration": { "type": "string" },
+        "platform": { "type": "string" },
+        "target": {
+          "enum": ["simulator", "device", "macos", "swift-package"]
+        },
+        "simulatorName": { "type": "string" },
+        "simulatorId": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "executableName": { "type": "string" },
+        "arch": { "type": "string" },
+        "derivedDataPath": { "type": "string" },
+        "testProductsPath": { "type": "string" },
+        "xctestrunPath": { "type": "string" },
+        "onlyTesting": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "skipTesting": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "mobilebuildmcp.output.build-result"
+    },
+    "schemaVersion": {
+      "const": "3"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": ["string", "null"]
+    },
+    "data": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "request": {
+              "$ref": "#/$defs/buildInvocationRequest"
+            },
+            "summary": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": ["SUCCEEDED", "FAILED"]
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "target": {
+                  "enum": ["simulator", "device", "macos", "swift-package"]
+                }
+              },
+              "required": ["status"]
+            },
+            "artifacts": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "appPath": { "type": "string" },
+                "bundleId": { "type": "string" },
+                "buildLogPath": { "type": "string" },
+                "packagePath": { "type": "string" },
+                "workspacePath": { "type": "string" },
+                "scheme": { "type": "string" },
+                "configuration": { "type": "string" },
+                "platform": { "type": "string" },
+                "testProductsPath": { "type": "string" },
+                "xctestrunPaths": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "required": [],
+              "minProperties": 1
+            },
+            "diagnostics": {
+              "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/basicDiagnostics"
+            }
+          },
+          "required": ["summary", "artifacts", "diagnostics"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nextSteps": {
+      "$ref": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json#/$defs/nextSteps"
+    }
+  },
+  "required": ["schema", "schemaVersion", "didError", "error", "data"]
+}

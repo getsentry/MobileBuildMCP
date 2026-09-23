@@ -80,7 +80,7 @@ export class XcodeToolsBridgeClient {
         };
 
         const client = new Client(
-          { name: 'xcodebuildmcp-xcode-tools-bridge', version: '0.0.0' },
+          { name: 'mobilebuildmcp-xcode-tools-bridge', version: '0.0.0' },
           {
             listChanged: {
               tools: {
@@ -192,14 +192,14 @@ function mapXcodeEnvForMcpBridge(env: NodeJS.ProcessEnv): Record<string, string>
     }
   }
 
-  if (typeof env.XCODEBUILDMCP_XCODE_PID === 'string' && mapped.MCP_XCODE_PID === undefined) {
-    mapped.MCP_XCODE_PID = env.XCODEBUILDMCP_XCODE_PID;
+  if (typeof env.MOBILEBUILDMCP_XCODE_PID === 'string' && mapped.MCP_XCODE_PID === undefined) {
+    mapped.MCP_XCODE_PID = env.MOBILEBUILDMCP_XCODE_PID;
   }
   if (
-    typeof env.XCODEBUILDMCP_XCODE_SESSION_ID === 'string' &&
+    typeof env.MOBILEBUILDMCP_XCODE_SESSION_ID === 'string' &&
     mapped.MCP_XCODE_SESSION_ID === undefined
   ) {
-    mapped.MCP_XCODE_SESSION_ID = env.XCODEBUILDMCP_XCODE_SESSION_ID;
+    mapped.MCP_XCODE_SESSION_ID = env.MOBILEBUILDMCP_XCODE_SESSION_ID;
   }
 
   return mapped;

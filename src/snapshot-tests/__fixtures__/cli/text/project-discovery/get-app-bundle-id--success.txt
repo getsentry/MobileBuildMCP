@@ -7,7 +7,7 @@
   └ com.test.snapshot
 
 Next steps:
-1. Install on simulator: xcodebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/BundleTest.app
-2. Launch on simulator: xcodebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id com.test.snapshot
-3. Install on device: xcodebuildmcp device install --device-id DEVICE_UDID --app-path <TMPDIR>/BundleTest.app
-4. Launch on device: xcodebuildmcp device launch --device-id DEVICE_UDID --bundle-id com.test.snapshot
+1. Install on simulator: mobilebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/BundleTest.app
+2. Launch on simulator: mobilebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id com.test.snapshot
+3. Install on device: mobilebuildmcp device install --device-id DEVICE_UDID --app-path <TMPDIR>/BundleTest.app
+4. Launch on device: mobilebuildmcp device launch --device-id DEVICE_UDID --bundle-id com.test.snapshot

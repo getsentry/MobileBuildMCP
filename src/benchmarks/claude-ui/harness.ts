@@ -571,7 +571,7 @@ export async function runSuite(
     mcpWorkspaceConfigPath: path.join(
       runDirectory,
       'mcp-workspace',
-      '.xcodebuildmcp',
+      '.mobilebuildmcp',
       'config.yaml',
     ),
     claudeJsonlPath: path.join(runDirectory, 'claude.jsonl'),
@@ -633,7 +633,7 @@ export async function runSuite(
       ? resolveFrom(repoRoot, config.workingDirectory)
       : repoRoot;
     const claudeWorkingDirectory = config.claude?.isolatedWorkingDirectory
-      ? path.join(tmpdir(), 'xcodebuildmcp-claude-ui-cwd', slug, runTimestamp)
+      ? path.join(tmpdir(), 'mobilebuildmcp-claude-ui-cwd', slug, runTimestamp)
       : workingDirectory;
     if (config.claude?.isolatedWorkingDirectory) {
       await mkdir(claudeWorkingDirectory, { recursive: true });

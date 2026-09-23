@@ -111,7 +111,7 @@ function createDisplayedTestDomainResult(
 }
 
 export function resolveTestProgressEnabled(progress: boolean | undefined): boolean {
-  return progress ?? process.env.XCODEBUILDMCP_RUNTIME === 'mcp';
+  return progress ?? process.env.MOBILEBUILDMCP_RUNTIME === 'mcp';
 }
 
 export interface SharedTestExecutorParams {

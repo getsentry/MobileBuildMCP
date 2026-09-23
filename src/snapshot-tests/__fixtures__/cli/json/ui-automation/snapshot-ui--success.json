@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.capture-result",
+  "schema": "mobilebuildmcp.output.capture-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -45,9 +45,9 @@
     }
   },
   "nextSteps": [
-    "Refresh after layout changes: xcodebuildmcp ui-automation snapshot-ui --simulator-id <UUID>",
-    "Wait for UI to settle: xcodebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled",
-    "Batch same-screen taps: xcodebuildmcp ui-automation batch --json '{\"simulatorId\":\"<UUID>\",\"steps\":[{\"action\":\"tap\",\"elementRef\":\"<REF>\"},{\"action\":\"tap\",\"elementRef\":\"<REF>\"}]}'",
-    "Tap an elementRef: xcodebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>"
+    "Refresh after layout changes: mobilebuildmcp ui-automation snapshot-ui --simulator-id <UUID>",
+    "Wait for UI to settle: mobilebuildmcp ui-automation wait-for-ui --simulator-id <UUID> --predicate settled",
+    "Batch same-screen taps: mobilebuildmcp ui-automation batch --json '{\"simulatorId\":\"<UUID>\",\"steps\":[{\"action\":\"tap\",\"elementRef\":\"<REF>\"},{\"action\":\"tap\",\"elementRef\":\"<REF>\"}]}'",
+    "Tap an elementRef: mobilebuildmcp ui-automation tap --simulator-id <UUID> --element-ref <REF>"
   ]
 }

@@ -3,10 +3,10 @@ import path from 'node:path';
 import { z, type ZodType } from 'zod';
 import { getStructuredOutputSchemasDir } from './resource-root.ts';
 
-const SCHEMA_PATTERN = /^xcodebuildmcp\.output\.[a-z0-9-]+$/;
+const SCHEMA_PATTERN = /^mobilebuildmcp\.output\.[a-z0-9-]+$/;
 const SCHEMA_VERSION_PATTERN = /^[0-9]+$/;
 const COMMON_DEFS_ID =
-  'https://xcodebuildmcp.com/schemas/structured-output/_defs/common.schema.json';
+  'https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/_defs/common.schema.json';
 const COMMON_DEFS_REF_PREFIX = `${COMMON_DEFS_ID}#/$defs/`;
 
 export interface StructuredOutputSchemaRef {
@@ -18,7 +18,7 @@ export type JsonObject = Record<string, unknown>;
 export type McpOutputSchema = ZodType;
 
 const STRUCTURED_ERROR_SCHEMA_REF: StructuredOutputSchemaRef = {
-  schema: 'xcodebuildmcp.output.error',
+  schema: 'mobilebuildmcp.output.error',
   version: '1',
 };
 
@@ -260,7 +260,7 @@ function getMcpOutputSchemaForRegistrationJson(ref: StructuredOutputSchemaRef): 
 
   const registrationSchema: JsonObject = {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
-    $id: `https://xcodebuildmcp.com/schemas/structured-output/${ref.schema}/${ref.version}.registration.schema.json`,
+    $id: `https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/${ref.schema}/${ref.version}.registration.schema.json`,
     type: 'object',
     oneOf: [toolResource.schema, errorResource.schema],
   };

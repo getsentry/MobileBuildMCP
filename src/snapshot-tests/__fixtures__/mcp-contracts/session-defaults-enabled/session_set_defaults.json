@@ -32,7 +32,7 @@
         "items": {"type":"string"},
         "type": "array"
       },
-      "persist": {"description":"Persist provided defaults to .xcodebuildmcp/config.yaml","type":"boolean"},
+      "persist": {"description":"Persist provided defaults to .mobilebuildmcp/config.yaml","type":"boolean"},
       "platform": {"description":"Default device platform for device tools (e.g. iOS, watchOS).","minLength":1,"type":"string"},
       "preferXcodebuild": {"description":"Prefer xcodebuild over incremental builds for Xcode build/test/clean tools.","type":"boolean"},
       "profile": {"description":"Set defaults for this named profile and make it active for the current session.","minLength":1,"type":"string"},
@@ -234,7 +234,7 @@
         "type": "object"
       }
     },
-    "$id": "https://xcodebuildmcp.com/schemas/structured-output/xcodebuildmcp.output.session-defaults/2.registration.schema.json",
+    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.session-defaults/2.registration.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
       {
@@ -265,7 +265,7 @@
             "type": ["string","null"]
           },
           "nextSteps": {"$ref":"#/$defs/nextSteps"},
-          "schema": {"const":"xcodebuildmcp.output.session-defaults"},
+          "schema": {"const":"mobilebuildmcp.output.session-defaults"},
           "schemaVersion": {"const":"2"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],
@@ -290,7 +290,7 @@
           },
           "didError": {"const":true},
           "error": {"minLength":1,"type":"string"},
-          "schema": {"const":"xcodebuildmcp.output.error"},
+          "schema": {"const":"mobilebuildmcp.output.error"},
           "schemaVersion": {"const":"1"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],

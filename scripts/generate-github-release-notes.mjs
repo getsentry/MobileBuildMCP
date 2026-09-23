@@ -13,7 +13,7 @@ function parseArgs(argv) {
   const args = {
     changelog: 'CHANGELOG.md',
     out: '',
-    packageName: 'xcodebuildmcp',
+    packageName: 'mobilebuildmcp',
     version: '',
   };
 
@@ -82,7 +82,7 @@ Options:
   --version <version>    Required release version (e.g. 2.0.0 or 2.0.0-beta.1)
   --changelog <path>     Changelog path (default: CHANGELOG.md)
   --out <path>           Output file path (default: stdout)
-  --package <name>       Package name for install snippets (default: xcodebuildmcp)
+  --package <name>       Package name for install snippets (default: mobilebuildmcp)
   -h, --help             Show this help
 `);
 }
@@ -134,13 +134,13 @@ function buildInstallAndSetupSection(version, packageName) {
     '',
     'Install:',
     '```bash',
-    `brew tap getsentry/${packageName}`,
+    "brew tap getsentry/xcodebuildmcp",
     `brew install ${packageName}`,
     '```',
     '',
     'MCP config:',
     '```json',
-    '"XcodeBuildMCP": {',
+    '"MobileBuildMCP": {',
     `  "command": "${packageName}",`,
     '  "args": ["mcp"]',
     '}',
@@ -155,7 +155,7 @@ function buildInstallAndSetupSection(version, packageName) {
     '',
     'MCP config:',
     '```json',
-    '"XcodeBuildMCP": {',
+    '"MobileBuildMCP": {',
     '  "command": "npx",',
     `  "args": ["-y", "${packageName}@latest", "mcp"]`,
     '}',

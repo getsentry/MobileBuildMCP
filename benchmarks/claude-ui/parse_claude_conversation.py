@@ -6,7 +6,7 @@ calls/results. Strips screenshot image blobs to a short placeholder.
 
 Usage:
     parse_claude_conversation.py <session.jsonl> [output_dir] \\
-        [--tool-prefix=mcp__xcodebuildmcp] [--tool-name=Bash]
+        [--tool-prefix=mcp__mobilebuildmcp] [--tool-name=Bash]
 """
 
 from __future__ import annotations
@@ -241,7 +241,7 @@ def main() -> int:
         return 1
 
     out = args.output or args.jsonl.with_name(f"{args.jsonl.stem}_conversation")
-    tool_prefixes = args.tool_prefix or ["mcp__xcodebuildmcp"]
+    tool_prefixes = args.tool_prefix or ["mcp__mobilebuildmcp"]
     return 0 if parse(args.jsonl, out, tool_prefixes, set(args.tool_name)) else 1
 
 

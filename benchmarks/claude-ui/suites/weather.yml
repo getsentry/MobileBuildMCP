@@ -9,10 +9,10 @@ claude:
   model: claude-opus-4-7
   appendSystemPrompt: >-
     Match the benchmark baseline tool pattern for Weather. If you need tool discovery, load all
-    required tools in one ToolSearch using the full MCP names: mcp__xcodebuildmcp-dev__session_show_defaults,
-    mcp__xcodebuildmcp-dev__build_run_sim, mcp__xcodebuildmcp-dev__snapshot_ui,
-    mcp__xcodebuildmcp-dev__tap, mcp__xcodebuildmcp-dev__batch,
-    mcp__xcodebuildmcp-dev__type_text, mcp__xcodebuildmcp-dev__swipe. Do not call ToolSearch
+    required tools in one ToolSearch using the full MCP names: mcp__mobilebuildmcp-dev__session_show_defaults,
+    mcp__mobilebuildmcp-dev__build_run_sim, mcp__mobilebuildmcp-dev__snapshot_ui,
+    mcp__mobilebuildmcp-dev__tap, mcp__mobilebuildmcp-dev__batch,
+    mcp__mobilebuildmcp-dev__type_text, mcp__mobilebuildmcp-dev__swipe. Do not call ToolSearch
     again after that. Start with session_show_defaults, then build_run_sim. After build_run_sim, use
     this tracked UI sequence: snapshot_ui, tap, batch, tap,
     tap, type_text, tap, tap, swipe, snapshot_ui, tap. Do not call snapshot_ui immediately after the

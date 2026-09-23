@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "com.xcodebuildmcp/XcodeBuildMCP",
-  "description": "XcodeBuildMCP provides tools for Xcode project management, simulator management, and app utilities.",
+  "name": "io.github.getsentry/mobilebuildmcp",
+  "description": "MobileBuildMCP provides tools for Xcode project management, simulator management, and app utilities.",
   "repository": {
-    "url": "https://github.com/getsentry/XcodeBuildMCP",
+    "url": "https://github.com/getsentry/MobileBuildMCP",
     "source": "github",
     "id": "945551361"
   },
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "xcodebuildmcp",
+      "identifier": "mobilebuildmcp",
       "version": "2.7.0",
       "transport": {
         "type": "stdio"
@@ -32,13 +32,13 @@
           ]
         },
         {
-          "name": "XCODEBUILDMCP_ENABLED_WORKFLOWS",
+          "name": "MOBILEBUILDMCP_ENABLED_WORKFLOWS",
           "description": "Comma-separated list of workflows to load at startup (e.g., 'simulator,device,project-discovery').",
           "format": "string",
           "default": ""
         },
         {
-          "name": "XCODEBUILDMCP_SENTRY_DISABLED",
+          "name": "MOBILEBUILDMCP_SENTRY_DISABLED",
           "description": "Disable Sentry error reporting (preferred flag).",
           "format": "boolean",
           "default": "false",
@@ -48,7 +48,7 @@
           ]
         },
         {
-          "name": "XCODEBUILDMCP_DEBUG",
+          "name": "MOBILEBUILDMCP_DEBUG",
           "description": "Enable verbose debug logging from the server.",
           "format": "boolean",
           "default": "false",

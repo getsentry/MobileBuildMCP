@@ -10,4 +10,4 @@ Targets
   CalculatorAppTests.xctest: 4.6% (18/391 lines)
 
 Next steps:
-1. View file-level coverage: xcodebuildmcp coverage get-file-coverage --xcresult-path <TMPDIR>/TestResults.xcresult
+1. View file-level coverage: mobilebuildmcp coverage get-file-coverage --xcresult-path <TMPDIR>/TestResults.xcresult

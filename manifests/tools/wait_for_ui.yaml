@@ -5,7 +5,7 @@ names:
   cli: wait-for-ui
 description: Poll rs/1 runtime UI snapshots until a selector-based UI predicate, selector-free textContains/gone text predicate, or selector-free settled predicate is satisfied, then record the latest snapshot. Prefer this after navigation or layout changes. Select with elementRef, identifier, label, role, or value when a selector is needed.
 outputSchema:
-  schema: xcodebuildmcp.output.capture-result
+  schema: mobilebuildmcp.output.capture-result
   version: '2'
 routing:
   stateful: true

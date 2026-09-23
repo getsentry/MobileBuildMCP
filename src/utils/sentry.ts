@@ -1,5 +1,5 @@
 /**
- * Sentry instrumentation for XcodeBuildMCP
+ * Sentry instrumentation for MobileBuildMCP
  *
  * This file initializes Sentry when explicitly called to avoid side effects
  * during module import.
@@ -11,7 +11,7 @@ import { isSentryCaptureSealed } from './shutdown-state.ts';
 const USER_HOME_PATH_PATTERN = /\/Users\/[^/\s]+/g;
 const XCODE_VERSION_PATTERN = /^Xcode\s+(.+)$/m;
 const XCODE_BUILD_PATTERN = /^Build version\s+(.+)$/m;
-const SENTRY_SELF_TEST_ENV_VAR = 'XCODEBUILDMCP_SENTRY_SELFTEST';
+const SENTRY_SELF_TEST_ENV_VAR = 'MOBILEBUILDMCP_SENTRY_SELFTEST';
 
 export type SentryRuntimeMode = 'mcp' | 'cli-daemon' | 'cli';
 export type SentryToolRuntime = 'cli' | 'daemon' | 'mcp';
@@ -154,7 +154,7 @@ let selfTestEmitted = false;
 let pendingRuntimeContext: SentryRuntimeContext | null = null;
 function isSentryDisabled(): boolean {
   return (
-    process.env.XCODEBUILDMCP_SENTRY_DISABLED === 'true' || process.env.SENTRY_DISABLED === 'true'
+    process.env.MOBILEBUILDMCP_SENTRY_DISABLED === 'true' || process.env.SENTRY_DISABLED === 'true'
   );
 }
 
@@ -173,17 +173,17 @@ function emitSentrySelfTest(mode: SentryRuntimeMode | undefined): void {
 
   const marker = new Date().toISOString();
   const attributes: Record<string, string | number> = {
-    source: 'xcodebuildmcp.sentry_selftest',
+    source: 'mobilebuildmcp.sentry_selftest',
     marker,
     runtime_mode: mode ?? 'unknown',
     pid: process.pid,
   };
 
-  Sentry.logger.info('XcodeBuildMCP Sentry self-test log', attributes);
+  Sentry.logger.info('MobileBuildMCP Sentry self-test log', attributes);
   Sentry.startSpan(
     {
-      name: 'XcodeBuildMCP Sentry self-test transaction',
-      op: 'xcodebuildmcp.sentry_selftest',
+      name: 'MobileBuildMCP Sentry self-test transaction',
+      op: 'mobilebuildmcp.sentry_selftest',
       forceTransaction: true,
       attributes,
     },
@@ -225,7 +225,7 @@ function applyRuntimeContext(context: SentryRuntimeContext): void {
 
   if (context.enabledWorkflows) {
     Sentry.setTag('config.workflow_count', String(context.enabledWorkflows.length));
-    Sentry.setContext('xcodebuildmcp.runtime', {
+    Sentry.setContext('mobilebuildmcp.runtime', {
       enabledWorkflows: context.enabledWorkflows.join(','),
     });
   }
@@ -329,7 +329,7 @@ export function initSentry(context?: Pick<SentryRuntimeContext, 'mode'>): void {
     beforeSend: redactEvent,
     beforeSendLog: redactLog,
     serverName: '',
-    release: `xcodebuildmcp@${version}`,
+    release: `mobilebuildmcp@${version}`,
     environment: 'production',
   });
 
@@ -490,9 +490,9 @@ export function recordToolInvocationMetric(metric: ToolInvocationMetric): void {
   };
 
   try {
-    Sentry.metrics.count('xcodebuildmcp.tool.invocation.count', 1, { attributes: tags });
+    Sentry.metrics.count('mobilebuildmcp.tool.invocation.count', 1, { attributes: tags });
     Sentry.metrics.distribution(
-      'xcodebuildmcp.tool.invocation.duration_ms',
+      'mobilebuildmcp.tool.invocation.duration_ms',
       Math.max(0, metric.durationMs),
       { attributes: tags },
     );
@@ -507,7 +507,7 @@ export function recordInternalErrorMetric(metric: InternalErrorMetric): void {
   }
 
   try {
-    Sentry.metrics.count('xcodebuildmcp.internal_error.count', 1, {
+    Sentry.metrics.count('mobilebuildmcp.internal_error.count', 1, {
       attributes: {
         component: sanitizeTagValue(metric.component),
         runtime: metric.runtime,
@@ -525,7 +525,7 @@ export function recordDaemonLifecycleMetric(event: SentryDaemonLifecycleEvent): 
   }
 
   try {
-    Sentry.metrics.count(`xcodebuildmcp.daemon.${event}.count`, 1, {
+    Sentry.metrics.count(`mobilebuildmcp.daemon.${event}.count`, 1, {
       attributes: {
         runtime: 'daemon',
       },
@@ -544,7 +544,7 @@ export function recordBootstrapDurationMetric(
   }
 
   try {
-    Sentry.metrics.distribution('xcodebuildmcp.bootstrap.duration_ms', Math.max(0, durationMs), {
+    Sentry.metrics.distribution('mobilebuildmcp.bootstrap.duration_ms', Math.max(0, durationMs), {
       attributes: {
         runtime,
       },
@@ -561,7 +561,7 @@ export function recordDaemonGaugeMetric(metricName: DaemonGaugeMetricName, value
 
   const normalizedValue = Number.isFinite(value) ? Math.max(0, value) : 0;
   try {
-    Sentry.metrics.gauge(`xcodebuildmcp.daemon.${metricName}`, normalizedValue, {
+    Sentry.metrics.gauge(`mobilebuildmcp.daemon.${metricName}`, normalizedValue, {
       attributes: {
         runtime: 'daemon',
       },
@@ -603,20 +603,20 @@ export function recordMcpLifecycleMetric(metric: McpLifecycleMetric): void {
   };
 
   try {
-    Sentry.metrics.count('xcodebuildmcp.mcp.lifecycle.count', 1, { attributes });
+    Sentry.metrics.count('mobilebuildmcp.mcp.lifecycle.count', 1, { attributes });
     Sentry.metrics.distribution(
-      'xcodebuildmcp.mcp.lifecycle.uptime_ms',
+      'mobilebuildmcp.mcp.lifecycle.uptime_ms',
       Math.max(0, metric.uptimeMs),
       { attributes },
     );
     Sentry.metrics.distribution(
-      'xcodebuildmcp.mcp.lifecycle.rss_bytes',
+      'mobilebuildmcp.mcp.lifecycle.rss_bytes',
       Math.max(0, metric.rssBytes),
       { attributes },
     );
     if (metric.matchingMcpProcessCount != null) {
       Sentry.metrics.distribution(
-        'xcodebuildmcp.mcp.lifecycle.process_count',
+        'mobilebuildmcp.mcp.lifecycle.process_count',
         Math.max(0, metric.matchingMcpProcessCount),
         { attributes },
       );
@@ -632,7 +632,7 @@ export function recordMcpLifecycleAnomalyMetric(metric: McpLifecycleAnomalyMetri
   }
 
   try {
-    Sentry.metrics.count('xcodebuildmcp.mcp.lifecycle.anomaly.count', 1, {
+    Sentry.metrics.count('mobilebuildmcp.mcp.lifecycle.anomaly.count', 1, {
       attributes: {
         runtime: 'mcp',
         kind: sanitizeTagValue(metric.kind),

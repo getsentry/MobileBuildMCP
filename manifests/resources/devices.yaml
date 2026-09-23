@@ -1,6 +1,6 @@
 id: devices
 module: mcp/resources/devices
 name: devices
-uri: xcodebuildmcp://devices
+uri: mobilebuildmcp://devices
 description: Connected physical Apple devices with their UUIDs, names, and connection status
 mimeType: text/plain

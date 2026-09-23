@@ -4,7 +4,7 @@
    Scheme: spm
    Configuration: debug
    Platform: Swift Package
-   Derived Data: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData
+   Derived Data: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData
 Running tests (1 completed, 1 failure, 0 skipped)
 Running tests (2 completed, 1 failure, 0 skipped)
 Running tests (3 completed, 1 failure, 0 skipped)
@@ -26,4 +26,4 @@ Test failed
 
 ❌ <FAIL_COUNT> tests failed, <PASS_COUNT> passed, <SKIP_COUNT> skipped (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log

@@ -4,7 +4,7 @@ import type { DaemonRegistryEntry } from '../../daemon/daemon-registry.ts';
 const originalEntry: DaemonRegistryEntry = {
   workspaceKey: 'workspace-a',
   workspaceRoot: '/workspaces/workspace-a',
-  socketPath: '/tmp/xcodebuildmcp-daemon.sock',
+  socketPath: '/tmp/mobilebuildmcp-daemon.sock',
   pid: 123_456,
   startedAt: '2026-05-05T00:00:00.000Z',
   enabledWorkflows: ['build'],

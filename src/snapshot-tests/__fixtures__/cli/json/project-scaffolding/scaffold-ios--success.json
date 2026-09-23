@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.scaffold-result",
+  "schema": "mobilebuildmcp.output.scaffold-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -16,7 +16,7 @@
   },
   "nextSteps": [
     "Important: Before working on the project make sure to read the README.md file in the workspace root directory.",
-    "Build for simulator: xcodebuildmcp simulator build --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'",
-    "Build and run on simulator: xcodebuildmcp simulator build-and-run --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'"
+    "Build for simulator: mobilebuildmcp simulator build --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'",
+    "Build and run on simulator: mobilebuildmcp simulator build-and-run --workspace-path <TMPDIR>/ios/SnapshotTestApp.xcworkspace --scheme SnapshotTestApp --simulator-name 'iPhone 17'"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.capture-result",
+  "schema": "mobilebuildmcp.output.capture-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

@@ -21,9 +21,9 @@ import { homedir } from 'node:os';
 const mockedGetResourceRoot = vi.mocked(getResourceRoot);
 const mockedHomedir = vi.mocked(homedir);
 const agentsGuidanceLine =
-  '- If using XcodeBuildMCP, use the installed XcodeBuildMCP skill before calling XcodeBuildMCP tools.';
+  '- If using MobileBuildMCP, use the installed MobileBuildMCP skill before calling MobileBuildMCP tools.';
 const legacyAgentsGuidanceLine =
-  '- If using XcodeBuildMCP, first find and read the installed XcodeBuildMCP skill before calling XcodeBuildMCP tools.';
+  '- If using MobileBuildMCP, first find and read the installed MobileBuildMCP skill before calling MobileBuildMCP tools.';
 
 function loadInitModule() {
   return import('../init.ts');
@@ -39,17 +39,17 @@ describe('init command', () => {
   let fakeResourceRoot: string;
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'xbmcp-init-'));
+    tempDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-init-'));
     fakeResourceRoot = join(tempDir, 'resource-root');
-    mkdirSync(join(fakeResourceRoot, 'skills', 'xcodebuildmcp'), { recursive: true });
-    mkdirSync(join(fakeResourceRoot, 'skills', 'xcodebuildmcp-cli'), { recursive: true });
+    mkdirSync(join(fakeResourceRoot, 'skills', 'mobilebuildmcp'), { recursive: true });
+    mkdirSync(join(fakeResourceRoot, 'skills', 'mobilebuildmcp-cli'), { recursive: true });
     writeFileSync(
-      join(fakeResourceRoot, 'skills', 'xcodebuildmcp', 'SKILL.md'),
+      join(fakeResourceRoot, 'skills', 'mobilebuildmcp', 'SKILL.md'),
       '# MCP Skill Content',
       'utf8',
     );
     writeFileSync(
-      join(fakeResourceRoot, 'skills', 'xcodebuildmcp-cli', 'SKILL.md'),
+      join(fakeResourceRoot, 'skills', 'mobilebuildmcp-cli', 'SKILL.md'),
       '# CLI Skill Content',
       'utf8',
     );
@@ -82,14 +82,14 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      const installed = join(dest, 'xcodebuildmcp-cli', 'SKILL.md');
+      const installed = join(dest, 'mobilebuildmcp-cli', 'SKILL.md');
       expect(existsSync(installed)).toBe(true);
       expect(readFileSync(installed, 'utf8')).toBe('# CLI Skill Content');
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
       expect(output.skillType).toBe('cli');
-      expect(output.message).toBe('Installed XcodeBuildMCP CLI skill');
+      expect(output.message).toBe('Installed MobileBuildMCP CLI skill');
       expect(output.installed).toEqual([{ client: 'Custom', location: installed }]);
 
       stdoutSpy.mockRestore();
@@ -108,14 +108,14 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      const installed = join(dest, 'xcodebuildmcp', 'SKILL.md');
+      const installed = join(dest, 'mobilebuildmcp', 'SKILL.md');
       expect(existsSync(installed)).toBe(true);
       expect(readFileSync(installed, 'utf8')).toBe('# MCP Skill Content');
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
       expect(output.skillType).toBe('mcp');
-      expect(output.message).toBe('Installed XcodeBuildMCP (MCP server) skill');
+      expect(output.message).toBe('Installed MobileBuildMCP (MCP server) skill');
 
       stdoutSpy.mockRestore();
     });
@@ -133,8 +133,8 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      expect(existsSync(join(dest, 'xcodebuildmcp-cli', 'SKILL.md'))).toBe(true);
-      expect(existsSync(join(dest, 'xcodebuildmcp', 'SKILL.md'))).toBe(false);
+      expect(existsSync(join(dest, 'mobilebuildmcp-cli', 'SKILL.md'))).toBe(true);
+      expect(existsSync(join(dest, 'mobilebuildmcp', 'SKILL.md'))).toBe(false);
 
       stdoutSpy.mockRestore();
     });
@@ -153,7 +153,7 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      const installed = join(fakeHome, 'skills', 'xcodebuildmcp-cli', 'SKILL.md');
+      const installed = join(fakeHome, 'skills', 'mobilebuildmcp-cli', 'SKILL.md');
       expect(existsSync(installed)).toBe(true);
 
       stdoutSpy.mockRestore();
@@ -174,10 +174,10 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      expect(existsSync(join(fakeHome, '.claude', 'skills', 'xcodebuildmcp', 'SKILL.md'))).toBe(
+      expect(existsSync(join(fakeHome, '.claude', 'skills', 'mobilebuildmcp', 'SKILL.md'))).toBe(
         false,
       );
-      expect(existsSync(join(fakeHome, '.agents', 'skills', 'xcodebuildmcp', 'SKILL.md'))).toBe(
+      expect(existsSync(join(fakeHome, '.agents', 'skills', 'mobilebuildmcp', 'SKILL.md'))).toBe(
         true,
       );
 
@@ -232,7 +232,7 @@ describe('init command', () => {
       const stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
       await app.parseAsync();
 
-      expect(existsSync(join(fakeHome, '.claude', 'skills', 'xcodebuildmcp', 'SKILL.md'))).toBe(
+      expect(existsSync(join(fakeHome, '.claude', 'skills', 'mobilebuildmcp', 'SKILL.md'))).toBe(
         true,
       );
 
@@ -246,7 +246,7 @@ describe('init command', () => {
   describe('conflict handling', () => {
     it('removes conflicting skill with --remove-conflict', async () => {
       const dest = join(tempDir, 'skills');
-      const conflictDir = join(dest, 'xcodebuildmcp');
+      const conflictDir = join(dest, 'mobilebuildmcp');
       mkdirSync(conflictDir, { recursive: true });
       writeFileSync(join(conflictDir, 'SKILL.md'), 'old mcp skill', 'utf8');
 
@@ -262,14 +262,14 @@ describe('init command', () => {
       await app.parseAsync();
 
       expect(existsSync(conflictDir)).toBe(false);
-      expect(existsSync(join(dest, 'xcodebuildmcp-cli', 'SKILL.md'))).toBe(true);
+      expect(existsSync(join(dest, 'mobilebuildmcp-cli', 'SKILL.md'))).toBe(true);
 
       stdoutSpy.mockRestore();
     });
 
     it('errors on conflict in non-interactive mode without --remove-conflict', async () => {
       const dest = join(tempDir, 'skills');
-      const conflictDir = join(dest, 'xcodebuildmcp');
+      const conflictDir = join(dest, 'mobilebuildmcp');
       mkdirSync(conflictDir, { recursive: true });
       writeFileSync(join(conflictDir, 'SKILL.md'), 'old mcp skill', 'utf8');
 
@@ -291,7 +291,7 @@ describe('init command', () => {
   describe('--force', () => {
     it('overwrites existing installation with --force', async () => {
       const dest = join(tempDir, 'skills');
-      const existingDir = join(dest, 'xcodebuildmcp-cli');
+      const existingDir = join(dest, 'mobilebuildmcp-cli');
       mkdirSync(existingDir, { recursive: true });
       writeFileSync(join(existingDir, 'SKILL.md'), 'old content', 'utf8');
 
@@ -313,8 +313,8 @@ describe('init command', () => {
   describe('--uninstall', () => {
     it('removes all installed skill directories', async () => {
       const dest = join(tempDir, 'skills');
-      const cliSkillDir = join(dest, 'xcodebuildmcp-cli');
-      const mcpSkillDir = join(dest, 'xcodebuildmcp');
+      const cliSkillDir = join(dest, 'mobilebuildmcp-cli');
+      const mcpSkillDir = join(dest, 'mobilebuildmcp');
       mkdirSync(cliSkillDir, { recursive: true });
       mkdirSync(mcpSkillDir, { recursive: true });
       writeFileSync(join(cliSkillDir, 'SKILL.md'), 'cli content', 'utf8');
@@ -338,8 +338,8 @@ describe('init command', () => {
       expect(output.removed).toHaveLength(2);
       expect(output.removed).toEqual(
         expect.arrayContaining([
-          { client: 'Custom', variant: 'xcodebuildmcp-cli', path: cliSkillDir },
-          { client: 'Custom', variant: 'xcodebuildmcp', path: mcpSkillDir },
+          { client: 'Custom', variant: 'mobilebuildmcp-cli', path: cliSkillDir },
+          { client: 'Custom', variant: 'mobilebuildmcp', path: mcpSkillDir },
         ]),
       );
 
@@ -466,7 +466,7 @@ describe('init command', () => {
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
-      expect(output.message).toBe('Installed XcodeBuildMCP CLI skill');
+      expect(output.message).toBe('Installed MobileBuildMCP CLI skill');
       expect(output.agentsGuidance).toEqual({
         status: 'created',
         path: agentsPath,
@@ -498,7 +498,7 @@ describe('init command', () => {
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
-      expect(output.message).toBe('Installed XcodeBuildMCP CLI skill');
+      expect(output.message).toBe('Installed MobileBuildMCP CLI skill');
       expect(output.agentsGuidance).toEqual({
         status: 'error',
         path: join(projectRoot, 'AGENTS.md'),
@@ -535,7 +535,7 @@ describe('init command', () => {
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
-      expect(output.message).toBe('Installed XcodeBuildMCP CLI skill');
+      expect(output.message).toBe('Installed MobileBuildMCP CLI skill');
       expect(output.agentsGuidance).toEqual({
         status: 'updated',
         path: join(projectRoot, 'AGENTS.md'),
@@ -545,7 +545,7 @@ describe('init command', () => {
       Object.defineProperty(process.stdin, 'isTTY', { value: originalIsTTY, configurable: true });
     });
 
-    it('replaces legacy XcodeBuildMCP guidance line without appending duplicate', async () => {
+    it('replaces legacy MobileBuildMCP guidance line without appending duplicate', async () => {
       const dest = join(tempDir, 'skills');
       const projectRoot = join(tempDir, 'project-legacy-guidance');
       mkdirSync(dest, { recursive: true });
@@ -576,7 +576,7 @@ describe('init command', () => {
 
       const output = parseJsonOutput(stdoutSpy);
       expect(output.action).toBe('install');
-      expect(output.message).toBe('Installed XcodeBuildMCP CLI skill');
+      expect(output.message).toBe('Installed MobileBuildMCP CLI skill');
       expect(output.agentsGuidance).toEqual({
         status: 'updated',
         path: join(projectRoot, 'AGENTS.md'),
@@ -602,7 +602,7 @@ describe('init command', () => {
     });
 
     it('errors when skill source file is missing', async () => {
-      rmSync(join(fakeResourceRoot, 'skills', 'xcodebuildmcp-cli', 'SKILL.md'));
+      rmSync(join(fakeResourceRoot, 'skills', 'mobilebuildmcp-cli', 'SKILL.md'));
 
       const dest = join(tempDir, 'skills');
       mkdirSync(dest, { recursive: true });
@@ -617,10 +617,10 @@ describe('init command', () => {
     });
 
     it('does not delete conflicting skill when source file is missing', async () => {
-      rmSync(join(fakeResourceRoot, 'skills', 'xcodebuildmcp-cli', 'SKILL.md'));
+      rmSync(join(fakeResourceRoot, 'skills', 'mobilebuildmcp-cli', 'SKILL.md'));
 
       const dest = join(tempDir, 'skills');
-      const conflictDir = join(dest, 'xcodebuildmcp');
+      const conflictDir = join(dest, 'mobilebuildmcp');
       mkdirSync(conflictDir, { recursive: true });
       writeFileSync(join(conflictDir, 'SKILL.md'), 'existing mcp skill', 'utf8');
 

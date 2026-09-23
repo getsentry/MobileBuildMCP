@@ -3,7 +3,7 @@
 /**
  * MCP Server Startup Module
  *
- * This module provides the logic to start the XcodeBuildMCP server.
+ * This module provides the logic to start the MobileBuildMCP server.
  * It can be invoked from the CLI via the `mcp` subcommand.
  */
 
@@ -121,7 +121,7 @@ export async function startMcpServer(): Promise<void> {
     if (idleTimeoutConfig.invalid && idleTimeoutConfig.rawValue) {
       log(
         'warn',
-        `Invalid XCODEBUILDMCP_MCP_IDLE_TIMEOUT_MS=${idleTimeoutConfig.rawValue}; using default ${idleTimeoutConfig.timeoutMs}ms`,
+        `Invalid MOBILEBUILDMCP_MCP_IDLE_TIMEOUT_MS=${idleTimeoutConfig.rawValue}; using default ${idleTimeoutConfig.timeoutMs}ms`,
       );
     }
 
@@ -243,7 +243,7 @@ export async function startMcpServer(): Promise<void> {
       enrichSentryContext();
     });
 
-    log('info', `XcodeBuildMCP server (version ${version}) started successfully`);
+    log('info', `MobileBuildMCP server (version ${version}) started successfully`);
   } catch (error) {
     console.error('Fatal error in startMcpServer():', error);
     await lifecycle.shutdown('startup-failure', error);

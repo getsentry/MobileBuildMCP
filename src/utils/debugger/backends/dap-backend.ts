@@ -93,8 +93,8 @@ class DapBackend implements DebuggerBackend {
           },
           { supportsConfigurationDoneRequest?: boolean }
         >('initialize', {
-          clientID: 'xcodebuildmcp',
-          clientName: 'XcodeBuildMCP',
+          clientID: 'mobilebuildmcp',
+          clientName: 'MobileBuildMCP',
           adapterID: 'lldb-dap',
           linesStartAt1: true,
           columnsStartAt1: true,
@@ -153,7 +153,7 @@ class DapBackend implements DebuggerBackend {
       const message = error instanceof Error ? error.message : String(error);
       if (/evaluate|repl|not supported/i.test(message)) {
         throw new Error(
-          'DAP backend does not support LLDB command evaluation. Set XCODEBUILDMCP_DEBUGGER_BACKEND=lldb-cli to use the CLI backend.',
+          'DAP backend does not support LLDB command evaluation. Set MOBILEBUILDMCP_DEBUGGER_BACKEND=lldb-cli to use the CLI backend.',
         );
       }
       throw error;

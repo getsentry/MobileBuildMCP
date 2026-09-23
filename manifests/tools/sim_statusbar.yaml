@@ -5,7 +5,7 @@ names:
   cli: statusbar
 description: Set sim status bar network.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Simulator Statusbar

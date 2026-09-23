@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.app-path",
+  "schema": "mobilebuildmcp.output.app-path",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -10,13 +10,13 @@
       "durationMs": 1234
     },
     "artifacts": {
-      "appPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app"
+      "appPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app"
     }
   },
   "nextSteps": [
-    "Get bundle ID: get_app_bundle_id({ appPath: \"~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app\" })",
+    "Get bundle ID: get_app_bundle_id({ appPath: \"~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app\" })",
     "Boot simulator: boot_sim({ simulatorId: \"SIMULATOR_UUID\" })",
-    "Install app: install_app_sim({ simulatorId: \"SIMULATOR_UUID\", appPath: \"~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app\" })",
+    "Install app: install_app_sim({ simulatorId: \"SIMULATOR_UUID\", appPath: \"~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app\" })",
     "Launch app: launch_app_sim({ simulatorId: \"SIMULATOR_UUID\", bundleId: \"BUNDLE_ID\" })"
   ]
 }

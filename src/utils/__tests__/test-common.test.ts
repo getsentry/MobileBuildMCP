@@ -11,7 +11,7 @@ import type { TestPreflightResult } from '../test-preflight.ts';
 import { XcodePlatform } from '../xcode.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 import { setRuntimeInstanceForTests } from '../runtime-instance.ts';
 import { resetWorkspaceFilesystemLifecycleStateForTests } from '../workspace-filesystem-lifecycle.ts';
@@ -71,40 +71,40 @@ function createPreflight(): TestPreflightResult {
 }
 
 describe('resolveTestProgressEnabled', () => {
-  const originalRuntime = process.env.XCODEBUILDMCP_RUNTIME;
+  const originalRuntime = process.env.MOBILEBUILDMCP_RUNTIME;
 
   afterEach(() => {
     vi.restoreAllMocks();
 
     if (originalRuntime === undefined) {
-      delete process.env.XCODEBUILDMCP_RUNTIME;
+      delete process.env.MOBILEBUILDMCP_RUNTIME;
     } else {
-      process.env.XCODEBUILDMCP_RUNTIME = originalRuntime;
+      process.env.MOBILEBUILDMCP_RUNTIME = originalRuntime;
     }
   });
 
   it('defaults to true in MCP runtime when progress is not provided', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'mcp';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'mcp';
     expect(resolveTestProgressEnabled(undefined)).toBe(true);
   });
 
   it('defaults to false in CLI runtime when progress is not provided', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'cli';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'cli';
     expect(resolveTestProgressEnabled(undefined)).toBe(false);
   });
 
   it('defaults to false when runtime is unknown', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'unknown';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'unknown';
     expect(resolveTestProgressEnabled(undefined)).toBe(false);
   });
 
   it('honors explicit true override regardless of runtime', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'cli';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'cli';
     expect(resolveTestProgressEnabled(true)).toBe(true);
   });
 
   it('honors explicit false override regardless of runtime', () => {
-    process.env.XCODEBUILDMCP_RUNTIME = 'mcp';
+    process.env.MOBILEBUILDMCP_RUNTIME = 'mcp';
     expect(resolveTestProgressEnabled(false)).toBe(false);
   });
 });
@@ -114,8 +114,8 @@ describe('createTestExecutor', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    tempAppDir = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-result-bundles-'));
-    setXcodeBuildMCPAppDirOverrideForTests(tempAppDir);
+    tempAppDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-result-bundles-'));
+    setMobileBuildMCPAppDirOverrideForTests(tempAppDir);
     setRuntimeInstanceForTests({
       instanceId: 'result-bundle-test',
       pid: process.pid,
@@ -125,7 +125,7 @@ describe('createTestExecutor', () => {
 
   afterEach(() => {
     resetWorkspaceFilesystemLifecycleStateForTests();
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     setRuntimeInstanceForTests(null);
     rmSync(tempAppDir, { recursive: true, force: true });
   });

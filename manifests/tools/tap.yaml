@@ -6,7 +6,7 @@ names:
 description: >-
   Tap one elementRef from the latest snapshot_ui or wait_for_ui output. The elementRef must list the tap action in the snapshot targets; do not use refs from text-only rows. For multiple same-screen taps or visible switch toggles with no intermediate assertion, use batch instead of repeated tap calls. Other same-screen refs may remain usable after success; refresh after navigation, scrolling, sheet changes, or obvious layout changes.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: '2'
 routing:
   stateful: true

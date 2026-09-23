@@ -210,7 +210,7 @@ describe('UI action incomplete completion next steps', () => {
     expect(rowRef).toBeDefined();
 
     const result = createCaptureSuccessResult(simulatorId, { capture: snapshot });
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.capture-result', '2');
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.capture-result', '2');
 
     expect(compactTargets(envelope).some((target) => target.startsWith(`${rowRef}|tap|`))).toBe(
       true,
@@ -237,7 +237,7 @@ describe('UI action incomplete completion next steps', () => {
     );
 
     const result = ctx.structuredOutput?.result as UiActionResultDomainResult;
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.ui-action-result', '2', {
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.ui-action-result', '2', {
       nextSteps: ctx.nextSteps,
     });
 
@@ -275,7 +275,7 @@ describe('UI action incomplete completion next steps', () => {
     );
 
     const result = ctx.structuredOutput?.result as UiActionResultDomainResult;
-    const envelope = toStructuredEnvelope(result, 'xcodebuildmcp.output.ui-action-result', '2', {
+    const envelope = toStructuredEnvelope(result, 'mobilebuildmcp.output.ui-action-result', '2', {
       nextSteps: ctx.nextSteps,
     });
 

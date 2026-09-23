@@ -86,7 +86,7 @@ describe('createTypedTool', () => {
       });
 
       expect(result.isError).toBe(true);
-      expect(result.structuredOutput?.schema).toBe('xcodebuildmcp.output.error');
+      expect(result.structuredOutput?.schema).toBe('mobilebuildmcp.output.error');
       expect(result.structuredOutput?.result.didError).toBe(true);
       expect(result.structuredOutput?.result.error).toContain('Parameter validation failed');
       expect(result.text).toContain('Parameter validation failed');

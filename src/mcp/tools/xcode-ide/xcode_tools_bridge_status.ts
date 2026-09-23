@@ -35,7 +35,7 @@ export async function xcodeToolsBridgeStatusLogic(params: Params): Promise<void>
     ctx,
     executionContext,
     result,
-    'xcodebuildmcp.output.xcode-bridge-status',
+    'mobilebuildmcp.output.xcode-bridge-status',
     '2',
   );
 }

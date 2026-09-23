@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.debug-session-action",
+  "schema": "mobilebuildmcp.output.debug-session-action",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -16,8 +16,8 @@
     }
   },
   "nextSteps": [
-    "Add a breakpoint: xcodebuildmcp debugging add-breakpoint --debug-session-id <UUID> --file ... --line 123",
-    "Continue execution: xcodebuildmcp debugging continue --debug-session-id <UUID>",
-    "Show call stack: xcodebuildmcp debugging stack --debug-session-id <UUID>"
+    "Add a breakpoint: mobilebuildmcp debugging add-breakpoint --debug-session-id <UUID> --file ... --line 123",
+    "Continue execution: mobilebuildmcp debugging continue --debug-session-id <UUID>",
+    "Show call stack: mobilebuildmcp debugging stack --debug-session-id <UUID>"
   ]
 }

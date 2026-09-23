@@ -10,7 +10,7 @@ Schemes:
   CalculatorAppFeature
 
 Next steps:
-1. Build for macOS: xcodebuildmcp macos build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp
-2. Build and run on iOS Simulator (default for run intent): xcodebuildmcp simulator build-and-run --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'
-3. Build for iOS Simulator (compile-only): xcodebuildmcp simulator build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'
-4. Show build settings: xcodebuildmcp project-discovery show-build-settings --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp
+1. Build for macOS: mobilebuildmcp macos build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp
+2. Build and run on iOS Simulator (default for run intent): mobilebuildmcp simulator build-and-run --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'
+3. Build for iOS Simulator (compile-only): mobilebuildmcp simulator build --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp --simulator-name 'iPhone 17'
+4. Show build settings: mobilebuildmcp project-discovery show-build-settings --workspace-path example_projects/iOS_Calculator/CalculatorApp.xcworkspace --scheme CalculatorApp

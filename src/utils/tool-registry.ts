@@ -91,7 +91,7 @@ function normalizeName(name: string): string {
 }
 
 function getForceExposedToolAliases(env: NodeJS.ProcessEnv = process.env): Set<string> {
-  const value = env.XCODEBUILDMCP_TEST_FORCE_TOOL_EXPOSURE;
+  const value = env.MOBILEBUILDMCP_TEST_FORCE_TOOL_EXPOSURE;
   if (!value) {
     return new Set();
   }

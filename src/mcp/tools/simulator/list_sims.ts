@@ -175,7 +175,7 @@ export function createListSimsExecutor(
 function setStructuredOutput(ctx: ToolHandlerContext, result: SimulatorListResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.simulator-list',
+    schema: 'mobilebuildmcp.output.simulator-list',
     schemaVersion: '2',
   };
 }

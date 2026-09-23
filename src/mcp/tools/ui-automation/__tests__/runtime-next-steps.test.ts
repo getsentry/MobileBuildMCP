@@ -476,7 +476,7 @@ describe('runtime snapshot next steps', () => {
     expect(rootRef).toBeDefined();
     expect(
       snapshot.elements.find(
-        (element) => element.identifier === 'xcodebuildmcp.inferred.sheet-content',
+        (element) => element.identifier === 'mobilebuildmcp.inferred.sheet-content',
       ),
     ).toBeUndefined();
     expect(snapshot.elements.find((element) => element.ref === rootRef)?.actions).not.toContain(

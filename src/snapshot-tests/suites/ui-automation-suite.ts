@@ -19,7 +19,7 @@ const PRODUCT_NAME = 'CalculatorApp';
 const BUNDLE_ID = 'io.sentry.calculatorapp';
 const SNAPSHOT_SCROLL_SURFACE_ARGUMENT = '--snapshot-scroll-surface';
 const SIMULATOR_NAME = 'iPhone 17 Pro';
-const CONFIGURED_SIMULATOR = process.env.XCODEBUILDMCP_SNAPSHOT_SIMULATOR_ID ?? SIMULATOR_NAME;
+const CONFIGURED_SIMULATOR = process.env.MOBILEBUILDMCP_SNAPSHOT_SIMULATOR_ID ?? SIMULATOR_NAME;
 const INVALID_SIMULATOR_ID = '00000000-0000-0000-0000-000000000000';
 const UI_READY_TIMEOUT_MS = 15_000;
 const UI_READY_POLL_INTERVAL_MS = 250;
@@ -72,7 +72,7 @@ export function registerUiAutomationSnapshotSuite(runtime: SnapshotRuntime): voi
       suiteCleanup = new CleanupStack();
       const simulatorId = await resolveSimulatorId(CONFIGURED_SIMULATOR);
       await ensureSimulatorBooted(simulatorId, suiteCleanup);
-      const derivedDataPath = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-ui-snapshot-'));
+      const derivedDataPath = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-ui-snapshot-'));
       suiteCleanup.defer('remove shared UI snapshot DerivedData', () => {
         rmSync(derivedDataPath, { recursive: true, force: true });
       });

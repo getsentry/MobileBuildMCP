@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-result",
+  "schema": "mobilebuildmcp.output.build-result",
   "schemaVersion": "3",
   "didError": false,
   "error": null,
@@ -17,7 +17,7 @@
       "target": "simulator"
     },
     "artifacts": {
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_sim_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_sim_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],
@@ -25,6 +25,6 @@
     }
   },
   "nextSteps": [
-    "Get built app path in simulator derived data: xcodebuildmcp simulator get-app-path --simulator-id <UUID> --scheme CalculatorApp --platform 'iOS Simulator' --derived-data-path <TMPDIR>"
+    "Get built app path in simulator derived data: mobilebuildmcp simulator get-app-path --simulator-id <UUID> --scheme CalculatorApp --platform 'iOS Simulator' --derived-data-path <TMPDIR>"
   ]
 }

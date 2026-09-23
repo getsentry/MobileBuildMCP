@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-result",
+  "schema": "mobilebuildmcp.output.build-result",
   "schemaVersion": "3",
   "didError": false,
   "error": null,
@@ -17,7 +17,7 @@
       "target": "device"
     },
     "artifacts": {
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log"
     },
     "diagnostics": {
       "warnings": [],
@@ -25,6 +25,6 @@
     }
   },
   "nextSteps": [
-    "Get built device app path: xcodebuildmcp device get-app-path --scheme CalculatorApp --derived-data-path <TMPDIR>"
+    "Get built device app path: mobilebuildmcp device get-app-path --scheme CalculatorApp --derived-data-path <TMPDIR>"
   ]
 }

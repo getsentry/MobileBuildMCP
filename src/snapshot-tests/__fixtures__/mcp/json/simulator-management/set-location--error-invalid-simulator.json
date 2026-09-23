@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.simulator-action-result",
+  "schema": "mobilebuildmcp.output.simulator-action-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Failed to set simulator location.",

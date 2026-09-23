@@ -1,12 +1,12 @@
-export class XcodeBuildMCPError extends Error {
+export class MobileBuildMCPError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'XcodeBuildMCPError';
-    Object.setPrototypeOf(this, XcodeBuildMCPError.prototype);
+    this.name = 'MobileBuildMCPError';
+    Object.setPrototypeOf(this, MobileBuildMCPError.prototype);
   }
 }
 
-export class ValidationError extends XcodeBuildMCPError {
+export class ValidationError extends MobileBuildMCPError {
   constructor(
     message: string,
     public paramName?: string,
@@ -17,7 +17,7 @@ export class ValidationError extends XcodeBuildMCPError {
   }
 }
 
-export class SystemError extends XcodeBuildMCPError {
+export class SystemError extends MobileBuildMCPError {
   constructor(
     message: string,
     public originalError?: Error,
@@ -28,7 +28,7 @@ export class SystemError extends XcodeBuildMCPError {
   }
 }
 
-export class ConfigurationError extends XcodeBuildMCPError {
+export class ConfigurationError extends MobileBuildMCPError {
   constructor(message: string) {
     super(message);
     this.name = 'ConfigurationError';
@@ -36,7 +36,7 @@ export class ConfigurationError extends XcodeBuildMCPError {
   }
 }
 
-export class SimulatorError extends XcodeBuildMCPError {
+export class SimulatorError extends MobileBuildMCPError {
   constructor(
     message: string,
     public simulatorName?: string,
@@ -48,7 +48,7 @@ export class SimulatorError extends XcodeBuildMCPError {
   }
 }
 
-export class AxeError extends XcodeBuildMCPError {
+export class AxeError extends MobileBuildMCPError {
   constructor(
     message: string,
     public command?: string,

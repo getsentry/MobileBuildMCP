@@ -17,6 +17,6 @@ Running tests (2 completed, 0 failures, 0 skipped)
 
 ✅ 2 tests passed, 0 failed, 0 skipped (⏱️ <DURATION>)
   └ Files:
-     ├ Result Bundle: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/result-bundles/test_macos_<TIMESTAMP>_pid<PID>.xcresult
-     ├ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/test_macos_<TIMESTAMP>_pid<PID>.log
-     └ Test Products: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/test-products/test_macos_<TIMESTAMP>_pid<PID>.xctestproducts
+     ├ Result Bundle: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/result-bundles/test_macos_<TIMESTAMP>_pid<PID>.xcresult
+     ├ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/test_macos_<TIMESTAMP>_pid<PID>.log
+     └ Test Products: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/test-products/test_macos_<TIMESTAMP>_pid<PID>.xctestproducts

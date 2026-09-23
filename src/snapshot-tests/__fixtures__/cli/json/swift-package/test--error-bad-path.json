@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.test-result",
+  "schema": "mobilebuildmcp.output.test-result",
   "schemaVersion": "2",
   "didError": true,
   "error": "Tests failed",
@@ -16,7 +16,7 @@
       "target": "swift-package"
     },
     "artifacts": {
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log",
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/swift_package_test_<TIMESTAMP>_pid<PID>.log",
       "packagePath": "<TMPDIR>/spm/NONEXISTENT"
     },
     "diagnostics": {

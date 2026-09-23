@@ -12,4 +12,4 @@ Errors (1):
 
 ❌ Test failed. (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/test_macos_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/test_macos_<TIMESTAMP>_pid<PID>.log

@@ -50,15 +50,15 @@ import {
   getMcpBridgeAvailability,
 } from '../../../../integrations/xcode-tools-bridge/core.ts';
 import { allText, runToolLogic, callHandler } from '../../../../test-utils/test-helpers.ts';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../../../../utils/log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../../../../utils/log-paths.ts';
 import { setRuntimeInstanceForTests } from '../../../../utils/runtime-instance.ts';
 
 describe('xcode-ide bridge tools (standalone fallback)', () => {
   let tempAppDir: string;
 
   beforeEach(async () => {
-    tempAppDir = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-xcode-ide-test-'));
-    setXcodeBuildMCPAppDirOverrideForTests(tempAppDir);
+    tempAppDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-xcode-ide-test-'));
+    setMobileBuildMCPAppDirOverrideForTests(tempAppDir);
     setRuntimeInstanceForTests({
       instanceId: 'test-instance',
       pid: 1234,
@@ -109,7 +109,7 @@ describe('xcode-ide bridge tools (standalone fallback)', () => {
 
   afterEach(() => {
     setRuntimeInstanceForTests(null);
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     rmSync(tempAppDir, { recursive: true, force: true });
   });
 
@@ -236,7 +236,7 @@ describe('xcode-ide bridge tools (standalone fallback)', () => {
   it('call handler hard-fails when the raw response artifact cannot be written', async () => {
     const blockingAppDir = join(tempAppDir, 'app-dir-file');
     writeFileSync(blockingAppDir, 'not a directory');
-    setXcodeBuildMCPAppDirOverrideForTests(blockingAppDir);
+    setMobileBuildMCPAppDirOverrideForTests(blockingAppDir);
     clientMocks.callTool.mockResolvedValueOnce({
       content: [{ type: 'text', text: 'large inline payload' }],
       structuredContent: { raw: 'structured payload' },

@@ -6,7 +6,7 @@ names:
 description: >-
   Type text into a UI element by elementRef from a current rs/1 runtime snapshot, optionally replacing existing field contents. elementRef is required; do not call with only text. Example input: {"elementRef":"e8","text":"London","replaceExisting":true}.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: "2"
 routing:
   stateful: true

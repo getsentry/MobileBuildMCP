@@ -19,7 +19,7 @@
   ├ Process ID: <PID>
   └ Files:
      ├ App Path: <TMPDIR>/Build/Products/Debug-iphoneos/CalculatorApp.app
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_device_<TIMESTAMP>_pid<PID>.log
 
 Next steps:
-1. Stop app on device: xcodebuildmcp device stop --device-id <UUID> --process-id <PID>
+1. Stop app on device: mobilebuildmcp device stop --device-id <UUID> --process-id <PID>

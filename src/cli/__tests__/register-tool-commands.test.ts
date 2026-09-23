@@ -70,7 +70,7 @@ const baseRuntimeConfig: ResolvedRuntimeConfig = {
 
 function createApp(catalog: ToolCatalog, runtimeConfig: ResolvedRuntimeConfig = baseRuntimeConfig) {
   const app = yargs()
-    .scriptName('xcodebuildmcp')
+    .scriptName('mobilebuildmcp')
     .exitProcess(false)
     .fail((message, error) => {
       throw error ?? new Error(message);
@@ -137,7 +137,7 @@ function createBuildResultTool(options: { emitStatus?: boolean; includeNextSteps
         });
       }
       ctx.structuredOutput = {
-        schema: 'xcodebuildmcp.output.build-result',
+        schema: 'mobilebuildmcp.output.build-result',
         schemaVersion: '2',
         result: {
           kind: 'build-result',
@@ -173,7 +173,7 @@ function createAppPathTool() {
     handler: vi.fn(async (_args, ctx) => {
       if (ctx) {
         ctx.structuredOutput = {
-          schema: 'xcodebuildmcp.output.app-path',
+          schema: 'mobilebuildmcp.output.app-path',
           schemaVersion: '2',
           result: {
             kind: 'app-path',
@@ -228,7 +228,7 @@ describe('registerToolCommands', () => {
   });
 
   it('hydrates required args from the explicit --profile override', async () => {
-    process.argv = ['node', 'xcodebuildmcp', 'simulator', 'run-tool', '--profile', 'qa'];
+    process.argv = ['node', 'mobilebuildmcp', 'simulator', 'run-tool', '--profile', 'qa'];
 
     const invokeDirect = vi
       .spyOn(DefaultToolInvoker.prototype, 'invokeDirect')
@@ -339,7 +339,7 @@ describe('registerToolCommands', () => {
     expect(invokeDirect).not.toHaveBeenCalled();
     expect(process.exitCode).toBe(1);
     expect(JSON.parse(stdoutChunks.join(''))).toEqual({
-      schema: 'xcodebuildmcp.output.error',
+      schema: 'mobilebuildmcp.output.error',
       schemaVersion: '1',
       didError: true,
       error: 'Simulator named "Missing Phone" not found.',
@@ -638,7 +638,7 @@ describe('registerToolCommands', () => {
     vi.spyOn(DefaultToolInvoker.prototype, 'invokeDirect').mockImplementation(
       async (_tool, _args, opts) => {
         opts.renderSession?.setStructuredOutput?.({
-          schema: 'xcodebuildmcp.output.app-path',
+          schema: 'mobilebuildmcp.output.app-path',
           schemaVersion: '1',
           result: {
             kind: 'app-path',
@@ -709,7 +709,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.app-path',
+            schema: 'mobilebuildmcp.output.app-path',
             schemaVersion: '1',
             result: {
               kind: 'app-path',
@@ -745,7 +745,7 @@ describe('registerToolCommands', () => {
     ).resolves.toBeDefined();
 
     expect(JSON.parse(stdoutChunks.join(''))).toEqual({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -771,7 +771,7 @@ describe('registerToolCommands', () => {
     ).resolves.toBeDefined();
 
     expect(JSON.parse(stdoutChunks.join(''))).toEqual({
-      schema: 'xcodebuildmcp.output.build-result',
+      schema: 'mobilebuildmcp.output.build-result',
       schemaVersion: '2',
       didError: false,
       error: null,
@@ -780,7 +780,7 @@ describe('registerToolCommands', () => {
         artifacts: { buildLogPath: '/tmp/build.log' },
         diagnostics: { warnings: [], errors: [] },
       },
-      nextSteps: ['Get app path: xcodebuildmcp simulator get-app-path --scheme CalculatorApp'],
+      nextSteps: ['Get app path: mobilebuildmcp simulator get-app-path --scheme CalculatorApp'],
     });
   });
 
@@ -840,7 +840,7 @@ describe('registerToolCommands', () => {
 
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.simulator-list',
+            schema: 'mobilebuildmcp.output.simulator-list',
             schemaVersion: '1',
             result: {
               kind: 'simulator-list',
@@ -879,7 +879,7 @@ describe('registerToolCommands', () => {
     expect(stdoutChunks.join('')).toBe(
       `${JSON.stringify(
         {
-          schema: 'xcodebuildmcp.output.simulator-list',
+          schema: 'mobilebuildmcp.output.simulator-list',
           schemaVersion: '1',
           didError: false,
           error: null,
@@ -895,7 +895,7 @@ describe('registerToolCommands', () => {
             ],
           },
           nextSteps: [
-            'Boot this simulator: xcodebuildmcp simulator boot --simulator-id test-uuid-123',
+            'Boot this simulator: mobilebuildmcp simulator boot --simulator-id test-uuid-123',
           ],
         },
         null,
@@ -916,7 +916,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.capture-result',
+            schema: 'mobilebuildmcp.output.capture-result',
             schemaVersion: '2',
             result: {
               kind: 'capture-result',
@@ -978,7 +978,7 @@ describe('registerToolCommands', () => {
     expect(stdoutChunks.join('')).toBe(
       `${JSON.stringify(
         {
-          schema: 'xcodebuildmcp.output.capture-result',
+          schema: 'mobilebuildmcp.output.capture-result',
           schemaVersion: '2',
           didError: false,
           error: null,
@@ -1015,7 +1015,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.capture-result',
+            schema: 'mobilebuildmcp.output.capture-result',
             schemaVersion: '2',
             result: {
               kind: 'capture-result',
@@ -1081,7 +1081,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.ui-action-result',
+            schema: 'mobilebuildmcp.output.ui-action-result',
             schemaVersion: '2',
             result: {
               kind: 'ui-action-result',
@@ -1135,7 +1135,7 @@ describe('registerToolCommands', () => {
       schemaVersion: string;
       data: { capture: { targets: string[]; elements?: unknown[] } };
     };
-    expect(output.schema).toBe('xcodebuildmcp.output.ui-action-result');
+    expect(output.schema).toBe('mobilebuildmcp.output.ui-action-result');
     expect(output.schemaVersion).toBe('2');
     expect(output.data.capture).toEqual(
       expect.objectContaining({
@@ -1160,7 +1160,7 @@ describe('registerToolCommands', () => {
         capture: { rs?: string; protocol?: string; elements?: unknown[]; actions?: unknown[] };
       };
     };
-    expect(verboseOutput.schema).toBe('xcodebuildmcp.output.ui-action-result');
+    expect(verboseOutput.schema).toBe('mobilebuildmcp.output.ui-action-result');
     expect(verboseOutput.schemaVersion).toBe('3');
     expect(verboseOutput.data.capture).toEqual(
       expect.objectContaining({
@@ -1196,7 +1196,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.capture-result',
+            schema: 'mobilebuildmcp.output.capture-result',
             schemaVersion: '2',
             result: {
               kind: 'capture-result',
@@ -1241,7 +1241,7 @@ describe('registerToolCommands', () => {
         capture: { rs?: string; protocol?: string; elements?: unknown[]; actions?: unknown[] };
       };
     };
-    expect(output.schema).toBe('xcodebuildmcp.output.capture-result');
+    expect(output.schema).toBe('mobilebuildmcp.output.capture-result');
     expect(output.schemaVersion).toBe('2');
     expect(output.data.capture).toEqual(
       expect.objectContaining({
@@ -1288,7 +1288,7 @@ describe('registerToolCommands', () => {
 
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.simulator-list',
+            schema: 'mobilebuildmcp.output.simulator-list',
             schemaVersion: '1',
             result: {
               kind: 'simulator-list',
@@ -1347,7 +1347,7 @@ describe('registerToolCommands', () => {
         opts.renderSession?.emit(streamedFragment);
         opts.onProgress?.(streamedFragment);
         opts.onStructuredOutput?.({
-          schema: 'xcodebuildmcp.output.simulator-list',
+          schema: 'mobilebuildmcp.output.simulator-list',
           schemaVersion: '1',
           result: {
             kind: 'simulator-list',
@@ -1415,7 +1415,7 @@ describe('registerToolCommands', () => {
     expect(stdoutChunks.join('')).toBe(
       `${JSON.stringify(
         {
-          schema: 'xcodebuildmcp.output.error',
+          schema: 'mobilebuildmcp.output.error',
           schemaVersion: '1',
           didError: true,
           error: 'Tool did not produce structured output for --output json',
@@ -1446,7 +1446,7 @@ describe('registerToolCommands', () => {
       handler: vi.fn(async (_args, ctx) => {
         if (ctx) {
           ctx.structuredOutput = {
-            schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+            schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
             schemaVersion: '2',
             result: {
               kind: 'xcode-bridge-call-result',
@@ -1464,7 +1464,7 @@ describe('registerToolCommands', () => {
       }) as ToolDefinition['handler'],
     });
     const app = yargs()
-      .scriptName('xcodebuildmcp')
+      .scriptName('mobilebuildmcp')
       .exitProcess(false)
       .fail((message, error) => {
         throw error ?? new Error(message);
@@ -1483,7 +1483,7 @@ describe('registerToolCommands', () => {
     expect(stdoutChunks.join('')).toBe(
       `${JSON.stringify(
         {
-          schema: 'xcodebuildmcp.output.xcode-bridge-call-result',
+          schema: 'mobilebuildmcp.output.xcode-bridge-call-result',
           schemaVersion: '2',
           didError: false,
           error: null,

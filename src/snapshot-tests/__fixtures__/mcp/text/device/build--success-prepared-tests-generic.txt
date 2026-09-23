@@ -5,4 +5,4 @@
   └ Files:
      ├── <TMPDIR>/Generic CalculatorApp Tests.xctestproducts/ — Test Products
      │   └── Tests/0/CalculatorApp.xctestrun — XCTest Run
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log — Build Logs
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log — Build Logs

@@ -5,7 +5,7 @@ names:
   cli: build-and-run
 description: Build and run macOS app.
 outputSchema:
-  schema: xcodebuildmcp.output.build-run-result
+  schema: mobilebuildmcp.output.build-run-result
   version: "2"
 predicates:
   - hideWhenXcodeAgentMode

@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.build-run-result",
+  "schema": "mobilebuildmcp.output.build-run-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -20,7 +20,7 @@
       "appPath": "<TMPDIR>/DerivedData/Build/Products/Debug/MCPTest.app",
       "bundleId": "io.sentry.MCPTest.macOS",
       "processId": 99999,
-      "buildLogPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_run_macos_<TIMESTAMP>_pid<PID>.log"
+      "buildLogPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_run_macos_<TIMESTAMP>_pid<PID>.log"
     },
     "output": {
       "stdout": [],

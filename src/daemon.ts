@@ -91,7 +91,7 @@ function rotateLogIfNeeded(logPath: string): void {
 }
 
 function resolveDaemonLogPath(workspaceKey: string): string | null {
-  const override = process.env.XCODEBUILDMCP_DAEMON_LOG_PATH?.trim();
+  const override = process.env.MOBILEBUILDMCP_DAEMON_LOG_PATH?.trim();
   if (override) {
     return override;
   }
@@ -107,7 +107,7 @@ function ensureLogDir(logPath: string): void {
 }
 
 function resolveLogLevel(): ReturnType<typeof normalizeLogLevel> {
-  const raw = process.env.XCODEBUILDMCP_DAEMON_LOG_LEVEL;
+  const raw = process.env.MOBILEBUILDMCP_DAEMON_LOG_LEVEL;
   if (!raw) {
     return null;
   }
@@ -141,7 +141,7 @@ async function main(): Promise<void> {
   initSentry({ mode: 'cli-daemon' });
   recordDaemonLifecycleMetric('start');
 
-  log('info', `[Daemon] xcodebuildmcp daemon ${version} starting...`);
+  log('info', `[Daemon] mobilebuildmcp daemon ${version} starting...`);
 
   const socketPath = getSocketPath({
     cwd: result.runtime.cwd,

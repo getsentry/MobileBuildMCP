@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.scaffold-result",
+  "schema": "mobilebuildmcp.output.scaffold-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

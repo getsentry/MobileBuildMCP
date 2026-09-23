@@ -19,7 +19,7 @@ const schemaObj = z.object({
   persist: z
     .boolean()
     .optional()
-    .describe('Persist activeSessionDefaultsProfile to .xcodebuildmcp/config.yaml.'),
+    .describe('Persist activeSessionDefaultsProfile to .mobilebuildmcp/config.yaml.'),
 });
 
 type Params = z.input<typeof schemaObj>;
@@ -55,7 +55,7 @@ function setStructuredOutput(
 ): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.session-profile',
+    schema: 'mobilebuildmcp.output.session-profile',
     schemaVersion: '2',
   };
 }

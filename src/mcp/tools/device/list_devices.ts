@@ -113,7 +113,7 @@ function createDeviceListErrorResult(message: string): ListDevicesResult {
 function setStructuredOutput(ctx: ToolHandlerContext, result: ListDevicesResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.device-list',
+    schema: 'mobilebuildmcp.output.device-list',
     schemaVersion: '2',
   };
 }

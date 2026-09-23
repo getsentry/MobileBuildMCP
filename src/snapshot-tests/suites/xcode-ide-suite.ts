@@ -16,10 +16,10 @@ const DOCUMENTATION_SEARCH_QUERY = 'AVCapturePhotoOutputMaxPhotoQualityPrioritiz
 const XCODE_IDE_BRIDGE_POLL_INTERVAL_MS = 250;
 const XCODE_IDE_BRIDGE_READY_TIMEOUT_MS = 15_000;
 const XCODE_IDE_ENV = {
-  XCODEBUILDMCP_ENABLED_WORKFLOWS: 'xcode-ide',
-  XCODEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
-  XCODEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
-  XCODEBUILDMCP_XCODE_IDE_DISCOVERY_TIMEOUT_MS: '5000',
+  MOBILEBUILDMCP_ENABLED_WORKFLOWS: 'xcode-ide',
+  MOBILEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
+  MOBILEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
+  MOBILEBUILDMCP_XCODE_IDE_DISCOVERY_TIMEOUT_MS: '5000',
 };
 
 interface XcodeIdeTestEnvironment {
@@ -163,7 +163,7 @@ async function cleanupXcodeIdeTest(
 }
 
 function createXcodeIdeTestEnvironment(): XcodeIdeTestEnvironment {
-  const cwd = realpathSync(mkdtempSync(join(tmpdir(), 'xcodebuildmcp-xcode-ide-snapshot-')));
+  const cwd = realpathSync(mkdtempSync(join(tmpdir(), 'mobilebuildmcp-xcode-ide-snapshot-')));
   const workspaceKey = workspaceKeyForRoot(cwd);
   const workspaceLayout = getWorkspaceFilesystemLayout(workspaceKey);
   const artifactRoot = join(workspaceLayout.state, 'xcode-ide', 'call-tool');

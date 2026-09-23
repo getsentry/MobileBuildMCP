@@ -25,7 +25,7 @@ async function withSwiftPackageTestContext(
   runtime: SnapshotRuntime,
   run: (context: SwiftPackageTestContext) => Promise<void>,
 ): Promise<void> {
-  const tempDirectory = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-swift-package-snapshot-'));
+  const tempDirectory = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-swift-package-snapshot-'));
   const packagePath = copyPackageForTest(tempDirectory);
   let harness: WorkflowSnapshotHarness | undefined;
 

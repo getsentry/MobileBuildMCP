@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.install-result",
+  "schema": "mobilebuildmcp.output.install-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -9,7 +9,7 @@
     },
     "artifacts": {
       "simulatorId": "<UUID>",
-      "appPath": "~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app"
+      "appPath": "~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/DerivedData/CalculatorApp-<HASH>/Build/Products/Debug-iphonesimulator/CalculatorApp.app"
     },
     "diagnostics": {
       "warnings": [],

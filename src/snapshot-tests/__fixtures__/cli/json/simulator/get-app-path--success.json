@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.app-path",
+  "schema": "mobilebuildmcp.output.app-path",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -20,9 +20,9 @@
     }
   },
   "nextSteps": [
-    "Get bundle ID: xcodebuildmcp simulator get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app",
-    "Boot simulator: xcodebuildmcp simulator boot --simulator-id SIMULATOR_UUID",
-    "Install app: xcodebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app",
-    "Launch app: xcodebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id BUNDLE_ID"
+    "Get bundle ID: mobilebuildmcp simulator get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app",
+    "Boot simulator: mobilebuildmcp simulator boot --simulator-id SIMULATOR_UUID",
+    "Install app: mobilebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app",
+    "Launch app: mobilebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id BUNDLE_ID"
   ]
 }

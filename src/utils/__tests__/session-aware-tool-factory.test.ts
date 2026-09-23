@@ -151,7 +151,7 @@ describe('createSessionAwareTool', () => {
       simulatorId: 'SIM-1',
     });
     expect(result.isError).toBe(true);
-    expect(result.structuredOutput?.schema).toBe('xcodebuildmcp.output.error');
+    expect(result.structuredOutput?.schema).toBe('mobilebuildmcp.output.error');
     expect(result.structuredOutput?.result.error).toContain('Missing required session defaults');
     expect(result.text).toContain('Missing required session defaults');
     expect(result.text).toContain('scheme is required');

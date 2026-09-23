@@ -17,7 +17,7 @@ Test Failures (2):
 
 ❌ <FAIL_COUNT> tests failed, <PASS_COUNT> passed, <SKIP_COUNT> skipped (⏱️ <DURATION>)
   └ Files:
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/
          ├── logs/test_macos_<TIMESTAMP>_pid<PID>.log — Build Logs
          ├── result-bundles/test_macos_<TIMESTAMP>_pid<PID>.xcresult — Result Bundle
          └── test-products/test_macos_<TIMESTAMP>_pid<PID>.xctestproducts — Test Products

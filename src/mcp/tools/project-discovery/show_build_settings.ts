@@ -107,7 +107,7 @@ function createShowBuildSettingsErrorResult(
 function setStructuredOutput(ctx: ToolHandlerContext, result: ShowBuildSettingsResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.build-settings',
+    schema: 'mobilebuildmcp.output.build-settings',
     schemaVersion: '2',
   };
 }

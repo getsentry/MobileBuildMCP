@@ -186,7 +186,7 @@ function isLikelyMcpProcessCommand(command: string): boolean {
     return false;
   }
   return (
-    normalized.includes('xcodebuildmcp') ||
+    normalized.includes('mobilebuildmcp') ||
     normalized.includes('build/cli.js') ||
     normalized.includes('/cli.js')
   );

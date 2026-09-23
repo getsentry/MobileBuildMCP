@@ -8,7 +8,7 @@
 
 ✅ Build succeeded. (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_device_<TIMESTAMP>_pid<PID>.log
 
 Next steps:
-1. Get built device app path: xcodebuildmcp device get-app-path --scheme CalculatorApp --derived-data-path <TMPDIR>
+1. Get built device app path: mobilebuildmcp device get-app-path --scheme CalculatorApp --derived-data-path <TMPDIR>

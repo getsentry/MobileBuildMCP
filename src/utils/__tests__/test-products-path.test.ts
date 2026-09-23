@@ -7,12 +7,12 @@ import {
   createDefaultTestProductsPath,
   findXctestrunPaths,
   getTestProductsCompletionMarkerPath,
-  isXcodeBuildMCPManagedTestProductsName,
+  isMobileBuildMCPManagedTestProductsName,
   markTestProductsPathCompleted,
 } from '../test-products-path.ts';
 import {
   getWorkspaceFilesystemLayout,
-  setXcodeBuildMCPAppDirOverrideForTests,
+  setMobileBuildMCPAppDirOverrideForTests,
 } from '../log-paths.ts';
 import { setRuntimeInstanceForTests } from '../runtime-instance.ts';
 
@@ -20,8 +20,8 @@ describe('test products paths', () => {
   let appDir: string;
 
   beforeEach(() => {
-    appDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-test-products-path-'));
-    setXcodeBuildMCPAppDirOverrideForTests(appDir);
+    appDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-test-products-path-'));
+    setMobileBuildMCPAppDirOverrideForTests(appDir);
     setRuntimeInstanceForTests({
       instanceId: 'test-products-path',
       pid: process.pid,
@@ -31,7 +31,7 @@ describe('test products paths', () => {
 
   afterEach(async () => {
     setRuntimeInstanceForTests(null);
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     await rm(appDir, { recursive: true, force: true });
   });
 
@@ -41,8 +41,8 @@ describe('test products paths', () => {
 
     expect(path.dirname(first)).toBe(getWorkspaceFilesystemLayout('workspace-a').testProducts);
     expect(first).not.toBe(second);
-    expect(isXcodeBuildMCPManagedTestProductsName(path.basename(first))).toBe(true);
-    expect(isXcodeBuildMCPManagedTestProductsName('caller-provided.xctestproducts')).toBe(false);
+    expect(isMobileBuildMCPManagedTestProductsName(path.basename(first))).toBe(true);
+    expect(isMobileBuildMCPManagedTestProductsName('caller-provided.xctestproducts')).toBe(false);
   });
 
   it('atomically marks a generated test products directory completed', () => {

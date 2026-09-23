@@ -22,24 +22,24 @@ const CLIENT_DEFINITIONS: { id: string; name: string; skillsSubdir: string }[] =
 
 const AGENTS_FILE_NAME = 'AGENTS.md';
 const AGENTS_LEGACY_GUIDANCE_LINE =
-  '- If using XcodeBuildMCP, first find and read the installed XcodeBuildMCP skill before calling XcodeBuildMCP tools.';
+  '- If using MobileBuildMCP, first find and read the installed MobileBuildMCP skill before calling MobileBuildMCP tools.';
 const AGENTS_GUIDANCE_LINE =
-  '- If using XcodeBuildMCP, use the installed XcodeBuildMCP skill before calling XcodeBuildMCP tools.';
+  '- If using MobileBuildMCP, use the installed MobileBuildMCP skill before calling MobileBuildMCP tools.';
 
 function writeLine(text: string): void {
   process.stdout.write(`${text}\n`);
 }
 
 function skillDirName(skillType: SkillType): string {
-  return skillType === 'mcp' ? 'xcodebuildmcp' : 'xcodebuildmcp-cli';
+  return skillType === 'mcp' ? 'mobilebuildmcp' : 'mobilebuildmcp-cli';
 }
 
 function altSkillDirName(skillType: SkillType): string {
-  return skillType === 'mcp' ? 'xcodebuildmcp-cli' : 'xcodebuildmcp';
+  return skillType === 'mcp' ? 'mobilebuildmcp-cli' : 'mobilebuildmcp';
 }
 
 function skillDisplayName(skillType: SkillType): string {
-  return skillType === 'mcp' ? 'XcodeBuildMCP (MCP server)' : 'XcodeBuildMCP CLI';
+  return skillType === 'mcp' ? 'MobileBuildMCP (MCP server)' : 'MobileBuildMCP CLI';
 }
 
 function detectClients(): ClientInfo[] {
@@ -180,7 +180,7 @@ function uninstallSkill(
   clientName: string,
 ): { client: string; removed: Array<{ variant: string; path: string }> } | null {
   const removed: Array<{ variant: string; path: string }> = [];
-  for (const variant of ['xcodebuildmcp', 'xcodebuildmcp-cli']) {
+  for (const variant of ['mobilebuildmcp', 'mobilebuildmcp-cli']) {
     const dir = path.join(skillsDir, variant);
     if (fs.existsSync(dir)) {
       fs.rmSync(dir, { recursive: true, force: true });
@@ -247,7 +247,7 @@ async function ensureAgentsGuidance(
     const newContent = `# ${AGENTS_FILE_NAME}\n\n${AGENTS_GUIDANCE_LINE}\n`;
     fs.writeFileSync(agentsPath, newContent, 'utf8');
     if (emitOutput) {
-      writeLine(`Created ${AGENTS_FILE_NAME} with XcodeBuildMCP guidance at ${agentsPath}`);
+      writeLine(`Created ${AGENTS_FILE_NAME} with MobileBuildMCP guidance at ${agentsPath}`);
     }
     return 'created';
   }
@@ -255,7 +255,7 @@ async function ensureAgentsGuidance(
   const currentContent = fs.readFileSync(agentsPath, 'utf8');
   if (currentContent.includes(AGENTS_GUIDANCE_LINE)) {
     if (emitOutput) {
-      writeLine(`${AGENTS_FILE_NAME} already includes XcodeBuildMCP guidance.`);
+      writeLine(`${AGENTS_FILE_NAME} already includes MobileBuildMCP guidance.`);
     }
     return 'no_change';
   }
@@ -330,12 +330,12 @@ async function collectInitSelection(
       options: [
         {
           value: 'cli',
-          label: 'XcodeBuildMCP CLI',
+          label: 'MobileBuildMCP CLI',
           description: 'Recommended for most users',
         },
         {
           value: 'mcp',
-          label: 'XcodeBuildMCP MCP Server',
+          label: 'MobileBuildMCP MCP Server',
           description: 'For MCP server usage',
         },
       ],
@@ -447,7 +447,7 @@ async function promptCustomPath(): Promise<string> {
 export function registerInitCommand(app: Argv, ctx?: { workspaceRoot: string }): void {
   app.command(
     'init',
-    'Install XcodeBuildMCP agent skill',
+    'Install MobileBuildMCP agent skill',
     (yargs) => {
       return yargs
         .option('client', {
@@ -498,8 +498,8 @@ export function registerInitCommand(app: Argv, ctx?: { workspaceRoot: string }):
 
       if (argv.uninstall) {
         if (isTTY) {
-          clack.intro('XcodeBuildMCP Init');
-          clack.log.info('Removing XcodeBuildMCP agent skills from detected AI clients.');
+          clack.intro('MobileBuildMCP Init');
+          clack.log.info('Removing MobileBuildMCP agent skills from detected AI clients.');
         }
 
         const targets = resolveTargets(clientFlag ?? 'auto', destFlag, 'uninstall');
@@ -549,10 +549,10 @@ export function registerInitCommand(app: Argv, ctx?: { workspaceRoot: string }):
       }
 
       if (isTTY) {
-        clack.intro('XcodeBuildMCP Init');
+        clack.intro('MobileBuildMCP Init');
         clack.log.info(
-          'Install the XcodeBuildMCP agent skill to your AI coding clients.\n' +
-            'The skill teaches your AI assistant how to use XcodeBuildMCP\n' +
+          'Install the MobileBuildMCP agent skill to your AI coding clients.\n' +
+            'The skill teaches your AI assistant how to use MobileBuildMCP\n' +
             'effectively for building, testing, and debugging your apps.',
         );
       }

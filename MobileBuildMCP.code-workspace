@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "../MobileBuildMCP-iOS-Template",
+    },
+    {
+      "path": "../MobileBuildMCP-macOS-Template",
+    },
+  ],
+}

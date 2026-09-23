@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const RESOURCE_ROOT_ENV_VAR = 'XCODEBUILDMCP_RESOURCE_ROOT';
+const RESOURCE_ROOT_ENV_VAR = 'MOBILEBUILDMCP_RESOURCE_ROOT';
 let cachedPackageRoot: string | null = null;
 let cachedResourceRoot: string | null = null;
 

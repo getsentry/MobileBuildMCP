@@ -4,7 +4,7 @@ import { isPidAlive } from './process-liveness.ts';
 import {
   getManagedTestProductsOwnerPid,
   getTestProductsCompletionMarkerPath,
-  isXcodeBuildMCPManagedTestProductsName,
+  isMobileBuildMCPManagedTestProductsName,
 } from './test-products-path.ts';
 
 export const TEST_PRODUCTS_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000;
@@ -53,7 +53,7 @@ export async function pruneManagedTestProductsDirectory(
   await fs.mkdir(options.testProductsDir, { recursive: true, mode: 0o700 });
   const entries = await fs.readdir(options.testProductsDir, { withFileTypes: true });
   const candidates = entries
-    .filter((entry) => entry.isDirectory() && isXcodeBuildMCPManagedTestProductsName(entry.name))
+    .filter((entry) => entry.isDirectory() && isMobileBuildMCPManagedTestProductsName(entry.name))
     .map((entry) => ({
       name: entry.name,
       path: path.join(options.testProductsDir, entry.name),

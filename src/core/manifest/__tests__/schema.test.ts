@@ -85,7 +85,7 @@ describe('schema', () => {
       module: 'mcp/tools/simulator/list_sims',
       names: { mcp: 'list_sims' },
       outputSchema: {
-        schema: 'xcodebuildmcp.output.simulator-list',
+        schema: 'mobilebuildmcp.output.simulator-list',
         version: '1',
       },
     });
@@ -93,7 +93,7 @@ describe('schema', () => {
     expect(result.success).toBe(true);
     if (!result.success) throw new Error('Expected output schema metadata to parse');
     expect(result.data.outputSchema).toEqual({
-      schema: 'xcodebuildmcp.output.simulator-list',
+      schema: 'mobilebuildmcp.output.simulator-list',
       version: '1',
     });
   });
@@ -154,7 +154,7 @@ describe('schema', () => {
       id: 'simulators',
       module: 'mcp/resources/simulators',
       name: 'simulators',
-      uri: 'xcodebuildmcp://simulators',
+      uri: 'mobilebuildmcp://simulators',
       description: 'Available iOS simulators',
       mimeType: 'text/plain',
     };
@@ -173,7 +173,7 @@ describe('schema', () => {
       id: 'xcode-ide-state',
       module: 'mcp/resources/xcode-ide-state',
       name: 'xcode-ide-state',
-      uri: 'xcodebuildmcp://xcode-ide-state',
+      uri: 'mobilebuildmcp://xcode-ide-state',
       description: 'Xcode IDE state',
       mimeType: 'application/json',
       predicates: ['runningUnderXcodeAgent'],

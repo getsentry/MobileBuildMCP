@@ -21,7 +21,7 @@ describe('build-utils xcodemake lifecycle', () => {
   let projectDirectory: string;
 
   beforeEach(() => {
-    projectDirectory = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-xcodemake-'));
+    projectDirectory = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-xcodemake-'));
     writeFileSync(path.join(projectDirectory, 'Makefile'), 'all:\n\t@true\n');
     executeXcodemakeCommandMock.mockResolvedValue({ success: true, output: 'BUILD SUCCEEDED' });
   });
@@ -34,7 +34,7 @@ describe('build-utils xcodemake lifecycle', () => {
   it('delegates existing Makefile validation to xcodemake for external DerivedData', async () => {
     const workspacePath = path.join(projectDirectory, 'MyWorkspace.xcworkspace');
     const derivedDataPath =
-      '/Users/developer/Library/Developer/XcodeBuildMCP/DerivedData/MyWorkspace-57a542dedf16';
+      '/Users/developer/Library/Developer/MobileBuildMCP/DerivedData/MyWorkspace-57a542dedf16';
     const executorCall = vi.fn();
     const executor = createMockExecutor({ onExecute: executorCall });
 
@@ -81,7 +81,7 @@ describe('build-utils xcodemake lifecycle', () => {
 
   it('uses the current working directory when no project or workspace path is provided', async () => {
     const derivedDataPath =
-      '/Users/developer/Library/Developer/XcodeBuildMCP/DerivedData/MyScheme-57a542dedf16';
+      '/Users/developer/Library/Developer/MobileBuildMCP/DerivedData/MyScheme-57a542dedf16';
     const executorCall = vi.fn();
     const executor = createMockExecutor({ onExecute: executorCall });
 

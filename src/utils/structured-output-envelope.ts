@@ -389,7 +389,7 @@ export function toStructuredEnvelope<TResult extends ToolDomainResult>(
   const { kind: neverKind, didError, error, ...data } = result;
   const projectedData = projectRuntimeSnapshotData(data as DomainResultData<TResult>, options);
   const serializedNextSteps =
-    schema === 'xcodebuildmcp.output.error'
+    schema === 'mobilebuildmcp.output.error'
       ? undefined
       : serializeNextSteps(nextSteps, {
           runtime: nextStepRuntime,

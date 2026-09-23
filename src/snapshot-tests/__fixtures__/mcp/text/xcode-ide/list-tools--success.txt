@@ -3,4 +3,4 @@
 
 ✅ Found <XCODE_IDE_TOOL_COUNT> tool(s). Raw response saved to artifact.
   └ Files:
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/state/xcode-ide/call-tool/ownerpid<PID>_<UUID>/<TIMESTAMP>-list-tools-<HASH>.json — Raw Response JSON
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/state/xcode-ide/call-tool/ownerpid<PID>_<UUID>/<TIMESTAMP>-list-tools-<HASH>.json — Raw Response JSON

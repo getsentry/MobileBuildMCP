@@ -62,7 +62,7 @@ function baseResult(overrides: Partial<BenchmarkResult> = {}): BenchmarkResult {
         promptPath: `${runDirectory}/prompt.md`,
         mcpConfigPath: `${runDirectory}/mcp-config.json`,
         mcpWorkspaceDirectory: `${runDirectory}/mcp-workspace`,
-        mcpWorkspaceConfigPath: `${runDirectory}/mcp-workspace/.xcodebuildmcp/config.yaml`,
+        mcpWorkspaceConfigPath: `${runDirectory}/mcp-workspace/.mobilebuildmcp/config.yaml`,
         claudeJsonlPath: `${runDirectory}/claude.jsonl`,
         claudeStderrPath: `${runDirectory}/claude.stderr`,
         claudeCommandLogPath: `${runDirectory}/claude-command.log`,
@@ -100,7 +100,7 @@ describe('renderSuiteReport', () => {
         failures: [
           {
             shortName: 'boot_sim',
-            fullName: 'mcp__xcodebuildmcp-dev__boot_sim',
+            fullName: 'mcp__mobilebuildmcp-dev__boot_sim',
             line: 9,
             message: 'Boot failed: device not found',
           },

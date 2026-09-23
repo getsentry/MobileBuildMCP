@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.debug-breakpoint-result",
+  "schema": "mobilebuildmcp.output.debug-breakpoint-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,

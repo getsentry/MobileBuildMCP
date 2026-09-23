@@ -6,7 +6,7 @@ Discovered 1 test(s):
 
 ✅ 1 test passed, 0 failed, 0 skipped (⏱️ <DURATION>)
   └ Files:
-     └── ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/
+     └── ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/
          ├── logs/test_sim_<TIMESTAMP>_pid<PID>.log — Build Logs
          ├── result-bundles/test_sim_<TIMESTAMP>_pid<PID>.xcresult — Result Bundle
          └── test-products/test_sim_<TIMESTAMP>_pid<PID>.xctestproducts — Test Products

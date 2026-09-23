@@ -10,7 +10,7 @@ import type { FilePathRenderStyle } from './runtime-config-types.ts';
 import { normalizeSessionDefaultsProfileName } from './session-defaults-profile.ts';
 import { resolvePathFromCwd } from './path.ts';
 
-const CONFIG_DIR = '.xcodebuildmcp';
+const CONFIG_DIR = '.mobilebuildmcp';
 const CONFIG_FILE = 'config.yaml';
 
 export type ProjectConfig = RuntimeConfigFile & {

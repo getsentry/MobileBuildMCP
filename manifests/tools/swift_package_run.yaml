@@ -5,7 +5,7 @@ names:
   cli: run
 description: swift package target run.
 outputSchema:
-  schema: xcodebuildmcp.output.build-run-result
+  schema: mobilebuildmcp.output.build-run-result
   version: "2"
 routing:
   stateful: true

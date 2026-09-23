@@ -56,7 +56,7 @@ export type ToolNames = z.infer<typeof toolNamesSchema>;
 
 export const outputSchemaMetadataSchema = z
   .object({
-    schema: z.string().regex(/^xcodebuildmcp\.output\.[a-z0-9-]+$/),
+    schema: z.string().regex(/^mobilebuildmcp\.output\.[a-z0-9-]+$/),
     version: z.string().regex(/^[0-9]+$/),
   })
   .strict();
@@ -211,7 +211,7 @@ export const resourceManifestEntrySchema = z.object({
   /** MCP resource name */
   name: z.string(),
 
-  /** Resource URI (e.g., xcodebuildmcp://simulators) */
+  /** Resource URI (e.g., mobilebuildmcp://simulators) */
   uri: z.string(),
 
   /** Resource description */

@@ -78,7 +78,7 @@ export class DaemonClient {
         clearTimeout(timeoutId);
         cleanup();
         if (err.message.includes('ECONNREFUSED') || err.message.includes('ENOENT')) {
-          reject(new Error('Daemon is not running. Start it with: xcodebuildmcp daemon start'));
+          reject(new Error('Daemon is not running. Start it with: mobilebuildmcp daemon start'));
         } else {
           reject(err);
         }
@@ -205,7 +205,7 @@ export class DaemonClient {
 
         if (err.message.includes('ECONNREFUSED') || err.message.includes('ENOENT')) {
           failWithTransportError(
-            new Error('Daemon is not running. Start it with: xcodebuildmcp daemon start'),
+            new Error('Daemon is not running. Start it with: mobilebuildmcp daemon start'),
           );
         } else {
           failWithTransportError(err);

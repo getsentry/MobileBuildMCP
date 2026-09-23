@@ -18,25 +18,25 @@ describe('resource-root', () => {
 
   beforeEach(() => {
     originalExecPath = process.execPath;
-    originalResourceRoot = process.env.XCODEBUILDMCP_RESOURCE_ROOT;
-    tempDir = mkdtempSync(join(tmpdir(), 'xbmcp-resource-root-'));
+    originalResourceRoot = process.env.MOBILEBUILDMCP_RESOURCE_ROOT;
+    tempDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-resource-root-'));
     resetResourceRootCacheForTests();
   });
 
   afterEach(() => {
     process.execPath = originalExecPath;
     if (originalResourceRoot === undefined) {
-      delete process.env.XCODEBUILDMCP_RESOURCE_ROOT;
+      delete process.env.MOBILEBUILDMCP_RESOURCE_ROOT;
     } else {
-      process.env.XCODEBUILDMCP_RESOURCE_ROOT = originalResourceRoot;
+      process.env.MOBILEBUILDMCP_RESOURCE_ROOT = originalResourceRoot;
     }
     rmSync(tempDir, { recursive: true, force: true });
     resetResourceRootCacheForTests();
   });
 
-  it('uses XCODEBUILDMCP_RESOURCE_ROOT when set', () => {
+  it('uses MOBILEBUILDMCP_RESOURCE_ROOT when set', () => {
     const explicitRoot = join(tempDir, 'explicit-root');
-    process.env.XCODEBUILDMCP_RESOURCE_ROOT = explicitRoot;
+    process.env.MOBILEBUILDMCP_RESOURCE_ROOT = explicitRoot;
 
     expect(getResourceRoot()).toBe(resolve(explicitRoot));
     expect(getManifestsDir()).toBe(join(resolve(explicitRoot), 'manifests'));
@@ -47,10 +47,10 @@ describe('resource-root', () => {
   });
 
   it('falls back to executable-relative root when resources exist next to executable', () => {
-    delete process.env.XCODEBUILDMCP_RESOURCE_ROOT;
+    delete process.env.MOBILEBUILDMCP_RESOURCE_ROOT;
     const executableRoot = join(tempDir, 'portable-install', 'libexec');
     mkdirSync(join(executableRoot, 'manifests', 'tools'), { recursive: true });
-    process.execPath = join(executableRoot, 'xcodebuildmcp');
+    process.execPath = join(executableRoot, 'mobilebuildmcp');
 
     expect(getResourceRoot()).toBe(executableRoot);
     expect(getBundledFrameworksDir()).toBe(join(executableRoot, 'bundled', 'Frameworks'));

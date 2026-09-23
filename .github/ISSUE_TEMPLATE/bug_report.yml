@@ -1,12 +1,12 @@
 name: Bug Report
-description: Report a bug or issue with XcodeBuildMCP
+description: Report a bug or issue with MobileBuildMCP
 title: '[Bug]: '
 labels: ['bug']
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report an issue with XcodeBuildMCP!
+        Thanks for taking the time to report an issue with MobileBuildMCP!
 
   - type: textarea
     id: description
@@ -21,10 +21,10 @@ body:
     id: debug
     attributes:
       label: Debug Output
-      description: Ask your agent "Run the XcodeBuildMCP `doctor` tool and return the output as markdown verbatim" and then copy paste it here.
+      description: Ask your agent "Run the MobileBuildMCP `doctor` tool and return the output as markdown verbatim" and then copy paste it here.
       placeholder: |
         ```
-        XcodeBuildMCP Doctor
+        MobileBuildMCP Doctor
 
         Generated: 2025-08-11T17:42:29.812Z
         Server Version: 1.11.2
@@ -51,7 +51,7 @@ body:
     id: mcp-server-version
     attributes:
       label: MCP Server Version
-      description: The version of XcodeBuildMCP you're using
+      description: The version of MobileBuildMCP you're using
       placeholder: 1.2.2
     validations:
       required: true
@@ -74,7 +74,7 @@ body:
         ```json
         {
           "mcpServers": {
-            "XcodeBuildMCP": {...}
+            "MobileBuildMCP": {...}
           }
         }
         ```

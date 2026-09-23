@@ -16,7 +16,7 @@ export function registerUtilitiesSnapshotSuite(runtime: SnapshotRuntime): void {
 
     beforeEach(async () => {
       harness = await createHarnessForRuntime(runtime);
-      derivedDataPath = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-clean-snapshot-'));
+      derivedDataPath = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-clean-snapshot-'));
     });
 
     afterEach(async () => {

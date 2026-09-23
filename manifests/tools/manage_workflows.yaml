@@ -3,9 +3,9 @@ module: mcp/tools/workflow-discovery/manage_workflows
 names:
   mcp: manage-workflows
   cli: manage-workflows
-description: Workflows are groups of tools exposed by XcodeBuildMCP. By default, not all workflows (and therefore tools) are enabled; only simulator tools are enabled by default. Some workflows are mandatory and can't be disabled.
+description: Workflows are groups of tools exposed by MobileBuildMCP. By default, not all workflows (and therefore tools) are enabled; only simulator tools are enabled by default. Some workflows are mandatory and can't be disabled.
 outputSchema:
-  schema: xcodebuildmcp.output.workflow-selection
+  schema: mobilebuildmcp.output.workflow-selection
   version: "2"
 availability:
   cli: true

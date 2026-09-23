@@ -14,9 +14,9 @@ import { createHarnessForRuntime, createWorkflowResultFixtureMatcher } from './h
 const INVALID_SIMULATOR_ID = '00000000-0000-0000-0000-000000000000';
 // The caller owns all state on this dedicated simulator. Some Simulator controls cannot be queried,
 // so their tests establish a known baseline and leave the simulator in that baseline after the test.
-const DISPOSABLE_SIMULATOR_ID = process.env.XCODEBUILDMCP_SNAPSHOT_DISPOSABLE_SIMULATOR_ID;
-const ERASABLE_SIMULATOR_ID = process.env.XCODEBUILDMCP_SNAPSHOT_ERASABLE_SIMULATOR_ID;
-const RUN_FOREGROUND_SIMULATOR_SNAPSHOTS = process.env.XCODEBUILDMCP_SNAPSHOT_FOREGROUND === '1';
+const DISPOSABLE_SIMULATOR_ID = process.env.MOBILEBUILDMCP_SNAPSHOT_DISPOSABLE_SIMULATOR_ID;
+const ERASABLE_SIMULATOR_ID = process.env.MOBILEBUILDMCP_SNAPSHOT_ERASABLE_SIMULATOR_ID;
+const RUN_FOREGROUND_SIMULATOR_SNAPSHOTS = process.env.MOBILEBUILDMCP_SNAPSHOT_FOREGROUND === '1';
 
 async function invokeReversibleToggle(
   harness: WorkflowSnapshotHarness,
@@ -87,7 +87,7 @@ export function registerSimulatorManagementSnapshotSuite(runtime: SnapshotRuntim
     describe('open', () => {
       it.runIf(RUN_FOREGROUND_SIMULATOR_SNAPSHOTS)('success', async () => {
         const foregroundHarness = await createHarnessForRuntime(runtime, {
-          env: { XCODEBUILDMCP_HEADLESS_LAUNCH: '0' },
+          env: { MOBILEBUILDMCP_HEADLESS_LAUNCH: '0' },
         });
         cleanup.defer('clean up foreground harness', () => foregroundHarness.cleanup());
 
@@ -183,7 +183,7 @@ export function registerSimulatorManagementSnapshotSuite(runtime: SnapshotRuntim
         'success',
         async () => {
           const foregroundHarness = await createHarnessForRuntime(runtime, {
-            env: { XCODEBUILDMCP_HEADLESS_LAUNCH: '0' },
+            env: { MOBILEBUILDMCP_HEADLESS_LAUNCH: '0' },
           });
           cleanup.defer('clean up foreground harness', () => foregroundHarness.cleanup());
           await ensureSimulatorBooted(DISPOSABLE_SIMULATOR_ID!, cleanup);
@@ -211,7 +211,7 @@ export function registerSimulatorManagementSnapshotSuite(runtime: SnapshotRuntim
         'success',
         async () => {
           const foregroundHarness = await createHarnessForRuntime(runtime, {
-            env: { XCODEBUILDMCP_HEADLESS_LAUNCH: '0' },
+            env: { MOBILEBUILDMCP_HEADLESS_LAUNCH: '0' },
           });
           cleanup.defer('clean up foreground harness', () => foregroundHarness.cleanup());
           await ensureSimulatorBooted(DISPOSABLE_SIMULATOR_ID!, cleanup);

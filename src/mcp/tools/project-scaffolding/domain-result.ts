@@ -35,7 +35,7 @@ export function setScaffoldStructuredOutput(
 ): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.scaffold-result',
+    schema: 'mobilebuildmcp.output.scaffold-result',
     schemaVersion: '2',
   };
 }

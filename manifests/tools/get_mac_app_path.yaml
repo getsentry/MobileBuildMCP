@@ -5,7 +5,7 @@ names:
   cli: get-app-path
 description: Get macOS built app path.
 outputSchema:
-  schema: xcodebuildmcp.output.app-path
+  schema: mobilebuildmcp.output.app-path
   version: "2"
 annotations:
   title: Get macOS App Path

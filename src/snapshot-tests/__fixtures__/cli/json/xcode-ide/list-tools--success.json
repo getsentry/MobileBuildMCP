@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.xcode-bridge-tool-list",
+  "schema": "mobilebuildmcp.output.xcode-bridge-tool-list",
   "schemaVersion": "3",
   "didError": false,
   "error": null,

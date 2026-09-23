@@ -5,7 +5,7 @@ names:
   cli: record-video
 description: Record sim video.
 outputSchema:
-  schema: xcodebuildmcp.output.capture-result
+  schema: mobilebuildmcp.output.capture-result
   version: "2"
 routing:
   stateful: true

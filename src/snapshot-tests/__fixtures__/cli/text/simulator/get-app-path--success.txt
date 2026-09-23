@@ -11,7 +11,7 @@
      └ App Path: <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app
 
 Next steps:
-1. Get bundle ID: xcodebuildmcp simulator get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app
-2. Boot simulator: xcodebuildmcp simulator boot --simulator-id SIMULATOR_UUID
-3. Install app: xcodebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app
-4. Launch app: xcodebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id BUNDLE_ID
+1. Get bundle ID: mobilebuildmcp simulator get-app-bundle-id --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app
+2. Boot simulator: mobilebuildmcp simulator boot --simulator-id SIMULATOR_UUID
+3. Install app: mobilebuildmcp simulator install --simulator-id SIMULATOR_UUID --app-path <TMPDIR>/Build/Products/Debug-iphonesimulator/CalculatorApp.app
+4. Launch app: mobilebuildmcp simulator launch-app --simulator-id SIMULATOR_UUID --bundle-id BUNDLE_ID

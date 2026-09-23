@@ -1,5 +1,5 @@
 {
-  "schema": "xcodebuildmcp.output.install-result",
+  "schema": "mobilebuildmcp.output.install-result",
   "schemaVersion": "2",
   "didError": false,
   "error": null,
@@ -17,7 +17,7 @@
     }
   },
   "nextSteps": [
-    "Open the Simulator app: xcodebuildmcp simulator open",
-    "Launch the app: xcodebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id io.sentry.calculatorapp"
+    "Open the Simulator app: mobilebuildmcp simulator open",
+    "Launch the app: mobilebuildmcp simulator launch-app --simulator-id <UUID> --bundle-id io.sentry.calculatorapp"
   ]
 }

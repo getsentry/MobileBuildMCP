@@ -16,7 +16,7 @@ let tempDir: string;
 
 describe('ensureSocketDir', () => {
   beforeEach(() => {
-    tempDir = mkdtempSync(path.join(tmpdir(), 'xcodebuildmcp-socket-path-'));
+    tempDir = mkdtempSync(path.join(tmpdir(), 'mobilebuildmcp-socket-path-'));
   });
 
   afterEach(() => {

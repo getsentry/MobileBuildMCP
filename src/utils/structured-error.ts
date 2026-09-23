@@ -1,7 +1,7 @@
 import type { StructuredToolOutput, ToolHandlerContext } from '../rendering/types.ts';
 import type { StructuredErrorCategory } from '../types/domain-results.ts';
 
-export const STRUCTURED_ERROR_SCHEMA = 'xcodebuildmcp.output.error';
+export const STRUCTURED_ERROR_SCHEMA = 'mobilebuildmcp.output.error';
 export const STRUCTURED_ERROR_SCHEMA_VERSION = '1';
 
 export interface StructuredErrorParams {

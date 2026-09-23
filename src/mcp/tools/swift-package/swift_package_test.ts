@@ -20,7 +20,7 @@ import {
 } from '../../../utils/xcodebuild-domain-results.ts';
 import { toErrorMessage } from '../../../utils/errors.ts';
 
-const STRUCTURED_OUTPUT_SCHEMA = 'xcodebuildmcp.output.test-result';
+const STRUCTURED_OUTPUT_SCHEMA = 'mobilebuildmcp.output.test-result';
 
 const baseSchemaObject = z.object({
   packagePath: z.string(),

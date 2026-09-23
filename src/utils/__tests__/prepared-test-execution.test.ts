@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { CommandExecutor } from '../command.ts';
 import { createMockCommandResponse } from '../../test-utils/mock-executors.ts';
 import { DefaultStreamingExecutionContext } from '../execution/index.ts';
-import { setXcodeBuildMCPAppDirOverrideForTests } from '../log-paths.ts';
+import { setMobileBuildMCPAppDirOverrideForTests } from '../log-paths.ts';
 import { setRuntimeInstanceForTests } from '../runtime-instance.ts';
 import { createTestExecutor } from '../test-common.ts';
 import { resetWorkspaceFilesystemLifecycleStateForTests } from '../workspace-filesystem-lifecycle.ts';
@@ -15,8 +15,8 @@ describe('prepared test execution', () => {
   let tempAppDir: string;
 
   beforeEach(() => {
-    tempAppDir = mkdtempSync(join(tmpdir(), 'xcodebuildmcp-prepared-test-'));
-    setXcodeBuildMCPAppDirOverrideForTests(tempAppDir);
+    tempAppDir = mkdtempSync(join(tmpdir(), 'mobilebuildmcp-prepared-test-'));
+    setMobileBuildMCPAppDirOverrideForTests(tempAppDir);
     setRuntimeInstanceForTests({
       instanceId: 'prepared-test',
       pid: process.pid,
@@ -26,7 +26,7 @@ describe('prepared test execution', () => {
 
   afterEach(() => {
     resetWorkspaceFilesystemLifecycleStateForTests();
-    setXcodeBuildMCPAppDirOverrideForTests(null);
+    setMobileBuildMCPAppDirOverrideForTests(null);
     setRuntimeInstanceForTests(null);
     rmSync(tempAppDir, { recursive: true, force: true });
   });

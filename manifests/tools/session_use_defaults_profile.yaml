@@ -5,7 +5,7 @@ names:
   cli: use-defaults-profile
 description: Switch the active session defaults profile.
 outputSchema:
-  schema: xcodebuildmcp.output.session-profile
+  schema: mobilebuildmcp.output.session-profile
   version: "2"
 annotations:
   title: Use Session Defaults Profile

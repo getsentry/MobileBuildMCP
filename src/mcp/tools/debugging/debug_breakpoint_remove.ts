@@ -48,7 +48,7 @@ function createDebugBreakpointRemoveResult(params: {
 function setStructuredOutput(ctx: ToolHandlerContext, result: DebugBreakpointRemoveResult): void {
   ctx.structuredOutput = {
     result,
-    schema: 'xcodebuildmcp.output.debug-breakpoint-result',
+    schema: 'mobilebuildmcp.output.debug-breakpoint-result',
     schemaVersion: '2',
   };
 }

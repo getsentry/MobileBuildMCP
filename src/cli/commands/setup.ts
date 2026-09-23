@@ -752,7 +752,7 @@ async function listAvailableDevices(
   let jsonPath: string | undefined;
 
   try {
-    jsonPath = path.join(fileSystem.tmpdir(), `xcodebuildmcp-setup-devices-${Date.now()}.json`);
+    jsonPath = path.join(fileSystem.tmpdir(), `mobilebuildmcp-setup-devices-${Date.now()}.json`);
 
     const result = await executor(
       ['xcrun', 'devicectl', 'list', 'devices', '--json-output', jsonPath],
@@ -864,7 +864,7 @@ async function ensureSetupPrerequisites(opts: {
   }
 
   throw new Error(
-    `Setup prerequisites failed: ${xcodeInfo.error}. Run \`xcodebuildmcp doctor\` for details.`,
+    `Setup prerequisites failed: ${xcodeInfo.error}. Run \`mobilebuildmcp doctor\` for details.`,
   );
 }
 
@@ -875,7 +875,7 @@ async function collectSetupSelection(
   const existing = normalizeExistingDefaults(existingConfig);
 
   showPromptHelp(
-    'Enable debug mode to turn on more verbose logging and diagnostics while using XcodeBuildMCP.',
+    'Enable debug mode to turn on more verbose logging and diagnostics while using MobileBuildMCP.',
     deps.quietOutput,
   );
   const debug = await deps.prompter.confirm({
@@ -884,7 +884,7 @@ async function collectSetupSelection(
   });
 
   showPromptHelp(
-    'Disable Sentry telemetry to stop sending anonymous runtime diagnostics for XcodeBuildMCP itself (not your app, project code, or build errors).',
+    'Disable Sentry telemetry to stop sending anonymous runtime diagnostics for MobileBuildMCP itself (not your app, project code, or build errors).',
     deps.quietOutput,
   );
   const sentryDisabled = await deps.prompter.confirm({
@@ -979,48 +979,48 @@ function selectionToMcpConfigJson(selection: SetupSelection): string {
   const env: Record<string, string> = {};
 
   if (selection.enabledWorkflows.length > 0) {
-    env.XCODEBUILDMCP_ENABLED_WORKFLOWS = selection.enabledWorkflows.join(',');
+    env.MOBILEBUILDMCP_ENABLED_WORKFLOWS = selection.enabledWorkflows.join(',');
   }
 
   if (selection.debug) {
-    env.XCODEBUILDMCP_DEBUG = 'true';
+    env.MOBILEBUILDMCP_DEBUG = 'true';
   }
 
   if (selection.sentryDisabled) {
-    env.XCODEBUILDMCP_SENTRY_DISABLED = 'true';
+    env.MOBILEBUILDMCP_SENTRY_DISABLED = 'true';
   }
 
   if (selection.workspacePath) {
-    env.XCODEBUILDMCP_WORKSPACE_PATH = selection.workspacePath;
+    env.MOBILEBUILDMCP_WORKSPACE_PATH = selection.workspacePath;
   } else if (selection.projectPath) {
-    env.XCODEBUILDMCP_PROJECT_PATH = selection.projectPath;
+    env.MOBILEBUILDMCP_PROJECT_PATH = selection.projectPath;
   }
 
-  env.XCODEBUILDMCP_SCHEME = selection.scheme;
+  env.MOBILEBUILDMCP_SCHEME = selection.scheme;
   if (selection.deviceId) {
-    env.XCODEBUILDMCP_DEVICE_ID = selection.deviceId;
+    env.MOBILEBUILDMCP_DEVICE_ID = selection.deviceId;
   }
 
   const derivedPlatform = derivePlatformSessionDefault(selection.platforms);
   if (derivedPlatform) {
-    env.XCODEBUILDMCP_PLATFORM = derivedPlatform;
+    env.MOBILEBUILDMCP_PLATFORM = derivedPlatform;
   }
 
   if (selection.simulatorId) {
-    env.XCODEBUILDMCP_SIMULATOR_ID = selection.simulatorId;
+    env.MOBILEBUILDMCP_SIMULATOR_ID = selection.simulatorId;
   }
   if (selection.simulatorName) {
-    env.XCODEBUILDMCP_SIMULATOR_NAME = selection.simulatorName;
+    env.MOBILEBUILDMCP_SIMULATOR_NAME = selection.simulatorName;
   }
   if (selection.simulatorPlatform) {
-    env.XCODEBUILDMCP_SIMULATOR_PLATFORM = selection.simulatorPlatform;
+    env.MOBILEBUILDMCP_SIMULATOR_PLATFORM = selection.simulatorPlatform;
   }
 
   const mcpConfig = {
     mcpServers: {
-      XcodeBuildMCP: {
+      MobileBuildMCP: {
         command: 'npx',
-        args: ['-y', 'xcodebuildmcp@latest', 'mcp'],
+        args: ['-y', 'mobilebuildmcp@latest', 'mcp'],
         env,
       },
     },
@@ -1032,7 +1032,7 @@ function selectionToMcpConfigJson(selection: SetupSelection): string {
 export async function runSetupWizard(deps?: Partial<SetupDependencies>): Promise<SetupRunResult> {
   const isTTY = isInteractiveTTY();
   if (!isTTY) {
-    throw new Error('`xcodebuildmcp setup` requires an interactive TTY.');
+    throw new Error('`mobilebuildmcp setup` requires an interactive TTY.');
   }
 
   const resolvedDeps: SetupDependencies = {
@@ -1047,10 +1047,10 @@ export async function runSetupWizard(deps?: Partial<SetupDependencies>): Promise
   const isMcpJson = resolvedDeps.outputFormat === 'mcp-json';
 
   if (!resolvedDeps.quietOutput) {
-    clack.intro('XcodeBuildMCP Setup');
+    clack.intro('MobileBuildMCP Setup');
     if (isMcpJson) {
       clack.log.info(
-        'This wizard will configure your project defaults for XcodeBuildMCP.\n' +
+        'This wizard will configure your project defaults for MobileBuildMCP.\n' +
           'You will select target platforms, workflows, a project or workspace,\n' +
           'scheme, and any simulator/device defaults required by the workflows\n' +
           'you enable. A ready-to-paste MCP config JSON block will be printed\n' +
@@ -1059,10 +1059,10 @@ export async function runSetupWizard(deps?: Partial<SetupDependencies>): Promise
       );
     } else {
       clack.log.info(
-        'This wizard will configure your project defaults for XcodeBuildMCP.\n' +
+        'This wizard will configure your project defaults for MobileBuildMCP.\n' +
           'You will select target platforms, workflows, a project or workspace,\n' +
           'scheme, and any simulator/device defaults required by the workflows\n' +
-          'you enable. Settings are saved to .xcodebuildmcp/config.yaml in your\n' +
+          'you enable. Settings are saved to .mobilebuildmcp/config.yaml in your\n' +
           'project directory. You can rerun this wizard at any time — previous\n' +
           'choices are pre-loaded automatically.',
       );
@@ -1166,14 +1166,14 @@ export async function runSetupWizard(deps?: Partial<SetupDependencies>): Promise
 export function registerSetupCommand(app: Argv): void {
   app.command(
     'setup',
-    'Interactively configure XcodeBuildMCP project defaults',
+    'Interactively configure MobileBuildMCP project defaults',
     (yargs) =>
       yargs.option('format', {
         type: 'string',
         choices: ['yaml', 'mcp-json'] as const,
         default: 'yaml',
         describe:
-          'Output format: yaml writes .xcodebuildmcp/config.yaml, mcp-json prints an env-based MCP bootstrap config block',
+          'Output format: yaml writes .mobilebuildmcp/config.yaml, mcp-json prints an env-based MCP bootstrap config block',
       }),
     async (argv) => {
       await runSetupWizard({ outputFormat: argv.format as SetupOutputFormat });

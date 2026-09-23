@@ -5,7 +5,7 @@ names:
   cli: reset-location
 description: Reset sim location.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Reset Simulator Location

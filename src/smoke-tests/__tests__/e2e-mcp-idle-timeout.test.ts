@@ -142,9 +142,9 @@ describe('MCP server idle timeout e2e', () => {
         cwd: process.cwd(),
         env: getSmokeTestEnv({
           SENTRY_DISABLED: 'true',
-          XCODEBUILDMCP_ENABLED_WORKFLOWS: 'simulator',
-          XCODEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
-          XCODEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
+          MOBILEBUILDMCP_ENABLED_WORKFLOWS: 'simulator',
+          MOBILEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
+          MOBILEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
         }),
         stderr: 'pipe',
       });
@@ -194,10 +194,10 @@ describe('MCP server idle timeout e2e', () => {
         cwd: process.cwd(),
         env: getSmokeTestEnv({
           SENTRY_DISABLED: 'true',
-          XCODEBUILDMCP_ENABLED_WORKFLOWS: 'simulator',
-          XCODEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
-          XCODEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
-          XCODEBUILDMCP_MCP_IDLE_TIMEOUT_MS: String(MCP_IDLE_TIMEOUT_MS),
+          MOBILEBUILDMCP_ENABLED_WORKFLOWS: 'simulator',
+          MOBILEBUILDMCP_DISABLE_SESSION_DEFAULTS: 'true',
+          MOBILEBUILDMCP_DISABLE_XCODE_AUTO_SYNC: '1',
+          MOBILEBUILDMCP_MCP_IDLE_TIMEOUT_MS: String(MCP_IDLE_TIMEOUT_MS),
         }),
         stderr: 'pipe',
       });

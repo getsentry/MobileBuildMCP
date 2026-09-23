@@ -5,7 +5,7 @@ names:
   cli: lldb-command
 description: Run LLDB command.
 outputSchema:
-  schema: xcodebuildmcp.output.debug-command-result
+  schema: mobilebuildmcp.output.debug-command-result
   version: "2"
 routing:
   stateful: true

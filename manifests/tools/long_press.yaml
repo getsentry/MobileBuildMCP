@@ -5,7 +5,7 @@ names:
   cli: long-press
 description: Long press a UI element by elementRef from a current rs/1 runtime snapshot.
 outputSchema:
-  schema: xcodebuildmcp.output.ui-action-result
+  schema: mobilebuildmcp.output.ui-action-result
   version: "2"
 routing:
   stateful: true

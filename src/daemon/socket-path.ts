@@ -27,7 +27,7 @@ export function setDaemonRunDirOverrideForTests(dir: string | null): void {
 }
 
 export function daemonDirForWorkspaceKey(key: string): string {
-  return join(daemonRunDir(), `xcodebuildmcp-${compactWorkspaceKey(key)}`);
+  return join(daemonRunDir(), `mobilebuildmcp-${compactWorkspaceKey(key)}`);
 }
 
 export function socketPathForWorkspaceRoot(workspaceRoot: string): string {
@@ -52,8 +52,8 @@ export interface GetSocketPathOptions {
 export function getSocketPath(opts?: GetSocketPathOptions): string {
   const env = opts?.env ?? process.env;
 
-  if (env.XCODEBUILDMCP_SOCKET) {
-    return env.XCODEBUILDMCP_SOCKET;
+  if (env.MOBILEBUILDMCP_SOCKET) {
+    return env.MOBILEBUILDMCP_SOCKET;
   }
 
   const cwd = opts?.cwd ?? process.cwd();

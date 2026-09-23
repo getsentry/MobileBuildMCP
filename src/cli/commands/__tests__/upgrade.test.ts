@@ -41,7 +41,7 @@ const mockedIsCancel = vi.mocked(clack.isCancel);
 function createMockReleaseNotes(overrides?: Partial<ReleaseNotes>): ReleaseNotes {
   return {
     body: 'Bug fixes and improvements.',
-    htmlUrl: 'https://github.com/getsentry/XcodeBuildMCP/releases/tag/v3.0.0',
+    htmlUrl: 'https://github.com/getsentry/MobileBuildMCP/releases/tag/v3.0.0',
     name: 'Release 3.0.0',
     publishedAt: '2025-01-15T12:00:00Z',
     ...overrides,
@@ -70,10 +70,10 @@ function mockGitHubLatestRelease(tagName: string): void {
 function homebrewMethod(): InstallMethod {
   return {
     kind: 'homebrew',
-    manualCommand: 'brew update && brew upgrade xcodebuildmcp',
+    manualCommand: 'brew update && brew upgrade mobilebuildmcp',
     autoCommands: [
       ['brew', 'update'],
-      ['brew', 'upgrade', 'xcodebuildmcp'],
+      ['brew', 'upgrade', 'mobilebuildmcp'],
     ],
   };
 }
@@ -81,8 +81,8 @@ function homebrewMethod(): InstallMethod {
 function npmGlobalMethod(): InstallMethod {
   return {
     kind: 'npm-global',
-    manualCommand: 'npm install -g xcodebuildmcp@latest',
-    autoCommands: [['npm', 'install', '-g', 'xcodebuildmcp@latest']],
+    manualCommand: 'npm install -g mobilebuildmcp@latest',
+    autoCommands: [['npm', 'install', '-g', 'mobilebuildmcp@latest']],
   };
 }
 
@@ -100,8 +100,8 @@ function unknownMethod(): InstallMethod {
   return {
     kind: 'unknown',
     manualInstructions: [
-      'Homebrew:   brew update && brew upgrade xcodebuildmcp',
-      'npm:        npm install -g xcodebuildmcp@latest',
+      'Homebrew:   brew update && brew upgrade mobilebuildmcp',
+      'npm:        npm install -g mobilebuildmcp@latest',
       'npx:        npx always fetches the latest when using @latest',
     ],
   };
@@ -110,9 +110,9 @@ function unknownMethod(): InstallMethod {
 function baseDeps(overrides?: Partial<UpgradeDependencies>): Partial<UpgradeDependencies> {
   return {
     currentVersion: '2.0.0',
-    packageName: 'xcodebuildmcp',
+    packageName: 'mobilebuildmcp',
     repositoryOwner: 'getsentry',
-    repositoryName: 'XcodeBuildMCP',
+    repositoryName: 'MobileBuildMCP',
     fetchLatestRelease: vi.fn(async () => createMockLatestRelease()),
     fetchReleaseNotesForTag: vi.fn(async () => createMockReleaseNotes()),
     detectInstallMethod: vi.fn(() => homebrewMethod()),
@@ -336,71 +336,71 @@ describe('upgrade command', () => {
 
   describe('detectInstallMethodFromPaths', () => {
     it('detects homebrew on Intel Mac (/usr/local/Cellar)', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/usr/local/Cellar/xcodebuildmcp/2.0.0/bin/xcodebuildmcp',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/usr/local/Cellar/mobilebuildmcp/2.0.0/bin/mobilebuildmcp',
       ]);
       expect(method.kind).toBe('homebrew');
     });
 
     it('detects homebrew on Apple Silicon (/opt/homebrew/Cellar)', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/opt/homebrew/Cellar/xcodebuildmcp/2.0.0/bin/xcodebuildmcp',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/opt/homebrew/Cellar/mobilebuildmcp/2.0.0/bin/mobilebuildmcp',
       ]);
       expect(method.kind).toBe('homebrew');
     });
 
     it('produces correct homebrew auto commands', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/opt/homebrew/Cellar/xcodebuildmcp/2.0.0/bin/xcodebuildmcp',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/opt/homebrew/Cellar/mobilebuildmcp/2.0.0/bin/mobilebuildmcp',
       ]);
       expect(method.kind).toBe('homebrew');
       if (method.kind === 'homebrew') {
         expect(method.autoCommands).toEqual([
           ['brew', 'update'],
-          ['brew', 'upgrade', 'xcodebuildmcp'],
+          ['brew', 'upgrade', 'mobilebuildmcp'],
         ]);
       }
     });
 
     it('detects npm-global install', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/usr/local/lib/node_modules/xcodebuildmcp/build/cli.js',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/usr/local/lib/node_modules/mobilebuildmcp/build/cli.js',
       ]);
       expect(method.kind).toBe('npm-global');
       if (method.kind === 'npm-global') {
-        expect(method.autoCommands).toEqual([['npm', 'install', '-g', 'xcodebuildmcp@latest']]);
+        expect(method.autoCommands).toEqual([['npm', 'install', '-g', 'mobilebuildmcp@latest']]);
       }
     });
 
     it('detects npx from _npx cache path', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/Users/cam/.npm/_npx/abc123/node_modules/xcodebuildmcp/build/cli.js',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/Users/cam/.npm/_npx/abc123/node_modules/mobilebuildmcp/build/cli.js',
       ]);
       expect(method.kind).toBe('npx');
     });
 
     it('classifies npx before npm-global when path contains _npx and node_modules', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/Users/cam/.npm/_npx/12345/node_modules/xcodebuildmcp/build/cli.js',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/Users/cam/.npm/_npx/12345/node_modules/mobilebuildmcp/build/cli.js',
       ]);
       expect(method.kind).toBe('npx');
     });
 
     it('returns unknown for unrecognized paths', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/some/custom/path/xcodebuildmcp',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/some/custom/path/mobilebuildmcp',
       ]);
       expect(method.kind).toBe('unknown');
     });
 
     it('returns unknown for empty candidate list', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', []);
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', []);
       expect(method.kind).toBe('unknown');
     });
 
     it('matches case-insensitively', () => {
-      const method = detectInstallMethodFromPaths('xcodebuildmcp', [
-        '/opt/Homebrew/Cellar/XcodeBuildMCP/2.0.0/bin/xcodebuildmcp',
+      const method = detectInstallMethodFromPaths('mobilebuildmcp', [
+        '/opt/Homebrew/Cellar/MobileBuildMCP/2.0.0/bin/mobilebuildmcp',
       ]);
       expect(method.kind).toBe('homebrew');
     });
@@ -536,7 +536,7 @@ describe('upgrade command', () => {
         expect(code).toBe(0);
         expect(spawnMock).toHaveBeenCalledWith([
           ['brew', 'update'],
-          ['brew', 'upgrade', 'xcodebuildmcp'],
+          ['brew', 'upgrade', 'mobilebuildmcp'],
         ]);
       });
 
@@ -619,7 +619,7 @@ describe('upgrade command', () => {
 
         const code = await runUpgradeCommand({ check: false, yes: true }, deps);
         expect(code).toBe(0);
-        expect(spawnMock).toHaveBeenCalledWith([['npm', 'install', '-g', 'xcodebuildmcp@latest']]);
+        expect(spawnMock).toHaveBeenCalledWith([['npm', 'install', '-g', 'mobilebuildmcp@latest']]);
       });
 
       it('non-TTY without --yes exits 1', async () => {
@@ -784,7 +784,7 @@ describe('upgrade command', () => {
 
         const code = await runUpgradeCommand({ check: false, yes: false }, deps);
         expect(code).toBe(1);
-        expect(collectStdout(stdoutSpy)).toContain('brew update && brew upgrade xcodebuildmcp');
+        expect(collectStdout(stdoutSpy)).toContain('brew update && brew upgrade mobilebuildmcp');
       });
 
       it('shows failure info via clack in TTY mode', async () => {
@@ -900,13 +900,13 @@ describe('upgrade command', () => {
         mockGitHubLatestRelease('v3.0.0');
         const deps: Partial<UpgradeDependencies> = {
           currentVersion: '2.0.0',
-          packageName: 'xcodebuildmcp',
+          packageName: 'mobilebuildmcp',
           repositoryOwner: 'getsentry',
-          repositoryName: 'XcodeBuildMCP',
+          repositoryName: 'MobileBuildMCP',
           fetchReleaseNotesForTag: vi.fn(async (tag) =>
             createMockReleaseNotes({
               body: `Notes for ${tag}`,
-              htmlUrl: `https://github.com/getsentry/XcodeBuildMCP/releases/tag/${tag}`,
+              htmlUrl: `https://github.com/getsentry/MobileBuildMCP/releases/tag/${tag}`,
               name: `Release ${tag}`,
             }),
           ),
@@ -928,14 +928,14 @@ describe('upgrade command', () => {
         mockGitHubLatestRelease('3.0.0');
         const fetchReleaseNotesForTag = vi.fn(async (tag: string) =>
           createMockReleaseNotes({
-            htmlUrl: `https://github.com/getsentry/XcodeBuildMCP/releases/tag/${tag}`,
+            htmlUrl: `https://github.com/getsentry/MobileBuildMCP/releases/tag/${tag}`,
           }),
         );
         const deps: Partial<UpgradeDependencies> = {
           currentVersion: '2.0.0',
-          packageName: 'xcodebuildmcp',
+          packageName: 'mobilebuildmcp',
           repositoryOwner: 'getsentry',
-          repositoryName: 'XcodeBuildMCP',
+          repositoryName: 'MobileBuildMCP',
           fetchReleaseNotesForTag,
           detectInstallMethod: vi.fn(() => homebrewMethod()),
           spawnUpgradeProcess: vi.fn(async () => 0),
@@ -963,9 +963,9 @@ describe('upgrade command', () => {
           );
           const deps: Partial<UpgradeDependencies> = {
             currentVersion: '2.0.0',
-            packageName: 'xcodebuildmcp',
+            packageName: 'mobilebuildmcp',
             repositoryOwner: 'getsentry',
-            repositoryName: 'XcodeBuildMCP',
+            repositoryName: 'MobileBuildMCP',
             fetchReleaseNotesForTag: vi.fn(async () => createMockReleaseNotes()),
             detectInstallMethod: vi.fn(() => methodFactory()),
             spawnUpgradeProcess: vi.fn(async () => 0),

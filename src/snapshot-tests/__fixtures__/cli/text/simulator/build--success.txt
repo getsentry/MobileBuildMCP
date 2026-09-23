@@ -9,7 +9,7 @@
 
 ✅ Build succeeded. (⏱️ <DURATION>)
   └ Files:
-     └ Build Logs: ~/Library/Developer/XcodeBuildMCP/workspaces/XcodeBuildMCP-<HASH>/logs/build_sim_<TIMESTAMP>_pid<PID>.log
+     └ Build Logs: ~/Library/Developer/MobileBuildMCP/workspaces/MobileBuildMCP-<HASH>/logs/build_sim_<TIMESTAMP>_pid<PID>.log
 
 Next steps:
-1. Get built app path in simulator derived data: xcodebuildmcp simulator get-app-path --simulator-id <UUID> --scheme CalculatorApp --platform 'iOS Simulator' --derived-data-path <TMPDIR>
+1. Get built app path in simulator derived data: mobilebuildmcp simulator get-app-path --simulator-id <UUID> --scheme CalculatorApp --platform 'iOS Simulator' --derived-data-path <TMPDIR>

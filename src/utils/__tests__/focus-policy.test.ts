@@ -8,7 +8,7 @@ import {
 } from '../focus-policy.ts';
 import { createMockCommandResponse } from '../../test-utils/mock-executors.ts';
 
-const ENV_VAR = 'XCODEBUILDMCP_HEADLESS_LAUNCH';
+const ENV_VAR = 'MOBILEBUILDMCP_HEADLESS_LAUNCH';
 
 describe('focus-policy', () => {
   let previous: string | undefined;

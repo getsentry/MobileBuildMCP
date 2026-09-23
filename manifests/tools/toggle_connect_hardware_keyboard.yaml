@@ -5,7 +5,7 @@ names:
   cli: toggle-connect-hardware-keyboard
 description: Toggle whether the iOS Simulator simulates a hardware keyboard connection. Disconnecting makes the on-screen keyboard appear for tap-based input. Requires the simulator to be booted and Accessibility permission for the MCP host.
 outputSchema:
-  schema: xcodebuildmcp.output.simulator-action-result
+  schema: mobilebuildmcp.output.simulator-action-result
   version: "2"
 annotations:
   title: Toggle Connect Hardware Keyboard

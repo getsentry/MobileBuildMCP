@@ -2,6 +2,10 @@
 
 ## [2.7.1]
 
+### Fixed
+
+- Fixed simulator build, build-and-run, and test MCP calls silently discarding explicit project, scheme, destination, and configuration arguments when session defaults were set. Explicit values now override defaults, and `test_sim` accepts typed `onlyTesting` and `skipTesting` selectors ([#509](https://github.com/getsentry/XcodeBuildMCP/issues/509)).
+
 ### Changed
 
 - Renamed the project from XcodeBuildMCP to MobileBuildMCP. The npm package, CLI binaries (`mobilebuildmcp`, `mobilebuildmcp-doctor`), Homebrew formula, `MOBILEBUILDMCP_*` environment variables, `mobilebuildmcp://` resource URIs, `mobilebuildmcp.output.*` structured output schema IDs, the `.mobilebuildmcp/config.yaml` project config directory, and the `~/Library/Developer/MobileBuildMCP` state directory all use the new name. The `xcodebuildmcp.com` domain is retired: structured output schema `$id` URLs now use `https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/`, documentation links point at the docs sources in the `getsentry/xcodebuildmcp.com` repository, and the MCP registry name is `io.github.getsentry/mobilebuildmcp`.

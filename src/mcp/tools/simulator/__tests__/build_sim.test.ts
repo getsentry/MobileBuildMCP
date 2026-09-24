@@ -29,7 +29,7 @@ describe('build_sim tool', () => {
       expect(typeof handler).toBe('function');
     });
 
-    it('should have correct public schema (only non-session fields)', () => {
+    it('should expose optional session defaults for explicit overrides', () => {
       const schemaObj = z.strictObject(schema);
 
       expect(schemaObj.safeParse({}).success).toBe(true);
@@ -40,15 +40,41 @@ describe('build_sim tool', () => {
         }).success,
       ).toBe(true);
 
-      expect(schemaObj.safeParse({ derivedDataPath: '/path/to/derived' }).success).toBe(false);
+      expect(
+        schemaObj.safeParse({
+          projectPath: '/path/to/project.xcodeproj',
+          scheme: 'ExplicitScheme',
+          simulatorName: 'iPhone 17',
+          configuration: 'Release',
+          derivedDataPath: '/path/to/derived',
+          preferXcodebuild: false,
+        }).success,
+      ).toBe(true);
       expect(schemaObj.safeParse({ extraArgs: [123] }).success).toBe(false);
-      expect(schemaObj.safeParse({ preferXcodebuild: false }).success).toBe(false);
+      expect(schemaObj.safeParse({ preferXcodebuild: 'false' }).success).toBe(false);
       expect(
         schemaObj.safeParse({
           buildForTesting: true,
           testProductsPath: '/tmp/MyApp.xctestproducts',
         }).success,
       ).toBe(true);
+
+      expect(Object.keys(schema).sort()).toEqual(
+        [
+          'buildForTesting',
+          'configuration',
+          'derivedDataPath',
+          'extraArgs',
+          'preferXcodebuild',
+          'projectPath',
+          'scheme',
+          'simulatorId',
+          'simulatorName',
+          'testProductsPath',
+          'useLatestOS',
+          'workspacePath',
+        ].sort(),
+      );
     });
 
     it('should reject testProductsPath without buildForTesting', () => {

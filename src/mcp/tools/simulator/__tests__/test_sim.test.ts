@@ -18,7 +18,7 @@ describe('test_sim tool', () => {
       expect(typeof handler).toBe('function');
     });
 
-    it('should expose only non-session fields in public schema', () => {
+    it('should expose optional session defaults for explicit overrides', () => {
       const schemaObj = z.strictObject(schema);
 
       expect(schemaObj.safeParse({}).success).toBe(true);
@@ -31,12 +31,41 @@ describe('test_sim tool', () => {
 
       expect(schemaObj.safeParse({ derivedDataPath: 123 }).success).toBe(false);
       expect(schemaObj.safeParse({ extraArgs: ['--ok', 42] }).success).toBe(false);
-      expect(schemaObj.safeParse({ preferXcodebuild: true }).success).toBe(false);
+      expect(
+        schemaObj.safeParse({
+          projectPath: '/path/to/project.xcodeproj',
+          scheme: 'ExplicitScheme',
+          simulatorName: 'iPhone 17',
+          configuration: 'Release',
+          preferXcodebuild: true,
+          onlyTesting: ['MyTests/LoginTests/testSuccess'],
+          skipTesting: ['MyTests/LoginTests/testFailure'],
+        }).success,
+      ).toBe(true);
+      expect(schemaObj.safeParse({ preferXcodebuild: 'true' }).success).toBe(false);
+      expect(schemaObj.safeParse({ onlyTesting: [42] }).success).toBe(false);
       expect(schemaObj.safeParse({ testRunnerEnv: { FOO: 123 } }).success).toBe(false);
 
       const schemaKeys = Object.keys(schema).sort();
       expect(schemaKeys).toEqual(
-        ['extraArgs', 'progress', 'testProductsPath', 'testRunnerEnv', 'xctestrunPath'].sort(),
+        [
+          'configuration',
+          'derivedDataPath',
+          'extraArgs',
+          'onlyTesting',
+          'preferXcodebuild',
+          'progress',
+          'projectPath',
+          'scheme',
+          'simulatorId',
+          'simulatorName',
+          'skipTesting',
+          'testProductsPath',
+          'testRunnerEnv',
+          'useLatestOS',
+          'workspacePath',
+          'xctestrunPath',
+        ].sort(),
       );
     });
   });

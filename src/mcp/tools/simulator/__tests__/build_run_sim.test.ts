@@ -48,7 +48,7 @@ describe('build_run_sim tool', () => {
       expect(typeof handler).toBe('function');
     });
 
-    it('should expose only non-session fields in public schema', () => {
+    it('should expose optional session defaults for explicit overrides', () => {
       const schemaObj = z.strictObject(schema);
 
       expect(schemaObj.safeParse({}).success).toBe(true);
@@ -64,16 +64,36 @@ describe('build_run_sim tool', () => {
         }).success,
       ).toBe(true);
 
-      expect(schemaObj.safeParse({ derivedDataPath: '/path/to/derived' }).success).toBe(false);
+      expect(
+        schemaObj.safeParse({
+          workspacePath: '/path/to/workspace.xcworkspace',
+          scheme: 'ExplicitScheme',
+          simulatorName: 'iPhone 17',
+          configuration: 'Release',
+          derivedDataPath: '/path/to/derived',
+          preferXcodebuild: false,
+        }).success,
+      ).toBe(true);
       expect(schemaObj.safeParse({ extraArgs: [123] }).success).toBe(false);
       expect(schemaObj.safeParse({ launchArgs: [123] }).success).toBe(false);
-      expect(schemaObj.safeParse({ preferXcodebuild: false }).success).toBe(false);
+      expect(schemaObj.safeParse({ preferXcodebuild: 'false' }).success).toBe(false);
 
       const schemaKeys = Object.keys(schema).sort();
-      expect(schemaKeys).toEqual(['extraArgs', 'launchArgs']);
-      expect(schemaKeys).not.toContain('scheme');
-      expect(schemaKeys).not.toContain('simulatorName');
-      expect(schemaKeys).not.toContain('projectPath');
+      expect(schemaKeys).toEqual(
+        [
+          'configuration',
+          'derivedDataPath',
+          'extraArgs',
+          'launchArgs',
+          'preferXcodebuild',
+          'projectPath',
+          'scheme',
+          'simulatorId',
+          'simulatorName',
+          'useLatestOS',
+          'workspacePath',
+        ].sort(),
+      );
     });
   });
 

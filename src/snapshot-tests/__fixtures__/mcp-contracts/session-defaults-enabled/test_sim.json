@@ -5,11 +5,28 @@
   "inputSchema": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
+      "configuration": {"description":"Build configuration (Debug, Release, etc.)","type":"string"},
+      "derivedDataPath": {"type":"string"},
       "extraArgs": {
         "items": {"type":"string"},
         "type": "array"
       },
+      "onlyTesting": {
+        "description": "Test identifiers to include (for example, Target/Suite/testMethod)",
+        "items": {"type":"string"},
+        "type": "array"
+      },
+      "preferXcodebuild": {"type":"boolean"},
       "progress": {"description":"Show detailed test progress output (MCP defaults to true, CLI defaults to false)","type":"boolean"},
+      "projectPath": {"description":"Path to .xcodeproj file. Provide EITHER this OR workspacePath, not both","type":"string"},
+      "scheme": {"description":"The scheme to use in source mode","type":"string"},
+      "simulatorId": {"description":"UUID of the simulator (from list_sims). Provide EITHER this OR simulatorName, not both","type":"string"},
+      "simulatorName": {"description":"Name of the simulator (e.g., 'iPhone 17'). Provide EITHER this OR simulatorId, not both","type":"string"},
+      "skipTesting": {
+        "description": "Test identifiers to exclude (for example, Target/Suite/testMethod)",
+        "items": {"type":"string"},
+        "type": "array"
+      },
       "testProductsPath": {"description":"Path to a prepared .xctestproducts package. Cannot be combined with source inputs","type":"string"},
       "testRunnerEnv": {
         "description": "Environment variables to pass to the test runner (TEST_RUNNER_ prefix added automatically)",
@@ -24,6 +41,8 @@
         },
         "type": "array"
       },
+      "useLatestOS": {"description":"Whether to use the latest OS version for the named simulator","type":"boolean"},
+      "workspacePath": {"description":"Path to .xcworkspace file. Provide EITHER this OR projectPath, not both","type":"string"},
       "xctestrunPath": {"description":"Path to a prepared .xctestrun file. Cannot be combined with source inputs","type":"string"}
     },
     "type": "object"

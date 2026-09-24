@@ -79,6 +79,14 @@ const baseSchemaObject = z.object({
   configuration: z.string().optional().describe('Build configuration (Debug, Release, etc.)'),
   derivedDataPath: z.string().optional(),
   extraArgs: z.array(z.string()).optional(),
+  onlyTesting: z
+    .array(z.string())
+    .optional()
+    .describe('Test identifiers to include (for example, Target/Suite/testMethod)'),
+  skipTesting: z
+    .array(z.string())
+    .optional()
+    .describe('Test identifiers to exclude (for example, Target/Suite/testMethod)'),
   useLatestOS: z
     .boolean()
     .optional()
@@ -118,12 +126,26 @@ interface PreparedTestSimExecution {
   warningMessage?: string;
 }
 
+function resolveExtraArgs(params: TestSimulatorParams): string[] | undefined {
+  const selectorArgs = [
+    ...(params.onlyTesting ?? []).map((selector) => `-only-testing:${selector}`),
+    ...(params.skipTesting ?? []).map((selector) => `-skip-testing:${selector}`),
+  ];
+
+  if (!params.extraArgs && selectorArgs.length === 0) {
+    return undefined;
+  }
+
+  return [...(params.extraArgs ?? []), ...selectorArgs];
+}
+
 async function prepareTestSimExecution(
   params: TestSimulatorParams,
   executor: CommandExecutor,
   fileSystemExecutor: FileSystemExecutor,
 ): Promise<PreparedTestSimExecution> {
   const preparedTestSource = hasPreparedTestSource(params);
+  const extraArgs = resolveExtraArgs(params);
   const configuration = preparedTestSource ? undefined : params.configuration;
   const inferred = await inferPlatform(
     {
@@ -182,7 +204,7 @@ async function prepareTestSimExecution(
           workspacePath: params.workspacePath,
           scheme: params.scheme!,
           configuration,
-          extraArgs: params.extraArgs,
+          extraArgs,
           destinationName,
         },
         fileSystemExecutor,
@@ -264,7 +286,7 @@ export function createTestSimExecutor(
         simulatorName: params.simulatorName,
         configuration: resolved.configuration,
         derivedDataPath: params.derivedDataPath,
-        extraArgs: params.extraArgs,
+        extraArgs: resolveExtraArgs(params),
         useLatestOS: false,
         preferXcodebuild: params.preferXcodebuild ?? false,
         platform: resolved.platform,
@@ -294,29 +316,9 @@ export async function test_simLogic(
   setXcodebuildStructuredOutput(ctx, 'test-result', result, '3');
 }
 
-const publicSchemaObject = baseSchemaObject.omit({
-  projectPath: true,
-  workspacePath: true,
-  scheme: true,
-  simulatorId: true,
-  simulatorName: true,
-  configuration: true,
-  useLatestOS: true,
-  derivedDataPath: true,
-  preferXcodebuild: true,
-} as const);
+const publicSchemaObject = baseSchemaObject;
 
-const mcpPublicSchemaObject = mcpFullSchemaObject.omit({
-  projectPath: true,
-  workspacePath: true,
-  scheme: true,
-  simulatorId: true,
-  simulatorName: true,
-  configuration: true,
-  useLatestOS: true,
-  derivedDataPath: true,
-  preferXcodebuild: true,
-} as const);
+const mcpPublicSchemaObject = mcpFullSchemaObject;
 
 export const schema = getSessionAwareToolSchemaShape({
   sessionAware: publicSchemaObject,

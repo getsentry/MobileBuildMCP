@@ -509,16 +509,8 @@ export function createBuildRunSimExecutor(
   };
 }
 
-const publicSchemaObject = baseSchemaObject.omit({
-  projectPath: true,
-  workspacePath: true,
+const publicSchemaObject = baseSchemaObject.partial({
   scheme: true,
-  configuration: true,
-  simulatorId: true,
-  simulatorName: true,
-  useLatestOS: true,
-  derivedDataPath: true,
-  preferXcodebuild: true,
 } as const);
 
 export async function build_run_simLogic(

@@ -197,6 +197,51 @@ describe('createTestExecutor', () => {
     expect(runTestsIndex).toBeGreaterThan(-1);
     expect(finalSummaryIndex).toBeGreaterThan(runTestsIndex);
   });
+  it('uses the source test phase for prepared products containing multiple simulator platforms', async () => {
+    const commands: string[][] = [];
+    const executor: CommandExecutor = async (command) => {
+      commands.push(command);
+      if (command.at(-1) === 'build-for-testing') {
+        const testProductsIndex = command.indexOf('-testProductsPath');
+        const testProductsPath = command[testProductsIndex + 1]!;
+        mkdirSync(join(testProductsPath, 'Tests', '0'), { recursive: true });
+        writeFileSync(
+          join(testProductsPath, 'Tests', '0', 'Weather.xctestrun'),
+          `<?xml version="1.0"?><plist><dict><key>TestConfigurations</key><array><dict><key>TestTargets</key><array><dict><key>DependentProductPaths</key><array><string>__TESTROOT__/Debug-iphonesimulator/Weather.app</string><string>__TESTROOT__/Debug-watchsimulator/WatchTests.xctest</string></array></dict></array></dict></array></dict></plist>`,
+        );
+      }
+      return createSuccessfulCommandResponse();
+    };
+
+    const executeTest = createTestExecutor(executor, {
+      preflight: createPreflight(),
+      toolName: 'test_sim',
+      target: 'simulator',
+      request: {
+        scheme: 'Weather',
+        projectPath: 'Weather.xcodeproj',
+        configuration: 'Debug',
+        platform: XcodePlatform.iOSSimulator,
+      },
+    });
+
+    await executeTest(
+      {
+        projectPath: 'Weather.xcodeproj',
+        scheme: 'Weather',
+        configuration: 'Debug',
+        simulatorId: 'A2C64636-37E9-4B68-B872-E7F0A82A5670',
+        platform: XcodePlatform.iOSSimulator,
+      },
+      new DefaultStreamingExecutionContext(),
+    );
+
+    expect(commands).toHaveLength(2);
+    expect(commands[1]).toContain('-project');
+    expect(commands[1]).toContain('-scheme');
+    expect(commands[1]).toContain('-derivedDataPath');
+    expect(commands[1]).not.toContain('-testProductsPath');
+  });
 
   it('injects a workspace-scoped default result bundle path for macOS test commands', async () => {
     const commands: string[][] = [];

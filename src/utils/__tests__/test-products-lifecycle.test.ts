@@ -299,6 +299,94 @@ describe('test products lifecycle', () => {
     ).toEqual({ scanned: 1, deleted: 1 });
   });
 
+  it('serializes reader directory teardown with another reader registering', async () => {
+    const layout = getWorkspaceFilesystemLayout('workspace-a');
+    const testProductsPath = path.join(layout.testProducts, managedName('prepared'));
+    const readerDir = path.join(
+      layout.state,
+      'test-products-readers',
+      path.basename(testProductsPath),
+    );
+    writeTestProducts(testProductsPath, Date.now(), true);
+    let readerBOperationRan = false;
+    let signalReaderAStarted: () => void = () => undefined;
+    let finishReaderA: () => void = () => undefined;
+    let signalReaderBDirectoryCreated: () => void = () => undefined;
+    let allowReaderBMarkerWrite: () => void = () => undefined;
+    let signalReaderALockWait: () => void = () => undefined;
+    const readerAStarted = new Promise<void>((resolve) => {
+      signalReaderAStarted = resolve;
+    });
+    const readerAOperationFinished = new Promise<void>((resolve) => {
+      finishReaderA = resolve;
+    });
+    const readerBDirectoryCreated = new Promise<void>((resolve) => {
+      signalReaderBDirectoryCreated = resolve;
+    });
+    const readerBMarkerWriteAllowed = new Promise<void>((resolve) => {
+      allowReaderBMarkerWrite = resolve;
+    });
+    const readerALockWait = new Promise<void>((resolve) => {
+      signalReaderALockWait = resolve;
+    });
+    const readerA = withManagedTestProductsReader(
+      testProductsPath,
+      async () => {
+        signalReaderAStarted();
+        await readerAOperationFinished;
+      },
+      {
+        workspaceKey: 'workspace-a',
+        onLockWait: signalReaderALockWait,
+        dependencies: { ...dependencies, randomUUID: () => 'abcdef12' },
+      },
+    );
+    await readerAStarted;
+    const readerBFileSystem = createTestFileSystem();
+    const readerB = withManagedTestProductsReader(
+      testProductsPath,
+      async () => {
+        readerBOperationRan = true;
+      },
+      {
+        workspaceKey: 'workspace-a',
+        dependencies: {
+          ...dependencies,
+          randomUUID: () => 'abcdef34',
+          fileSystem: {
+            ...readerBFileSystem,
+            mkdir: async (filePath, options) => {
+              await readerBFileSystem.mkdir(filePath, options);
+              if (filePath === readerDir) {
+                signalReaderBDirectoryCreated();
+                await readerBMarkerWriteAllowed;
+              }
+            },
+          },
+        },
+      },
+    );
+    const readerBOutcome = readerB.then(
+      () => true,
+      () => false,
+    );
+    try {
+      await readerBDirectoryCreated;
+      finishReaderA();
+      await readerALockWait;
+      expect(existsSync(readerDir)).toBe(true);
+    } finally {
+      finishReaderA();
+      allowReaderBMarkerWrite();
+      await Promise.allSettled([readerA, readerB]);
+    }
+
+    await readerA;
+    expect(await readerBOutcome).toBe(true);
+    expect(readerBOperationRan).toBe(true);
+    expect(existsSync(readerDir)).toBe(false);
+  });
+
   it('removes a managed bundle when its completion marker cannot be published', async () => {
     let outputPath = '';
     await expect(
@@ -492,7 +580,7 @@ describe('test products lifecycle', () => {
     ).rejects.toBe(operationError);
 
     expect(lockAttempts).toBe(2);
-    expect(existsSync(readerDirectory)).toBe(false);
+    expect(readdirSync(readerDirectory)).toEqual([]);
   });
 
   it('cleans dead reader markers before pruning', async () => {

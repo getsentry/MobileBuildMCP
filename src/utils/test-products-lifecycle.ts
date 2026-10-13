@@ -609,8 +609,9 @@ export async function withManagedTestProductsReader<T>(
 
   await finalizeAfterOperation(operationFailed, async () => {
     await lifecycle.dependencies.fileSystem.rm(markerPath, { force: true });
-    await removeReaderDirectoryIfEmpty(directory, lifecycle.dependencies);
     await withLifecycleLock(lifecycle, async () => {
+      // Serialize directory removal with readers publishing their markers.
+      await removeReaderDirectoryIfEmpty(directory, lifecycle.dependencies);
       await pruneForLifecycle(lifecycle, lifecycle.maxCount);
     });
   });

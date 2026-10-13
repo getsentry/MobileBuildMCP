@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mkdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, sep } from 'node:path';
 import * as z from 'zod';
 import { computeScopedDerivedDataPath } from '../../../../utils/derived-data-path.ts';
 import {
@@ -13,6 +15,7 @@ import {
 } from '../../../../test-utils/test-helpers.ts';
 import { schema, handler, testDeviceLogic } from '../test_device.ts';
 import { sessionStore } from '../../../../utils/session-store.ts';
+import { getMobileBuildMCPAppDir } from '../../../../utils/log-paths.ts';
 
 const mockFs = () =>
   createMockFileSystemExecutor({
@@ -32,6 +35,7 @@ function createRequestedTestProducts(command: readonly string[]): void {
   if (command.at(-1) !== 'build-for-testing') return;
   const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
   if (testProductsPath) {
+    expect(testProductsPath.startsWith(`${getMobileBuildMCPAppDir()}${sep}`)).toBe(true);
     mkdirSync(testProductsPath, { recursive: true });
   }
 }
@@ -62,6 +66,10 @@ function createSpyExecutor(): {
 
 describe('test_device plugin', () => {
   beforeEach(() => {
+    // Fail before lifecycle pruning if this suite runs without the unit-test setup.
+    expect(
+      getMobileBuildMCPAppDir().startsWith(join(tmpdir(), 'mobilebuildmcp-test-app-dir-')),
+    ).toBe(true);
     sessionStore.clear();
   });
 

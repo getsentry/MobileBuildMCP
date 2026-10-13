@@ -346,6 +346,69 @@ describe('test products lifecycle', () => {
     ).rejects.toBe(operationError);
   });
 
+  it.each(['lock timeout', 'prune failure', 'marker removal failure'])(
+    'preserves completed output after nested reader cleanup fails: %s',
+    async (failure) => {
+      let outputPath = '';
+      let outputWasProduced = false;
+      let lockAttempts = 0;
+      const cleanupError = new Error(`Reader cleanup ${failure}`);
+      const fileSystem = createTestFileSystem();
+      const lifecycleOptions = {
+        workspaceKey: 'workspace-a',
+        lockTimeoutMs: 0,
+        dependencies: {
+          ...dependencies,
+          now: () => Date.UTC(2026, 4, 6, 12),
+          tryAcquireLock: async () => {
+            lockAttempts += 1;
+            return failure === 'lock timeout' && lockAttempts === 3 ? null : acquiredLock();
+          },
+          fileSystem: {
+            ...fileSystem,
+            readdir: async (filePath, options) => {
+              if (failure === 'prune failure' && lockAttempts === 3) throw cleanupError;
+              return fileSystem.readdir(filePath, options);
+            },
+            rm: async (filePath, options) => {
+              if (failure === 'marker removal failure' && filePath.endsWith('.reader')) {
+                throw cleanupError;
+              }
+              return fileSystem.rm(filePath, options);
+            },
+          } satisfies ManagedTestProductsFileSystem,
+        },
+      };
+
+      await expect(
+        withManagedTestProductsOutput(
+          'test_sim',
+          async (testProductsPath) => {
+            outputPath = testProductsPath;
+            mkdirSync(testProductsPath);
+            outputWasProduced = true;
+            return withManagedTestProductsReader(
+              testProductsPath,
+              async () => 'tests passed',
+              lifecycleOptions,
+            );
+          },
+          {
+            ...lifecycleOptions,
+            retainOnOperationError: () => outputWasProduced,
+          },
+        ),
+      ).rejects.toThrow(
+        failure === 'lock timeout'
+          ? 'Timed out waiting for managed test products lifecycle lock'
+          : cleanupError.message,
+      );
+
+      expect(existsSync(outputPath)).toBe(true);
+      expect(existsSync(getTestProductsCompletionMarkerPath(outputPath))).toBe(true);
+    },
+  );
+
   it('retries lifecycle lock acquisition until its timeout is exhausted', async () => {
     let attempts = 0;
     let now = 0;

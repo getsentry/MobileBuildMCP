@@ -62,6 +62,8 @@ export interface ManagedTestProductsLifecycleOptions {
 
 export type ManagedTestProductsOutputOptions<T> = ManagedTestProductsLifecycleOptions & {
   isSuccessful?: (result: T) => boolean;
+  // A later test or reader cleanup error must not discard an already successful build.
+  retainOnOperationError?: () => boolean;
 };
 
 export interface ManagedTestProductsFileSystem {
@@ -500,9 +502,11 @@ export async function withManagedTestProductsOutput<T>(
     operationError = error;
   }
 
-  const operationSucceeded = !operationFailed && (options.isSuccessful?.(result as T) ?? true);
+  const outputWasProduced = operationFailed
+    ? (options.retainOnOperationError?.() ?? false)
+    : (options.isSuccessful?.(result as T) ?? true);
 
-  if (!operationSucceeded) {
+  if (!outputWasProduced) {
     await finalizeAfterOperation(operationFailed, async () => {
       await withLifecycleLock(lifecycle, async () => {
         await removeManagedTestProductsOutput(testProductsPath, lifecycle);
@@ -515,7 +519,7 @@ export async function withManagedTestProductsOutput<T>(
     return result as T;
   }
 
-  await finalizeAfterOperation(false, async () => {
+  await finalizeAfterOperation(operationFailed, async () => {
     await withLifecycleLock(lifecycle, async () => {
       try {
         await markManagedTestProductsCompleted(testProductsPath, lifecycle.dependencies);
@@ -531,6 +535,9 @@ export async function withManagedTestProductsOutput<T>(
     });
   });
 
+  if (operationFailed) {
+    throw operationError;
+  }
   return result as T;
 }
 

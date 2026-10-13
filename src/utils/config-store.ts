@@ -615,12 +615,14 @@ function resolveConfig(opts: {
     testProductsMaxCount: resolveFromLayers({
       key: 'testProductsMaxCount',
       overrides: opts.overrides,
+      fileConfig: opts.fileConfig,
       envConfig,
       fallback: DEFAULT_CONFIG.testProductsMaxCount,
     }),
     testProductsMaxAgeDays: resolveFromLayers({
       key: 'testProductsMaxAgeDays',
       overrides: opts.overrides,
+      fileConfig: opts.fileConfig,
       envConfig,
       fallback: DEFAULT_CONFIG.testProductsMaxAgeDays,
     }),

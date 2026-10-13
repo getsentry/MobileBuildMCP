@@ -130,8 +130,10 @@ type BuildMacOSResult = BuildResultDomainResult;
 export function createBuildMacOSExecutor(
   executor: CommandExecutor,
   prepared?: PreparedBuildMacOSExecution,
+  onTestProductsProduced?: () => void,
 ): StreamingExecutor<BuildMacOSParams, BuildMacOSResult> {
   return async (params, ctx) => {
+    let managedOutputWasProduced = false;
     const executePrepared = async (
       resolved: PreparedBuildMacOSExecution,
     ): Promise<BuildMacOSResult> => {
@@ -150,6 +152,11 @@ export function createBuildMacOSExecutor(
         undefined,
         started.pipeline,
       );
+      const succeeded = !buildResult.isError;
+      if (succeeded && resolved.testProductsPath) {
+        managedOutputWasProduced = true;
+        onTestProductsProduced?.();
+      }
 
       let bundleId: string | undefined;
       if (!buildResult.isError && !params.buildForTesting) {
@@ -179,7 +186,6 @@ export function createBuildMacOSExecutor(
           // bundle ID is informational only
         }
       }
-      const succeeded = !buildResult.isError;
       const xctestrunPaths =
         succeeded && resolved.testProductsPath
           ? await findXctestrunPaths(resolved.testProductsPath)
@@ -210,7 +216,10 @@ export function createBuildMacOSExecutor(
           'build_macos',
           (testProductsPath) =>
             executePrepared(prepareBuildMacOSExecution(params, testProductsPath)),
-          { isSuccessful: (result) => !result.didError },
+          {
+            isSuccessful: (result) => !result.didError,
+            retainOnOperationError: () => managedOutputWasProduced,
+          },
         )
       : executePrepared(prepareBuildMacOSExecution(params));
   };
@@ -220,13 +229,14 @@ async function executeBuildMacOSLogic(
   params: BuildMacOSParams,
   executor: CommandExecutor,
   prepared: PreparedBuildMacOSExecution,
+  onTestProductsProduced?: () => void,
 ): Promise<BuildMacOSResult> {
   const ctx = getHandlerContext();
   log('info', `Starting macOS build for scheme ${params.scheme}`);
 
   ctx.emit(createBuildInvocationFragment('build-result', 'BUILD', prepared.invocationRequest));
   const executionContext = createStreamingExecutionContext(ctx);
-  const executeBuildMacOS = createBuildMacOSExecutor(executor, prepared);
+  const executeBuildMacOS = createBuildMacOSExecutor(executor, prepared, onTestProductsProduced);
   const result = await executeBuildMacOS(params, executionContext);
 
   setXcodebuildStructuredOutput(ctx, 'build-result', result, '3');
@@ -255,6 +265,7 @@ export async function buildMacOSLogic(
   executor: CommandExecutor,
 ): Promise<void> {
   if (params.buildForTesting && params.testProductsPath === undefined) {
+    let managedOutputWasProduced = false;
     await withManagedTestProductsOutput(
       'build_macos',
       (testProductsPath) =>
@@ -262,8 +273,14 @@ export async function buildMacOSLogic(
           params,
           executor,
           prepareBuildMacOSExecution(params, testProductsPath),
+          () => {
+            managedOutputWasProduced = true;
+          },
         ),
-      { isSuccessful: (result) => !result.didError },
+      {
+        isSuccessful: (result) => !result.didError,
+        retainOnOperationError: () => managedOutputWasProduced,
+      },
     );
     return;
   }

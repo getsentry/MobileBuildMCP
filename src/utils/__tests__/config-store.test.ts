@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { createMockFileSystemExecutor } from '../../test-utils/mock-executors.ts';
+import { loadProjectConfig } from '../project-config.ts';
 import {
   __resetConfigStoreForTests,
   getConfig,
@@ -86,6 +87,8 @@ describe('config-store', () => {
     const yaml = [
       'schemaVersion: 1',
       'debug: false',
+      'testProductsMaxCount: 5',
+      'testProductsMaxAgeDays: 0.25',
       'dapRequestTimeoutMs: 4000',
       'filePathRenderStyle: tree',
       'axeSourcePath: /file/AXe',
@@ -151,19 +154,44 @@ describe('config-store', () => {
   it('uses file config before env when no override is provided', async () => {
     const yaml = [
       'schemaVersion: 1',
+      'testProductsMaxCount: 5',
+      'testProductsMaxAgeDays: 0.25',
       'filePathRenderStyle: tree',
       'axeSourcePath: /file/AXe',
       '',
     ].join('\n');
     const env = {
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT: '9',
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS: '3',
       MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
       MOBILEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
     };
 
     await initConfigStore({ cwd, fs: createFs(yaml), env });
 
+    expect(getConfig().testProductsMaxCount).toBe(5);
+    expect(getConfig().testProductsMaxAgeDays).toBe(0.25);
     expect(getConfig().filePathRenderStyle).toBe('tree');
     expect(getConfig().axeSourcePath).toBe('/file/AXe');
+  });
+
+  it.each([
+    ['testProductsMaxCount', '0'],
+    ['testProductsMaxCount', '1.5'],
+    ['testProductsMaxCount', '"5"'],
+    ['testProductsMaxAgeDays', '0'],
+    ['testProductsMaxAgeDays', '-1'],
+    ['testProductsMaxAgeDays', '.inf'],
+    ['testProductsMaxAgeDays', '.nan'],
+    ['testProductsMaxAgeDays', 'null'],
+  ])('rejects invalid %s project config values: %s', async (name, value) => {
+    const result = await loadProjectConfig({
+      cwd,
+      fs: createFs(`schemaVersion: 1\n${name}: ${value}\n`),
+    });
+
+    expect(result.found).toBe(false);
+    expect(result).toHaveProperty('error');
   });
 
   it('reads sentryDisabled from config file', async () => {

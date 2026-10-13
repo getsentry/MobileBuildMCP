@@ -135,8 +135,10 @@ const publicSchemaObject = baseSchemaObject.omit({
 export function createBuildDeviceExecutor(
   executor: CommandExecutor,
   prepared?: PreparedBuildDeviceExecution,
+  onTestProductsProduced?: () => void,
 ): StreamingExecutor<BuildDeviceParams, BuildDeviceResult> {
   return async (params, ctx) => {
+    let managedOutputWasProduced = false;
     const executePrepared = async (
       resolved: PreparedBuildDeviceExecution,
     ): Promise<BuildDeviceResult> => {
@@ -157,6 +159,10 @@ export function createBuildDeviceExecutor(
         started.pipeline,
       );
       const succeeded = !buildResult.isError;
+      if (succeeded && resolved.testProductsPath) {
+        managedOutputWasProduced = true;
+        onTestProductsProduced?.();
+      }
       const xctestrunPaths =
         succeeded && resolved.testProductsPath
           ? await findXctestrunPaths(resolved.testProductsPath)
@@ -186,7 +192,10 @@ export function createBuildDeviceExecutor(
           'build_device',
           (testProductsPath) =>
             executePrepared(prepareBuildDeviceExecution(params, testProductsPath)),
-          { isSuccessful: (result) => !result.didError },
+          {
+            isSuccessful: (result) => !result.didError,
+            retainOnOperationError: () => managedOutputWasProduced,
+          },
         )
       : executePrepared(prepareBuildDeviceExecution(params));
   };
@@ -196,11 +205,12 @@ async function executeBuildDeviceLogic(
   params: BuildDeviceParams,
   executor: CommandExecutor,
   prepared: PreparedBuildDeviceExecution,
+  onTestProductsProduced?: () => void,
 ): Promise<BuildDeviceResult> {
   const ctx = getHandlerContext();
   ctx.emit(createBuildInvocationFragment('build-result', 'BUILD', prepared.invocationRequest));
   const executionContext = createStreamingExecutionContext(ctx);
-  const executeBuildDevice = createBuildDeviceExecutor(executor, prepared);
+  const executeBuildDevice = createBuildDeviceExecutor(executor, prepared, onTestProductsProduced);
   const result = await executeBuildDevice(params, executionContext);
 
   setXcodebuildStructuredOutput(ctx, 'build-result', result, '3');
@@ -236,6 +246,7 @@ export async function buildDeviceLogic(
   executor: CommandExecutor,
 ): Promise<void> {
   if (params.buildForTesting && params.testProductsPath === undefined) {
+    let managedOutputWasProduced = false;
     await withManagedTestProductsOutput(
       'build_device',
       (testProductsPath) =>
@@ -243,8 +254,14 @@ export async function buildDeviceLogic(
           params,
           executor,
           prepareBuildDeviceExecution(params, testProductsPath),
+          () => {
+            managedOutputWasProduced = true;
+          },
         ),
-      { isSuccessful: (result) => !result.didError },
+      {
+        isSuccessful: (result) => !result.didError,
+        retainOnOperationError: () => managedOutputWasProduced,
+      },
     );
     return;
   }

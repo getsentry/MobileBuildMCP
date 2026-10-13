@@ -197,8 +197,10 @@ const publicSchemaObject = baseSchemaObject.omit({
 export function createBuildSimExecutor(
   executor: CommandExecutor,
   prepared?: PreparedBuildSimExecution,
+  onTestProductsProduced?: () => void,
 ): StreamingExecutor<BuildSimulatorParams, BuildSimulatorResult> {
   return async (params, ctx) => {
+    let managedOutputWasProduced = false;
     const executePrepared = async (
       resolved: PreparedBuildSimExecution,
     ): Promise<BuildSimulatorResult> => {
@@ -222,6 +224,10 @@ export function createBuildSimExecutor(
         started.pipeline,
       );
       const succeeded = !buildResult.isError;
+      if (succeeded && resolved.testProductsPath) {
+        managedOutputWasProduced = true;
+        onTestProductsProduced?.();
+      }
       const xctestrunPaths =
         succeeded && resolved.testProductsPath
           ? await findXctestrunPaths(resolved.testProductsPath)
@@ -251,7 +257,10 @@ export function createBuildSimExecutor(
           'build_sim',
           async (testProductsPath) =>
             executePrepared(await prepareBuildSimExecution(params, executor, testProductsPath)),
-          { isSuccessful: (result) => !result.didError },
+          {
+            isSuccessful: (result) => !result.didError,
+            retainOnOperationError: () => managedOutputWasProduced,
+          },
         )
       : executePrepared(await prepareBuildSimExecution(params, executor));
   };
@@ -261,11 +270,12 @@ async function executeBuildSimLogic(
   params: BuildSimulatorParams,
   executor: CommandExecutor,
   prepared: PreparedBuildSimExecution,
+  onTestProductsProduced?: () => void,
 ): Promise<BuildSimulatorResult> {
   const ctx = getHandlerContext();
   ctx.emit(createBuildInvocationFragment('build-result', 'BUILD', prepared.invocationRequest));
   const executionContext = createStreamingExecutionContext(ctx);
-  const executeBuildSim = createBuildSimExecutor(executor, prepared);
+  const executeBuildSim = createBuildSimExecutor(executor, prepared, onTestProductsProduced);
   const result = await executeBuildSim(params, executionContext);
 
   setXcodebuildStructuredOutput(ctx, 'build-result', result, '3');
@@ -303,6 +313,7 @@ export async function build_simLogic(
   executor: CommandExecutor,
 ): Promise<void> {
   if (params.buildForTesting && params.testProductsPath === undefined) {
+    let managedOutputWasProduced = false;
     await withManagedTestProductsOutput(
       'build_sim',
       async (testProductsPath) =>
@@ -310,8 +321,14 @@ export async function build_simLogic(
           params,
           executor,
           await prepareBuildSimExecution(params, executor, testProductsPath),
+          () => {
+            managedOutputWasProduced = true;
+          },
         ),
-      { isSuccessful: (result) => !result.didError },
+      {
+        isSuccessful: (result) => !result.didError,
+        retainOnOperationError: () => managedOutputWasProduced,
+      },
     );
     return;
   }

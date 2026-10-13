@@ -15,6 +15,8 @@ export const runtimeConfigFileSchema = z
     filePathRenderStyle: z.enum(['tree', 'list']).optional(),
     uiDebuggerGuardMode: z.enum(['error', 'warn', 'off']).optional(),
     incrementalBuildsEnabled: z.boolean().optional(),
+    testProductsMaxCount: z.number().int().positive().optional(),
+    testProductsMaxAgeDays: z.number().finite().positive().optional(),
     dapRequestTimeoutMs: z.number().int().positive().optional(),
     dapLogEvents: z.boolean().optional(),
     launchJsonWaitMs: z.number().int().nonnegative().optional(),

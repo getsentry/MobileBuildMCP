@@ -357,7 +357,10 @@ export function createTestExecutor(
             request: options.request,
           });
         },
-        { isSuccessful: () => managedOutputWasProduced },
+        {
+          isSuccessful: () => managedOutputWasProduced,
+          retainOnOperationError: () => managedOutputWasProduced,
+        },
       );
     }
 

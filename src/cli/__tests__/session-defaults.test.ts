@@ -73,6 +73,39 @@ describe('CLI session defaults', () => {
     });
   });
 
+  it('drops a configured bundleId when the user attaches by pid', () => {
+    const merged = mergeCliSessionDefaults({
+      defaults: {
+        bundleId: 'com.example.App',
+        simulatorId: 'SIM-1',
+      },
+      explicitArgs: {
+        pid: 4242,
+      },
+    });
+
+    expect(merged).toEqual({
+      simulatorId: 'SIM-1',
+      pid: 4242,
+    });
+  });
+
+  it('drops a configured bundleId when JSON args pass pid with a null bundleId', () => {
+    const merged = mergeCliSessionDefaults({
+      defaults: {
+        bundleId: 'com.example.App',
+      },
+      explicitArgs: {
+        pid: 4242,
+        bundleId: null,
+      },
+    });
+
+    expect(merged).toEqual({
+      pid: 4242,
+    });
+  });
+
   it('prefers simulatorId when both simulator defaults come only from config', () => {
     const merged = mergeCliSessionDefaults({
       defaults: {

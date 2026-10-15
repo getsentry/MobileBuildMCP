@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed `mobilebuildmcp debugging attach --pid` failing with "Mutually exclusive parameters provided: bundleId, pid" when the project's session defaults set `bundleId`. An explicit `pid` now drops the configured `bundleId` on the CLI, as it already did over MCP ([#551](https://github.com/getsentry/MobileBuildMCP/issues/551)).
+
 ## [2.7.1]
 
 ### Changed

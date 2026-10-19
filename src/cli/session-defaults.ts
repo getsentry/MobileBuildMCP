@@ -46,13 +46,22 @@ export function getCliSessionDefaultsForTool(opts: {
   runtimeConfig: ResolvedRuntimeConfig;
   profileOverride?: string;
 }): Record<string, unknown> {
-  return pickSchemaSessionDefaults(
+  const defaults = pickSchemaSessionDefaults(
     opts.tool.cliSchema,
     resolveCliSessionDefaults({
       runtimeConfig: opts.runtimeConfig,
       profileOverride: opts.profileOverride,
     }),
   );
+
+  // Let the device build handler ignore the saved installation destination.
+  // Promoting it to an explicit CLI argument bypasses that handler's filtering.
+  // Explicit --device-id / --json values are merged separately by the caller.
+  if (opts.tool.id === 'build_device') {
+    delete defaults.deviceId;
+  }
+
+  return defaults;
 }
 
 export function mergeCliSessionDefaults(opts: {

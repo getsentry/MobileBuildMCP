@@ -505,6 +505,56 @@ describe('xcodebuild-event-parser', () => {
     });
   });
 
+  it('parses Swift Testing results for tests without display names', () => {
+    // Captured from `xcodebuild test` (Xcode 26, Swift Testing 1501) on a package
+    // that mixes `@Test func name()` and `@Test("Display name")` tests.
+    const events = collectEvents('TEST', [
+      {
+        source: 'stdout',
+        text: [
+          '➜ Test "Skipped with display name" skipped: "later"',
+          '\u200B➜ Test skippedPlain() skipped: "not now"',
+          '✘ Test fails() recorded an issue at CountsTests.swift:6:24: Expectation failed: (one() → 1) == 2',
+          '✘ Test "Display named failure" recorded an issue at CountsTests.swift:7:49: Expectation failed: (one() → 1) == 5',
+          '✔ Test passes() passed after 0.001 seconds.',
+          '✘ Test param(x:) recorded an issue with 1 argument x → 2 at CountsTests.swift:10:52: Expectation failed: (x → 2) != 2',
+          '✘ Test fails() recorded an issue at CountsTests.swift:6:45: Expectation failed: (one() → 1) == 3',
+          '✘ Test fails() recorded an issue at CountsTests.swift:6:66: Expectation failed: (one() → 1) == 4',
+          '✘ Test "Display named failure" failed after 0.004 seconds with 1 issue.',
+          '✘ Test param(x:) with 3 test cases failed after 0.004 seconds with 1 issue.',
+          '✘ Test fails() failed after 0.004 seconds with 3 issues.',
+          '✘ Suite CountsTests failed after 0.004 seconds with 5 issues.',
+          '✘ Test run with 6 tests in 1 suite failed after 0.005 seconds with 5 issues.',
+          '',
+        ].join('\n'),
+      },
+    ]);
+
+    const cases = events.filter((event) => event.fragment === 'test-case-result');
+    expect(cases.map((event) => [event.test, event.status])).toEqual([
+      ['Skipped with display name', 'skipped'],
+      ['skippedPlain', 'skipped'],
+      ['passes()', 'passed'],
+      ['Display named failure', 'failed'],
+      ['param(x:)', 'failed'],
+      ['fails()', 'failed'],
+    ]);
+
+    const failures = events.filter((event) => event.fragment === 'test-failure');
+    expect(failures.map((event) => event.test)).toEqual([
+      'Display named failure',
+      'param(x:)',
+      'fails()',
+      'fails()',
+      'fails()',
+    ]);
+
+    expect(events.filter((event) => event.fragment === 'test-progress').at(-1)).toMatchObject({
+      completed: 6,
+      skipped: 2,
+    });
+  });
+
   it('uses Swift Testing and XCTest summaries once for mixed Calculator test output', () => {
     const xctestPassedLines = Array.from({ length: 21 }, (_, index) => ({
       source: 'stdout' as const,

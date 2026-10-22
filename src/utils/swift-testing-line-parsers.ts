@@ -5,8 +5,10 @@ import {
   parseRawTestName,
 } from './xcodebuild-line-parsers.ts';
 
+// Test name: quoted display name ("Name") or bare function name (name(), name(x:))
 // Optional verbose suffix: (aka 'funcName()')
 // Optional parameterized suffix: with N test cases
+const TEST_NAME = `(?:"(.+)"|([^\\s"]\\S*))`;
 const OPTIONAL_AKA = `(?:\\s*\\(aka '[^']*'\\))?`;
 const OPTIONAL_PARAMETERIZED = `(?:\\s+with (\\d+) test cases?)?`;
 
@@ -19,17 +21,21 @@ const OPTIONAL_PARAMETERIZED = `(?:\\s+with (\\d+) test cases?)?`;
  *   ✔ Test "Name" with 3 test cases passed after 0.001 seconds.
  *   ✘ Test "Name" failed after 0.001 seconds with 1 issue.
  *   ✘ Test "Name" (aka 'func()') failed after 0.001 seconds with 1 issue.
+ *   ✔ Test funcName() passed after 0.001 seconds.
+ *   ✘ Test funcName(x:) with 3 test cases failed after 0.001 seconds with 1 issue.
  *   ➜ Test funcName() skipped: "reason"
+ *   ➜ Test "Name" skipped: "reason"
  *   ➜ Test funcName() skipped
  */
 export function parseSwiftTestingResultLine(line: string): ParsedTestCase | null {
   const passedRegex = new RegExp(
-    `^[✔] Test "(.+)"${OPTIONAL_AKA}${OPTIONAL_PARAMETERIZED} passed after ([\\d.]+) seconds\\.?$`,
+    `^[✔] Test ${TEST_NAME}${OPTIONAL_AKA}${OPTIONAL_PARAMETERIZED} passed after ([\\d.]+) seconds\\.?$`,
     'u',
   );
   const passedMatch = line.match(passedRegex);
   if (passedMatch) {
-    const [, name, caseCountStr, duration] = passedMatch;
+    const [, quotedName, bareName, caseCountStr, duration] = passedMatch;
+    const name = quotedName ?? bareName;
     const { suiteName, testName } = parseRawTestName(name);
     const caseCount = caseCountStr ? Number(caseCountStr) : undefined;
     return {
@@ -43,12 +49,13 @@ export function parseSwiftTestingResultLine(line: string): ParsedTestCase | null
   }
 
   const failedRegex = new RegExp(
-    `^[✘] Test "(.+)"${OPTIONAL_AKA}${OPTIONAL_PARAMETERIZED} failed after ([\\d.]+) seconds`,
+    `^[✘] Test ${TEST_NAME}${OPTIONAL_AKA}${OPTIONAL_PARAMETERIZED} failed after ([\\d.]+) seconds`,
     'u',
   );
   const failedMatch = line.match(failedRegex);
   if (failedMatch) {
-    const [, name, caseCountStr, duration] = failedMatch;
+    const [, quotedName, bareName, caseCountStr, duration] = failedMatch;
+    const name = quotedName ?? bareName;
     const { suiteName, testName } = parseRawTestName(name);
     const caseCount = caseCountStr ? Number(caseCountStr) : undefined;
     return {
@@ -61,10 +68,12 @@ export function parseSwiftTestingResultLine(line: string): ParsedTestCase | null
     };
   }
 
-  // Skipped: ➜ Test funcName() skipped: "reason"
+  // Skipped: ➜ Test funcName() skipped: "reason" or ➜ Test "Name" skipped: "reason"
   // Also handle legacy format: ◇ Test "Name" skipped
   const skippedMatch =
-    line.match(/^[➜] Test (\S+?)(?:\(\))? skipped/u) ?? line.match(/^[◇] Test "(.+)" skipped/u);
+    line.match(/^[➜] Test "(.+?)" skipped/u) ??
+    line.match(/^[➜] Test (\S+?)(?:\(\))? skipped/u) ??
+    line.match(/^[◇] Test "(.+)" skipped/u);
   if (skippedMatch) {
     const rawName = skippedMatch[1];
     const { suiteName, testName } = parseRawTestName(rawName);
@@ -87,16 +96,19 @@ export function parseSwiftTestingResultLine(line: string): ParsedTestCase | null
  *   ✘ Test "Name" (aka 'func()') recorded an issue at File.swift:48:5: msg
  *   ✘ Test "Name" recorded an issue with 1 argument value → 0 at File.swift:10:5: msg
  *   ✘ Test "Name" recorded an issue: message
+ *   ✘ Test funcName() recorded an issue at File.swift:48:5: msg
+ *   ✘ Test funcName(x:) recorded an issue with 1 argument x → 2 at File.swift:10:5: msg
  */
 export function parseSwiftTestingIssueLine(line: string): ParsedFailureDiagnostic | null {
   // Match with location -- handle both aka suffix and parameterized argument values before "at"
   const locationRegex = new RegExp(
-    `^[✘] Test "(.+)"${OPTIONAL_AKA} recorded an issue(?:\\s+with \\d+ argument values?.*?)? at (.+?):(\\d+):\\d+: (.+)$`,
+    `^[✘] Test ${TEST_NAME}${OPTIONAL_AKA} recorded an issue(?:\\s+with \\d+ arguments?\\b.*?)? at (.+?):(\\d+):\\d+: (.+)$`,
     'u',
   );
   const locationMatch = line.match(locationRegex);
   if (locationMatch) {
-    const [, rawTestName, filePath, lineNumber, message] = locationMatch;
+    const [, quotedName, bareName, filePath, lineNumber, message] = locationMatch;
+    const rawTestName = quotedName ?? bareName;
     const { suiteName, testName } = parseRawTestName(rawTestName);
     return {
       rawTestName,
@@ -108,10 +120,14 @@ export function parseSwiftTestingIssueLine(line: string): ParsedFailureDiagnosti
   }
 
   // Match without location
-  const simpleRegex = new RegExp(`^[✘] Test "(.+)"${OPTIONAL_AKA} recorded an issue: (.+)$`, 'u');
+  const simpleRegex = new RegExp(
+    `^[✘] Test ${TEST_NAME}${OPTIONAL_AKA} recorded an issue: (.+)$`,
+    'u',
+  );
   const simpleMatch = line.match(simpleRegex);
   if (simpleMatch) {
-    const [, rawTestName, message] = simpleMatch;
+    const [, quotedName, bareName, message] = simpleMatch;
+    const rawTestName = quotedName ?? bareName;
     const { suiteName, testName } = parseRawTestName(rawTestName);
     return {
       rawTestName,
@@ -121,10 +137,14 @@ export function parseSwiftTestingIssueLine(line: string): ParsedFailureDiagnosti
     };
   }
 
-  const fallbackRegex = new RegExp(`^[✘] Test "(.+)"${OPTIONAL_AKA} recorded an issue\\b.*$`, 'u');
+  const fallbackRegex = new RegExp(
+    `^[✘] Test ${TEST_NAME}${OPTIONAL_AKA} recorded an issue\\b.*$`,
+    'u',
+  );
   const fallbackMatch = line.match(fallbackRegex);
   if (fallbackMatch) {
-    const [, rawTestName] = fallbackMatch;
+    const [, quotedName, bareName] = fallbackMatch;
+    const rawTestName = quotedName ?? bareName;
     const { suiteName, testName } = parseRawTestName(rawTestName);
     return {
       rawTestName,

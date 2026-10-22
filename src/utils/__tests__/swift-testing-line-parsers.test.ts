@@ -109,6 +109,65 @@ describe('Swift Testing line parsers', () => {
       });
     });
 
+    it('should parse a passed test without a display name', () => {
+      const result = parseSwiftTestingResultLine('✔ Test passes() passed after 0.001 seconds.');
+      expect(result).toEqual({
+        status: 'passed',
+        rawName: 'passes()',
+        testName: 'passes()',
+        durationText: '0.001s',
+      });
+    });
+
+    it('should parse a failed test without a display name', () => {
+      const result = parseSwiftTestingResultLine(
+        '✘ Test fails() failed after 0.004 seconds with 3 issues.',
+      );
+      expect(result).toEqual({
+        status: 'failed',
+        rawName: 'fails()',
+        testName: 'fails()',
+        durationText: '0.004s',
+      });
+    });
+
+    it('should parse a failed parameterized test without a display name', () => {
+      const result = parseSwiftTestingResultLine(
+        '✘ Test param(x:) with 3 test cases failed after 0.004 seconds with 1 issue.',
+      );
+      expect(result).toEqual({
+        status: 'failed',
+        rawName: 'param(x:)',
+        testName: 'param(x:)',
+        durationText: '0.004s',
+        caseCount: 3,
+      });
+    });
+
+    it('should parse a skipped test with a display name (arrow format)', () => {
+      const result = parseSwiftTestingResultLine(
+        '➜ Test "Skipped with display name" skipped: "later"',
+      );
+      expect(result).toEqual({
+        status: 'skipped',
+        rawName: 'Skipped with display name',
+        testName: 'Skipped with display name',
+      });
+    });
+
+    it('should not parse run summary lines as test results', () => {
+      expect(
+        parseSwiftTestingResultLine(
+          '✔ Test run with 6 tests in 1 suite passed after 0.005 seconds.',
+        ),
+      ).toBeNull();
+      expect(
+        parseSwiftTestingResultLine(
+          '✘ Test run with 6 tests in 1 suite failed after 0.005 seconds with 5 issues.',
+        ),
+      ).toBeNull();
+    });
+
     it('should return null for non-matching lines', () => {
       expect(parseSwiftTestingResultLine('◇ Test "Foo" started.')).toBeNull();
       expect(parseSwiftTestingResultLine('random text')).toBeNull();
@@ -161,6 +220,30 @@ describe('Swift Testing line parsers', () => {
         testName: 'Dict test',
         location: 'DictTests.swift:5',
         message: 'failed',
+      });
+    });
+
+    it('should parse an issue for a test without a display name', () => {
+      const result = parseSwiftTestingIssueLine(
+        '✘ Test fails() recorded an issue at CountsTests.swift:6:24: Expectation failed: (one() → 1) == 2',
+      );
+      expect(result).toEqual({
+        rawTestName: 'fails()',
+        testName: 'fails()',
+        location: 'CountsTests.swift:6',
+        message: 'Expectation failed: (one() → 1) == 2',
+      });
+    });
+
+    it('should parse a parameterized issue for a test without a display name', () => {
+      const result = parseSwiftTestingIssueLine(
+        '✘ Test param(x:) recorded an issue with 1 argument x → 2 at CountsTests.swift:10:52: Expectation failed: (x → 2) != 2',
+      );
+      expect(result).toEqual({
+        rawTestName: 'param(x:)',
+        testName: 'param(x:)',
+        location: 'CountsTests.swift:10',
+        message: 'Expectation failed: (x → 2) != 2',
       });
     });
 

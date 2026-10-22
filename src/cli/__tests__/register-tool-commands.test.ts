@@ -69,6 +69,7 @@ const baseRuntimeConfig: ResolvedRuntimeConfig = {
 };
 
 function createApp(catalog: ToolCatalog, runtimeConfig: ResolvedRuntimeConfig = baseRuntimeConfig) {
+  const workflows = [...new Set(catalog.tools.map((tool) => tool.workflow))];
   const app = yargs()
     .scriptName('mobilebuildmcp')
     .exitProcess(false)
@@ -79,8 +80,8 @@ function createApp(catalog: ToolCatalog, runtimeConfig: ResolvedRuntimeConfig = 
   registerToolCommands(app, catalog, {
     workspaceRoot: '/repo',
     runtimeConfig,
-    cliExposedWorkflowIds: ['simulator'],
-    workflowNames: ['simulator'],
+    cliExposedWorkflowIds: workflows,
+    workflowNames: workflows,
   });
 
   return app;
@@ -225,6 +226,109 @@ describe('registerToolCommands', () => {
     );
 
     stdoutWrite.mockRestore();
+  });
+
+  describe('device build destinations', () => {
+    const runtimeConfig: ResolvedRuntimeConfig = {
+      ...baseRuntimeConfig,
+      sessionDefaults: {
+        workspacePath: 'App.xcworkspace',
+        scheme: 'App',
+        deviceId: 'SAVED-DEVICE',
+      },
+      sessionDefaultsProfiles: {
+        phone: {
+          workspacePath: 'Profile.xcworkspace',
+          scheme: 'ProfileApp',
+          deviceId: 'PROFILE-DEVICE',
+        },
+      },
+      activeSessionDefaultsProfile: undefined,
+    };
+
+    function createDeviceTool(overrides: Partial<ToolDefinition> = {}) {
+      return createTool({
+        id: 'build_device',
+        cliName: 'build',
+        mcpName: 'build_device',
+        workflow: 'device',
+        cliSchema: {
+          workspacePath: z.string(),
+          scheme: z.string(),
+          deviceId: z.string().optional(),
+          buildForTesting: z.boolean().optional(),
+        },
+        ...overrides,
+      });
+    }
+
+    it.each([
+      { description: 'normal builds', args: [] },
+      { description: 'prepared builds', args: ['--build-for-testing'] },
+      { description: 'named profiles', args: ['--profile', 'phone'] },
+    ])('does not forward the saved device ID for $description', async ({ args }) => {
+      const invokeDirect = vi
+        .spyOn(DefaultToolInvoker.prototype, 'invokeDirect')
+        .mockResolvedValue(undefined);
+      vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+      const tool = createDeviceTool();
+      const app = createApp(createCatalog([tool]), runtimeConfig);
+
+      await app.parseAsync(['device', 'build', ...args]);
+
+      expect(invokeDirect).toHaveBeenCalledTimes(1);
+      const passedArgs = invokeDirect.mock.calls[0][1];
+      expect(passedArgs).not.toHaveProperty('deviceId');
+      expect(passedArgs).toMatchObject(
+        args.includes('phone')
+          ? { workspacePath: 'Profile.xcworkspace', scheme: 'ProfileApp' }
+          : { workspacePath: 'App.xcworkspace', scheme: 'App' },
+      );
+      expect(runtimeConfig.sessionDefaults?.deviceId).toBe('SAVED-DEVICE');
+      expect(runtimeConfig.sessionDefaultsProfiles?.phone.deviceId).toBe('PROFILE-DEVICE');
+    });
+
+    it.each([
+      ['--device-id', 'EXPLICIT-DEVICE'],
+      ['--device-id', 'EXPLICIT-DEVICE', '--build-for-testing'],
+      ['--json', JSON.stringify({ deviceId: 'EXPLICIT-DEVICE', buildForTesting: true })],
+    ])('preserves explicit device arguments: %j', async (...args) => {
+      const invokeDirect = vi
+        .spyOn(DefaultToolInvoker.prototype, 'invokeDirect')
+        .mockResolvedValue(undefined);
+      vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+      const tool = createDeviceTool();
+      const app = createApp(createCatalog([tool]), runtimeConfig);
+
+      await app.parseAsync(['device', 'build', ...args]);
+
+      expect(invokeDirect).toHaveBeenCalledWith(
+        tool,
+        expect.objectContaining({ deviceId: 'EXPLICIT-DEVICE' }),
+        expect.any(Object),
+      );
+    });
+
+    it.each([
+      { id: 'build_run_device', cliName: 'build-and-run' },
+      { id: 'install_app_device', cliName: 'install' },
+      { id: 'test_device', cliName: 'test' },
+    ])('retains the saved device ID for $cliName', async ({ id, cliName }) => {
+      const invokeDirect = vi
+        .spyOn(DefaultToolInvoker.prototype, 'invokeDirect')
+        .mockResolvedValue(undefined);
+      vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+      const tool = createDeviceTool({ id, cliName });
+      const app = createApp(createCatalog([tool]), runtimeConfig);
+
+      await app.parseAsync(['device', cliName]);
+
+      expect(invokeDirect).toHaveBeenCalledWith(
+        tool,
+        expect.objectContaining({ deviceId: 'SAVED-DEVICE' }),
+        expect.any(Object),
+      );
+    });
   });
 
   it('hydrates required args from the explicit --profile override', async () => {

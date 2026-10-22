@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed `mobilebuildmcp device build` failing with `deviceId requires buildForTesting to be true` when a phone is saved in session defaults. Regular builds ignore the saved installation destination, while explicit device arguments and installation commands retain their existing behavior.
+
 ## [2.7.1]
 
 ### Changed

@@ -25,6 +25,7 @@ import { finalizeInlineXcodebuild } from './xcodebuild-output.ts';
 import type { StartedPipeline, XcodebuildPipeline } from './xcodebuild-pipeline.ts';
 import { createXcodebuildPipeline } from './xcodebuild-pipeline.ts';
 import type { XcodebuildRunState } from './xcodebuild-run-state.ts';
+import { countFailedTests } from './xcodebuild-run-state.ts';
 import { collectResolvedTestSelectors, type TestPreflightResult } from './test-preflight.ts';
 import { createStreamingExecutionContext } from './tool-execution-compat.ts';
 import { isBuildErrorDiagnosticLine } from './xcodebuild-line-parsers.ts';
@@ -185,7 +186,7 @@ function createStateTestCounts(state: XcodebuildRunState): Counts | undefined {
     return undefined;
   }
 
-  const failed = Math.max(state.failedTests, state.testFailures.length);
+  const failed = countFailedTests(state);
   const skipped = state.skippedTests;
   const passed = Math.max(0, state.completedTests - failed - skipped);
 

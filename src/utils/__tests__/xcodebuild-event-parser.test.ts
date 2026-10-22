@@ -678,6 +678,45 @@ describe('xcodebuild-event-parser', () => {
     expect(progress).toEqual([expect.objectContaining({ completed: 2, failed: 2, skipped: 0 })]);
   });
 
+  it('counts a Swift Testing test with several issues as one failed test', () => {
+    const events = collectRunStateEvents([
+      { source: 'stdout', text: '✔ Test "passes" passed after 0.001 seconds.\n' },
+      {
+        source: 'stdout',
+        text: '✘ Test "fails" recorded an issue at CountsTests.swift:10:3: Expectation failed: first\n',
+      },
+      {
+        source: 'stdout',
+        text: '✘ Test "fails" recorded an issue at CountsTests.swift:11:3: Expectation failed: second\n',
+      },
+      {
+        source: 'stdout',
+        text: '✘ Test "fails" recorded an issue at CountsTests.swift:12:3: Expectation failed: third\n',
+      },
+      {
+        source: 'stdout',
+        text: '✘ Test "fails" failed after 0.001 seconds with 3 issues.\n',
+      },
+      {
+        source: 'stdout',
+        text: '✘ Test run with 2 tests in 1 suite failed after 0.002 seconds with 3 issues.\n',
+      },
+    ]);
+
+    expect(events.filter((event) => event.fragment === 'test-failure')).toHaveLength(3);
+    expect(events.filter((event) => event.fragment === 'test-progress').at(-1)).toMatchObject({
+      completed: 2,
+      failed: 1,
+      skipped: 0,
+    });
+    expect(events.filter((event) => event.fragment === 'build-summary').at(-1)).toMatchObject({
+      totalTests: 2,
+      passedTests: 1,
+      failedTests: 1,
+      skippedTests: 0,
+    });
+  });
+
   it('keeps parameterized Swift Testing result counts aligned with the run summary', () => {
     const events = collectRunStateEvents([
       {

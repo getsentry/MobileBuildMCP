@@ -135,7 +135,7 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
   let failedCount = 0;
   let skippedCount = 0;
   let testCasesCompletedSinceSwiftTestingSummary = 0;
-  let testCasesFailedSinceSwiftTestingSummary = 0;
+  let issuesAccountedSinceSwiftTestingSummary = 0;
   let detectedXcresultPath: string | null = null;
 
   let pendingError: {
@@ -251,6 +251,7 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
   function recordTestCaseResult(
     testCase: ParsedTestCase,
     source: 'xcodebuild' | 'swift-testing' | 'swift-testing-native' = 'xcodebuild',
+    issueCount = 1,
   ): void {
     const increment = 1;
     completedCount += increment;
@@ -258,17 +259,15 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
 
     if (testCase.status === 'failed') {
       applyFailureDuration(testCase.suiteName, testCase.testName, durationMs);
-      if (source !== 'swift-testing-native') {
-        failedCount += increment;
-      }
+      failedCount += increment;
     } else if (testCase.status === 'skipped') {
       skippedCount += increment;
     }
 
     if (source !== 'xcodebuild') {
       testCasesCompletedSinceSwiftTestingSummary += increment;
-      if (source === 'swift-testing' && testCase.status === 'failed') {
-        testCasesFailedSinceSwiftTestingSummary += increment;
+      if (testCase.status === 'failed') {
+        issuesAccountedSinceSwiftTestingSummary += issueCount;
       }
     }
 
@@ -367,19 +366,32 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
 
     const stResult = parseSwiftTestingResultLine(line);
     if (stResult) {
-      recordTestCaseResult(stResult, 'swift-testing-native');
+      const issueMatch = line.match(/with (\d+) issues?\.?$/u);
+      recordTestCaseResult(
+        stResult,
+        'swift-testing-native',
+        issueMatch ? Number(issueMatch[1]) : 1,
+      );
       return;
     }
 
     const stSummary = parseSwiftTestingRunSummary(line);
     if (stSummary) {
-      completedCount += Math.max(
+      // The summary reports issues, not failed tests, and one test can record
+      // several issues. Only issues not already attributed to a reported failed
+      // test can mark unreported tests as failed.
+      const unreportedTests = Math.max(
         0,
         stSummary.executed - testCasesCompletedSinceSwiftTestingSummary,
       );
-      failedCount += Math.max(0, stSummary.failed - testCasesFailedSinceSwiftTestingSummary);
+      const unaccountedIssues = Math.max(
+        0,
+        stSummary.failed - issuesAccountedSinceSwiftTestingSummary,
+      );
+      completedCount += unreportedTests;
+      failedCount += Math.min(unreportedTests, unaccountedIssues);
       testCasesCompletedSinceSwiftTestingSummary = 0;
-      testCasesFailedSinceSwiftTestingSummary = 0;
+      issuesAccountedSinceSwiftTestingSummary = 0;
       emitTestProgress();
       return;
     }

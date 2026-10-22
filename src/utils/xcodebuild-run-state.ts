@@ -83,6 +83,21 @@ function normalizeTestFailureKey(fragment: TestFailureFragment): string {
   return `${suite}|${test}|${normalizedMessage}`;
 }
 
+/**
+ * Failed test count for a run. Failure diagnostics are counted per test, not per
+ * diagnostic, because one test can record several failed assertions.
+ */
+export function countFailedTests(
+  state: Pick<XcodebuildRunState, 'failedTests' | 'testFailures'>,
+): number {
+  const failedTestKeys = new Set<string>();
+  for (const [index, failure] of state.testFailures.entries()) {
+    const test = normalizeTestIdentifier(failure.test);
+    failedTestKeys.add(test ? `test:${test}` : `failure:${index}`);
+  }
+  return Math.max(state.failedTests, failedTestKeys.size);
+}
+
 export interface XcodebuildRunStateHandle {
   push(fragment: XcodebuildRunStateFragment): void;
   finalize(succeeded: boolean, durationMs?: number): XcodebuildRunState;
@@ -95,7 +110,7 @@ function createTestSummaryFragment(
   kind: 'build-result' | 'build-run-result' | 'test-result',
   durationMs?: number,
 ): BuildSummaryFragment {
-  const failedTests = Math.max(state.failedTests, state.testFailures.length);
+  const failedTests = countFailedTests(state);
   const passedTests = Math.max(0, state.completedTests - failedTests - state.skippedTests);
   const totalTests = passedTests + failedTests + state.skippedTests;
 

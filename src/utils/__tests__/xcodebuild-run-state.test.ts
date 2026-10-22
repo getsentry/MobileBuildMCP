@@ -394,6 +394,42 @@ Actual mismatch`,
     expect(finalState.testFailures).toHaveLength(2);
   });
 
+  it('counts several failure diagnostics from one test as one failed test', () => {
+    const forwarded: DomainFragment[] = [];
+    const state = createXcodebuildRunState({
+      operation: 'TEST',
+      onEvent: (e) => forwarded.push(e),
+    });
+
+    state.push({
+      kind: 'test-result',
+      fragment: 'test-progress',
+      operation: 'TEST',
+      completed: 2,
+      failed: 1,
+      skipped: 0,
+    });
+    for (const line of [10, 11, 12]) {
+      state.push({
+        kind: 'test-result',
+        fragment: 'test-failure',
+        operation: 'TEST',
+        test: 'fails',
+        message: `Expectation failed: ${line}`,
+        location: `CountsTests.swift:${line}:3`,
+      });
+    }
+
+    state.finalize(false);
+    expect(forwarded.at(-1)).toMatchObject({
+      fragment: 'build-summary',
+      totalTests: 2,
+      passedTests: 1,
+      failedTests: 1,
+      skippedTests: 0,
+    });
+  });
+
   it('highestStageRank returns correct rank for multi-phase handoff', () => {
     const state = createXcodebuildRunState({ operation: 'TEST' });
 

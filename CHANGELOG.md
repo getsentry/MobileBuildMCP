@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed test progress and summaries counting each failed Swift Testing assertion as a failed test, which could report more failed tests than were run and zero passing tests ([#533](https://github.com/getsentry/MobileBuildMCP/issues/533), [#541](https://github.com/getsentry/MobileBuildMCP/pull/541) by [@breken-ai](https://github.com/breken-ai)).
+
 ## [2.7.1]
 
 ### Changed

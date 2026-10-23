@@ -5,11 +5,15 @@ import type { SessionDefaults } from '../utils/session-store.ts';
 import {
   mergeSessionDefaultArgs,
   pickSessionDefaultsForKeys,
+  type ExclusiveParameterGroup,
 } from '../utils/session-default-args.ts';
 
-const CLI_SESSION_DEFAULT_EXCLUSIVE_PAIRS: (keyof SessionDefaults)[][] = [
+// Mirrors the exclusive pairs the tool handlers declare: an explicit value for one key drops the
+// configured default for the other, so a merged default never collides with an explicit argument.
+const CLI_SESSION_DEFAULT_EXCLUSIVE_PAIRS: readonly ExclusiveParameterGroup[] = [
   ['projectPath', 'workspacePath'],
   ['simulatorId', 'simulatorName'],
+  ['bundleId', 'pid'],
 ];
 
 export function resolveCliSessionDefaults(opts: {

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ChildProcess } from 'node:child_process';
+import { ChildProcess } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -17,17 +17,24 @@ import { setRuntimeInstanceForTests } from '../runtime-instance.ts';
 import { resetWorkspaceFilesystemLifecycleStateForTests } from '../workspace-filesystem-lifecycle.ts';
 import { getTestProductsCompletionMarkerPath } from '../test-products-path.ts';
 import { extractTestFailuresFromXcresult } from '../xcresult-test-failures.ts';
+import * as testProductsLifecycle from '../test-products-lifecycle.ts';
 
 vi.mock('../xcresult-test-failures.ts', () => ({
   extractTestFailuresFromXcresult: vi.fn(() => []),
   extractTestSummaryCountsFromXcresult: vi.fn(() => null),
 }));
 
-function createSuccessfulCommandResponse(): CommandResponse {
+function createSuccessfulCommandResponse(command?: readonly string[]): CommandResponse {
+  if (command?.at(-1) === 'build-for-testing') {
+    const testProductsPath = command[command.indexOf('-testProductsPath') + 1];
+    if (testProductsPath) {
+      mkdirSync(testProductsPath, { recursive: true });
+    }
+  }
   return {
     success: true,
     output: '',
-    process: { pid: 12345 } as ChildProcess,
+    process: Object.assign(new ChildProcess(), { pid: 12345 }),
     exitCode: 0,
   };
 }
@@ -124,6 +131,7 @@ describe('createTestExecutor', () => {
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     resetWorkspaceFilesystemLifecycleStateForTests();
     setMobileBuildMCPAppDirOverrideForTests(null);
     setRuntimeInstanceForTests(null);
@@ -155,7 +163,7 @@ describe('createTestExecutor', () => {
         opts?.onStdout?.('Ld /tmp/Weather.build/Weather normal arm64\n');
       }
 
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -202,7 +210,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -277,7 +285,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -324,7 +332,7 @@ describe('createTestExecutor', () => {
       return {
         success: false,
         output: '',
-        process: { pid: 12345 } as ChildProcess,
+        process: Object.assign(new ChildProcess(), { pid: 12345 }),
         exitCode: 65,
       };
     };
@@ -355,14 +363,15 @@ describe('createTestExecutor', () => {
     expect(commands).toHaveLength(1);
     expect(commands[0]).not.toContain('-resultBundlePath');
     expect(result.artifacts.xcresultPath).toBeUndefined();
-    expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(true);
+    expect(existsSync(testProductsPath!)).toBe(false);
+    expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(false);
   });
 
   it('injects the default result bundle only into the simulator test execution phase', async () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -407,7 +416,7 @@ describe('createTestExecutor', () => {
     const commands: string[][] = [];
     const executor: CommandExecutor = async (command) => {
       commands.push(command);
-      return createSuccessfulCommandResponse();
+      return createSuccessfulCommandResponse(command);
     };
 
     const executeTest = createTestExecutor(executor, {
@@ -452,7 +461,7 @@ describe('createTestExecutor', () => {
         const testProductsIndex = command.indexOf('-testProductsPath');
         testProductsPath = command[testProductsIndex + 1];
         mkdirSync(testProductsPath!);
-        return createSuccessfulCommandResponse();
+        return createSuccessfulCommandResponse(command);
       }
 
       expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(false);
@@ -484,5 +493,43 @@ describe('createTestExecutor', () => {
 
     expect(result.didError).toBe(true);
     expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath!))).toBe(true);
+  });
+
+  it('retains completed build products when reader cleanup fails after successful tests', async () => {
+    let testProductsPath = '';
+    let testsRan = false;
+    const cleanupError = new Error('Reader cleanup failed');
+    vi.spyOn(testProductsLifecycle, 'withManagedTestProductsReader').mockImplementation(
+      async (_sourcePath, operation) => {
+        await operation();
+        throw cleanupError;
+      },
+    );
+    const executor: CommandExecutor = async (command) => {
+      if (command.at(-1) === 'build-for-testing') {
+        testProductsPath = command[command.indexOf('-testProductsPath') + 1] ?? '';
+      } else {
+        testsRan = true;
+      }
+      return createSuccessfulCommandResponse(command);
+    };
+    const params = {
+      projectPath: '/tmp/Weather/Weather.xcodeproj',
+      scheme: 'Weather',
+      platform: XcodePlatform.macOS,
+    };
+    const executeTest = createTestExecutor(executor, {
+      toolName: 'test_macos',
+      target: 'macos',
+      request: params,
+    });
+
+    await expect(executeTest(params, new DefaultStreamingExecutionContext())).rejects.toBe(
+      cleanupError,
+    );
+
+    expect(testsRan).toBe(true);
+    expect(existsSync(testProductsPath)).toBe(true);
+    expect(existsSync(getTestProductsCompletionMarkerPath(testProductsPath))).toBe(true);
   });
 });

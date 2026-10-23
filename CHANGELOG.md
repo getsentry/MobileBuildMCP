@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Managed `.xctestproducts` now prune promptly around builds and tests, defaulting to three bundles retained for one day. Set `testProductsMaxCount` or `testProductsMaxAgeDays` in `.mobilebuildmcp/config.yaml`, or use `MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT` and `MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS`, to override those limits. Project configuration takes precedence over environment variables. Reader registration and directory cleanup share the lifecycle lock. Successfully built products remain available if a later test, metadata read, or reader cleanup raises a runtime error ([#524](https://github.com/getsentry/MobileBuildMCP/issues/524)).
+
 ## [2.7.1]
 
 ### Changed

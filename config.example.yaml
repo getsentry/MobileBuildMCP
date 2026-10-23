@@ -8,6 +8,8 @@ customWorkflows:
 experimentalWorkflowDiscovery: false
 disableSessionDefaults: false
 incrementalBuildsEnabled: false
+testProductsMaxCount: 3 # positive integer; active builds and readers remain protected
+testProductsMaxAgeDays: 1 # positive number; fractional days are supported
 debug: false
 sentryDisabled: false
 filePathRenderStyle: 'list' # text output file artifacts: list or tree

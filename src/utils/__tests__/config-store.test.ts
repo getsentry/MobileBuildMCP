@@ -7,6 +7,7 @@ import {
   initConfigStore,
   persistActiveSessionDefaultsProfile,
   persistSessionDefaultsPatch,
+  type RuntimeConfigOverrides,
 } from '../config-store.ts';
 
 const cwd = '/repo';
@@ -38,6 +39,8 @@ describe('config-store', () => {
     const config = getConfig();
     expect(config.debug).toBe(false);
     expect(config.incrementalBuildsEnabled).toBe(false);
+    expect(config.testProductsMaxCount).toBe(3);
+    expect(config.testProductsMaxAgeDays).toBe(1);
     expect(config.dapRequestTimeoutMs).toBe(30000);
     expect(config.dapLogEvents).toBe(false);
     expect(config.launchJsonWaitMs).toBe(8000);
@@ -49,6 +52,8 @@ describe('config-store', () => {
       MOBILEBUILDMCP_DEBUG: 'true',
       MOBILEBUILDMCP_SENTRY_DISABLED: 'true',
       INCREMENTAL_BUILDS_ENABLED: '1',
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT: '4',
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS: '0.5',
       MOBILEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '12345',
       MOBILEBUILDMCP_DAP_LOG_EVENTS: 'true',
       MOBILEBUILDMCP_LAUNCH_JSON_WAIT_MS: '9000',
@@ -65,6 +70,8 @@ describe('config-store', () => {
     expect(config.debug).toBe(true);
     expect(config.sentryDisabled).toBe(true);
     expect(config.incrementalBuildsEnabled).toBe(true);
+    expect(config.testProductsMaxCount).toBe(4);
+    expect(config.testProductsMaxAgeDays).toBe(0.5);
     expect(config.dapRequestTimeoutMs).toBe(12345);
     expect(config.dapLogEvents).toBe(true);
     expect(config.launchJsonWaitMs).toBe(9000);
@@ -86,6 +93,8 @@ describe('config-store', () => {
     ].join('\n');
     const env = {
       MOBILEBUILDMCP_DEBUG: 'true',
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT: '9',
+      MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS: '3',
       MOBILEBUILDMCP_DAP_REQUEST_TIMEOUT_MS: '999',
       MOBILEBUILDMCP_FILE_PATH_RENDER_STYLE: 'list',
       MOBILEBUILDMCP_AXE_SOURCE_PATH: '/env/AXe',
@@ -96,6 +105,8 @@ describe('config-store', () => {
       fs: createFs(yaml),
       overrides: {
         debug: true,
+        testProductsMaxCount: 7,
+        testProductsMaxAgeDays: 1.5,
         dapRequestTimeoutMs: 12345,
         filePathRenderStyle: 'list',
         axeSourcePath: '/override/AXe',
@@ -105,16 +116,45 @@ describe('config-store', () => {
 
     const config = getConfig();
     expect(config.debug).toBe(true);
+    expect(config.testProductsMaxCount).toBe(7);
+    expect(config.testProductsMaxAgeDays).toBe(1.5);
     expect(config.dapRequestTimeoutMs).toBe(12345);
     expect(config.filePathRenderStyle).toBe('list');
     expect(config.axeSourcePath).toBe('/override/AXe');
   });
+
+  it.each([
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT', '0'],
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT', '1.5'],
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_COUNT', 'not-a-number'],
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS', '0'],
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS', 'Infinity'],
+    ['MOBILEBUILDMCP_TEST_PRODUCTS_MAX_AGE_DAYS', ''],
+  ])('rejects invalid %s environment values', async (name, value) => {
+    await expect(initConfigStore({ cwd, fs: createFs(), env: { [name]: value } })).rejects.toThrow(
+      name,
+    );
+  });
+
+  it.each([
+    [{ testProductsMaxCount: 0 }, 'testProductsMaxCount'],
+    [{ testProductsMaxCount: 1.5 }, 'testProductsMaxCount'],
+    [{ testProductsMaxAgeDays: Number.NaN }, 'testProductsMaxAgeDays'],
+    [{ testProductsMaxAgeDays: 0 }, 'testProductsMaxAgeDays'],
+  ] satisfies ReadonlyArray<readonly [RuntimeConfigOverrides, string]>)(
+    'rejects invalid runtime retention overrides',
+    async (overrides, name) => {
+      await expect(initConfigStore({ cwd, fs: createFs(), overrides })).rejects.toThrow(name);
+    },
+  );
 
   it('uses file config before env when no override is provided', async () => {
     const yaml = [
       'schemaVersion: 1',
       'filePathRenderStyle: tree',
       'axeSourcePath: /file/AXe',
+      'testProductsMaxCount: 5',
+      'testProductsMaxAgeDays: 2',
       '',
     ].join('\n');
     const env = {
@@ -126,6 +166,8 @@ describe('config-store', () => {
 
     expect(getConfig().filePathRenderStyle).toBe('tree');
     expect(getConfig().axeSourcePath).toBe('/file/AXe');
+    expect(getConfig().testProductsMaxCount).toBe(5);
+    expect(getConfig().testProductsMaxAgeDays).toBe(2);
   });
 
   it('reads sentryDisabled from config file', async () => {
@@ -133,8 +175,7 @@ describe('config-store', () => {
 
     await initConfigStore({ cwd, fs: createFs(yaml) });
 
-    const config = getConfig();
-    expect(config.sentryDisabled).toBe(true);
+    expect(getConfig().sentryDisabled).toBe(true);
   });
 
   it('resolves enabledWorkflows from overrides, config, then defaults', async () => {

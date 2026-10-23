@@ -15,6 +15,7 @@ import { getDefaultCommandExecutor } from '../utils/command.ts';
 import type { PredicateContext } from '../visibility/predicate-types.ts';
 import { createStartupProfiler, getStartupProfileNowMs } from './startup-profiler.ts';
 import { runWorkspaceFilesystemLifecycleSweep } from '../utils/workspace-filesystem-lifecycle.ts';
+import { pruneManagedTestProductsAcrossWorkspaces } from '../utils/test-products-lifecycle.ts';
 
 export interface BootstrapOptions {
   enabledWorkflows?: string[];
@@ -28,15 +29,24 @@ export interface BootstrapResult {
 }
 
 function runStartupFilesystemLifecycleSweep(workspaceKey: string): Promise<void> {
-  return runWorkspaceFilesystemLifecycleSweep({
-    workspaceKey,
-    trigger: 'startup',
-  })
-    .then((lifecycle) => {
+  return Promise.all([
+    runWorkspaceFilesystemLifecycleSweep({
+      workspaceKey,
+      trigger: 'startup',
+    }),
+    pruneManagedTestProductsAcrossWorkspaces(),
+  ])
+    .then(([lifecycle, testProducts]) => {
       if (lifecycle.stopped > 0 || lifecycle.deleted > 0 || lifecycle.errors.length > 0) {
         log(
           lifecycle.errors.length > 0 ? 'warn' : 'info',
           `[startup] Filesystem lifecycle: ${JSON.stringify(lifecycle)}`,
+        );
+      }
+      if (testProducts.deleted > 0 || testProducts.errors.length > 0) {
+        log(
+          testProducts.errors.length > 0 ? 'warn' : 'info',
+          `[startup] Test products lifecycle: ${JSON.stringify(testProducts)}`,
         );
       }
     })

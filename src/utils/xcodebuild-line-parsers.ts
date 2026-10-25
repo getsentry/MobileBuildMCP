@@ -49,10 +49,12 @@ export interface ParsedBuildError {
   renderedLine: string;
 }
 
-const BUILD_ERROR_DIAGNOSTIC_PATTERN = /(?:^|\s)(?:fatal error|error):\s+\S/iu;
+export interface ParsedBuildDiagnostic extends ParsedBuildError {
+  severity: 'error' | 'warning' | 'note';
+}
 
 export function isBuildErrorDiagnosticLine(line: string): boolean {
-  return BUILD_ERROR_DIAGNOSTIC_PATTERN.test(line);
+  return parseBuildDiagnostic(line.trim().split(/\r?\n/u, 1)[0])?.severity === 'error';
 }
 
 function normalizeSuiteName(rawSuiteName: string): string {
@@ -149,39 +151,66 @@ export function parseDurationMs(durationText?: string): number | undefined {
   return Math.round(seconds * 1000);
 }
 
-export function parseBuildErrorDiagnostic(line: string): ParsedBuildError | null {
-  // File path with line number: /path/to/File.swift:42:10: error: message
-  const locationMatch = line.match(/^(.*?):(\d+)(?::\d+)?: (?:fatal error|error): (.+)$/u);
+export function parseBuildDiagnostic(line: string): ParsedBuildDiagnostic | null {
+  // numbered source and caret gutters are diagnostic context, not headers.
+  if (/^\s*(?:\d+\s*)?\|/u.test(line)) {
+    return null;
+  }
+
+  // located compiler diagnostics carry the severity before the message.
+  const locationMatch = line.match(
+    /^(.*?):(\d+)(?::\d+)?:\s+(fatal error|error|warning|note):\s+(.+)$/iu,
+  );
   if (locationMatch) {
-    const [, filePath, lineNumber, message] = locationMatch;
+    const [, filePath, lineNumber, severity, message] = locationMatch;
     return {
+      severity: normalizeSeverity(severity),
       location: `${filePath}:${lineNumber}`,
       message,
       renderedLine: line,
     };
   }
 
-  // Path-based error without line number: /path/to/Project.xcodeproj: error: message
-  const pathErrorMatch = line.match(/^(\/[^:]+): (?:fatal error|error): (.+)$/u);
-  if (pathErrorMatch) {
-    const [, filePath, message] = pathErrorMatch;
+  // project paths and tool prefixes have no line number.
+  const prefixedMatch = line.match(
+    /^(?:(\/[^:]+|[\w.+-]+):\s+)?(fatal error|error|warning|note):\s+(.+)$/iu,
+  );
+  if (prefixedMatch) {
+    const [, prefix, severity, message] = prefixedMatch;
     return {
-      location: filePath,
+      severity: normalizeSeverity(severity),
+      ...(prefix?.startsWith('/') ? { location: prefix } : {}),
       message,
       renderedLine: line,
     };
   }
 
-  // Prefixed error: xcodebuild: error: message / error: message
-  const rawMatch = line.match(/^(?:[\w-]+:\s+)?(?:fatal error|error): (.+)$/u);
-  if (rawMatch) {
-    const [, message] = rawMatch;
-    return { message, renderedLine: line };
+  // preserve timestamped tool diagnostics as raw messages.
+  const timestampedMatch = line.match(
+    /^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+\s+[^\s[]+\[[^\]]+\]\s+(fatal error|error|warning|note):\s+\S.*$/iu,
+  );
+  if (timestampedMatch) {
+    return {
+      severity: normalizeSeverity(timestampedMatch[1]),
+      message: line,
+      renderedLine: line,
+    };
   }
 
-  if (!isBuildErrorDiagnosticLine(line)) {
+  return null;
+}
+
+function normalizeSeverity(severity: string): ParsedBuildDiagnostic['severity'] {
+  const normalized = severity.toLowerCase();
+  return normalized === 'warning' || normalized === 'note' ? normalized : 'error';
+}
+
+export function parseBuildErrorDiagnostic(line: string): ParsedBuildError | null {
+  const diagnostic = parseBuildDiagnostic(line);
+  if (diagnostic?.severity !== 'error') {
     return null;
   }
 
-  return { message: line, renderedLine: line };
+  const { severity: _severity, ...error } = diagnostic;
+  return error;
 }

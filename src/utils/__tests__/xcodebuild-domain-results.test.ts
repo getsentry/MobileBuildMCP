@@ -205,7 +205,8 @@ describe('xcodebuild-domain-results', () => {
       rawLine: '/tmp/App.swift:8:17: error: type mismatch',
     });
     const parsedLine = '/tmp/App.swift:8:17: error: type mismatch';
-    const unparsedLine = '2026-04-23 12:00:00.000 xcodebuild[123:456] error: IDE operation failed';
+    const unparsedLine =
+      '2026-04-23 12:00:00.000 xcodebuild[123:456] error: IDE operation failed\n  additional details';
 
     const result = createBuildDomainResult({
       started: createStartedPipelineWithState(runState.finalize(false, 1000)),
@@ -213,7 +214,14 @@ describe('xcodebuild-domain-results', () => {
       target: 'simulator',
       artifacts: { buildLogPath: '/tmp/build.log' },
       request: { scheme: 'App' },
-      fallbackErrorMessages: [parsedLine, unparsedLine, 'ordinary progress line'],
+      fallbackErrorMessages: [
+        parsedLine,
+        unparsedLine,
+        '/tmp/Bridge.cpp:4:2: warning: quoted execution error: message',
+        '    4 | log("execution error: message");',
+        '/tmp/Bridge.cpp:2:3: note: quoted execution error: message',
+        'ordinary progress line',
+      ],
     });
 
     expect(result.diagnostics).toMatchObject({

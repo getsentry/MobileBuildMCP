@@ -42,6 +42,11 @@ describe('parseBuildErrorDiagnostic', () => {
       renderedLine: 'xcodebuild: error: Unable to find destination',
     });
 
+    expect(parseBuildErrorDiagnostic('clang++: error: linker command failed')).toEqual({
+      message: 'linker command failed',
+      renderedLine: 'clang++: error: linker command failed',
+    });
+
     expect(parseBuildErrorDiagnostic('error: emit-module command failed')).toEqual({
       message: 'emit-module command failed',
       renderedLine: 'error: emit-module command failed',
@@ -54,6 +59,27 @@ describe('parseBuildErrorDiagnostic', () => {
     expect(parseBuildErrorDiagnostic(line)).toEqual({
       message: line,
       renderedLine: line,
+    });
+  });
+
+  it('uses header severity rather than quoted diagnostic text', () => {
+    for (const line of [
+      '/tmp/Bridge.cpp:4:2: warning: quoted execution error: message',
+      '/tmp/Bridge.cpp:4:2: note: quoted execution error: message',
+      '4 | log("execution error: message");',
+      '4 | log("/tmp/Bridge.cpp:1: error: message");',
+      'ld: warning: quoted error: message',
+    ]) {
+      expect(isBuildErrorDiagnosticLine(line)).toBe(false);
+      expect(parseBuildErrorDiagnostic(line)).toBeNull();
+    }
+    expect(
+      isBuildErrorDiagnosticLine('xcodebuild: error: invalid destination\n  available devices'),
+    ).toBe(true);
+    expect(parseBuildErrorDiagnostic('/tmp/Bridge.cpp:1:1: fatal error: missing.h')).toEqual({
+      location: '/tmp/Bridge.cpp:1',
+      message: 'missing.h',
+      renderedLine: '/tmp/Bridge.cpp:1:1: fatal error: missing.h',
     });
   });
 

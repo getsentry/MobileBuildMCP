@@ -433,6 +433,51 @@ describe('xcodebuild-event-parser', () => {
     });
   });
 
+  it.each(['stdout', 'stderr'] as const)(
+    'preserves diagnostic severity and context across byte chunks on %s',
+    (source) => {
+      const warningLines = [
+        '/tmp/Bridge.cpp:4:2: warning: quoted execution error: message [-Wconditional-uninitialized]',
+        '    4 | log("/tmp/Other.cpp:1: error: message");',
+        '      | ^',
+        '/tmp/Bridge.cpp:2:3: note: initialize the variable',
+        '    2 | const char *message;',
+      ];
+      const errorLines = [
+        '  /tmp/Bridge.cpp:8:2: error: undeclared identifier',
+        '    8 | missing();',
+        '      | ^',
+        '/tmp/Bridge.cpp:7:2: note: declared here',
+      ];
+      const text = [...warningLines, ...errorLines, 'xcodebuild: error: build failed'].join('\n');
+      const events = collectEvents(
+        'BUILD',
+        Array.from(text, (text) => ({ source, text })),
+      );
+      expect(events).toEqual([
+        expect.objectContaining({
+          severity: 'warning',
+          location: '/tmp/Bridge.cpp:4',
+          message: [
+            'quoted execution error: message [-Wconditional-uninitialized]',
+            ...warningLines.slice(1).map((line) => line.trim()),
+          ].join('\n'),
+          rawLine: warningLines.join('\n'),
+        }),
+        expect.objectContaining({
+          severity: 'error',
+          location: '/tmp/Bridge.cpp:8',
+          message: [
+            'undeclared identifier',
+            ...errorLines.slice(1).map((line) => line.trim()),
+          ].join('\n'),
+          rawLine: errorLines.join('\n'),
+        }),
+        expect.objectContaining({ severity: 'error', message: 'build failed' }),
+      ]);
+    },
+  );
+
   it('emits warning events', () => {
     const events = collectEvents('BUILD', [
       { source: 'stdout', text: '/tmp/App.swift:10:5: warning: variable unused\n' },

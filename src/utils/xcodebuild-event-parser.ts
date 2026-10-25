@@ -7,9 +7,8 @@ import {
   parseTestCaseLine,
   parseTotalsLine,
   parseFailureDiagnostic,
-  parseBuildErrorDiagnostic,
+  parseBuildDiagnostic,
   parseDurationMs,
-  isBuildErrorDiagnosticLine,
   type ParsedTestCase,
 } from './xcodebuild-line-parsers.ts';
 import {
@@ -51,23 +50,6 @@ const stageMessages: Record<XcodebuildStage, string> = {
   ARCHIVING: 'Archiving',
   COMPLETED: 'Completed',
 };
-
-function parseWarningLine(line: string): { location?: string; message: string } | null {
-  const locationMatch = line.match(/^(.*?):(\d+)(?::\d+)?:\s+warning:\s+(.+)$/u);
-  if (locationMatch) {
-    return {
-      location: `${locationMatch[1]}:${locationMatch[2]}`,
-      message: locationMatch[3],
-    };
-  }
-
-  const prefixedMatch = line.match(/^(?:[\w-]+:\s+)?warning:\s+(.+)$/iu);
-  if (prefixedMatch) {
-    return { message: prefixedMatch[1] };
-  }
-
-  return null;
-}
 
 const IGNORED_NOISE_PATTERNS = [
   /^Command line invocation:$/u,
@@ -138,7 +120,8 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
   let testCasesFailedSinceSwiftTestingSummary = 0;
   let detectedXcresultPath: string | null = null;
 
-  let pendingError: {
+  let pendingDiagnostic: {
+    severity: 'error' | 'warning';
     message: string;
     location?: string;
     rawLines: string[];
@@ -289,26 +272,26 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
     }
   }
 
-  function flushPendingError(): void {
-    if (!pendingError) {
+  function flushPendingDiagnostic(): void {
+    if (!pendingDiagnostic) {
       return;
     }
     onEvent({
       kind,
       fragment: 'compiler-diagnostic',
       operation,
-      severity: 'error',
-      message: pendingError.message,
-      location: pendingError.location,
-      rawLine: pendingError.rawLines.join('\n'),
+      severity: pendingDiagnostic.severity,
+      message: pendingDiagnostic.message,
+      location: pendingDiagnostic.location,
+      rawLine: pendingDiagnostic.rawLines.join('\n'),
     });
-    pendingError = null;
+    pendingDiagnostic = null;
   }
 
   function processLine(rawLine: string): void {
     const line = normalizeEventLine(rawLine);
     if (!line) {
-      flushPendingError();
+      flushPendingDiagnostic();
       return;
     }
 
@@ -321,13 +304,17 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
       }
     }
 
-    if (pendingError && /^\s/u.test(rawLine)) {
-      pendingError.message += `\n${line}`;
-      pendingError.rawLines.push(rawLine);
+    const diagnostic = parseBuildDiagnostic(line);
+    if (
+      pendingDiagnostic &&
+      (diagnostic?.severity === 'note' || (!diagnostic && /^\s/u.test(rawLine)))
+    ) {
+      pendingDiagnostic.message += `\n${line}`;
+      pendingDiagnostic.rawLines.push(rawLine);
       return;
     }
 
-    flushPendingError();
+    flushPendingDiagnostic();
 
     const xcresultPath = parseXcresultPathLine(line);
     if (xcresultPath) {
@@ -396,27 +383,13 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
       return;
     }
 
-    const buildError = parseBuildErrorDiagnostic(line);
-    if (buildError) {
-      pendingError = {
-        message: buildError.message,
-        location: buildError.location,
-        rawLines: [line],
+    if (diagnostic && diagnostic.severity !== 'note') {
+      pendingDiagnostic = {
+        severity: diagnostic.severity,
+        message: diagnostic.message,
+        location: diagnostic.location,
+        rawLines: [rawLine],
       };
-      return;
-    }
-
-    const warning = parseWarningLine(line);
-    if (warning) {
-      onEvent({
-        kind,
-        fragment: 'compiler-diagnostic',
-        operation,
-        severity: 'warning',
-        message: warning.message,
-        location: warning.location,
-        rawLine: line,
-      });
       return;
     }
 
@@ -425,18 +398,6 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
     }
 
     if (isIgnoredNoiseLine(line)) {
-      return;
-    }
-
-    if (isBuildErrorDiagnosticLine(line)) {
-      onEvent({
-        kind,
-        fragment: 'compiler-diagnostic',
-        operation,
-        severity: 'error',
-        message: line,
-        rawLine: line,
-      });
       return;
     }
 
@@ -470,7 +431,7 @@ export function createXcodebuildEventParser(options: EventParserOptions): Xcodeb
         processLine(stderrBuffer);
       }
       flushQueuedFailureDiagnostics();
-      flushPendingError();
+      flushPendingDiagnostic();
       stdoutBuffer = '';
       stderrBuffer = '';
     },

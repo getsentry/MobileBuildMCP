@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed compiler warnings and their quoted source snippets being reported as build errors; warning and error diagnostics now retain their continuation lines and notes.
+
 ## [2.7.1]
 
 ### Changed

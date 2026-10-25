@@ -39,6 +39,7 @@ describe('record_sim_video tool - validation', () => {
 describe('record_sim_video logic - start behavior', () => {
   it('starts with default fps (30) and warns when outputFile is provided on start (ignored)', async () => {
     const video: any = {
+      checkMp4Finalized: async () => ({ finalized: true }),
       startSimulatorVideoCapture: async () => ({
         started: true,
         sessionId: 'sess-123',
@@ -86,6 +87,7 @@ describe('record_sim_video logic - start behavior', () => {
 
   it('keeps start failure summary short and preserves diagnostics', async () => {
     const video: any = {
+      checkMp4Finalized: async () => ({ finalized: true }),
       startSimulatorVideoCapture: async () => ({
         started: false,
         error: 'AXe stderr: permission denied',
@@ -124,6 +126,7 @@ describe('record_sim_video logic - start behavior', () => {
 describe('record_sim_video logic - end-to-end stop with rename', () => {
   it('stops, parses stdout path, and renames to outputFile', async () => {
     const video: any = {
+      checkMp4Finalized: async () => ({ finalized: true }),
       startSimulatorVideoCapture: async () => ({
         started: true,
         sessionId: 'sess-abc',
@@ -181,6 +184,7 @@ describe('record_sim_video logic - end-to-end stop with rename', () => {
 
   it('keeps missing parsed path summary short and preserves raw AXe output', async () => {
     const video: any = {
+      checkMp4Finalized: async () => ({ finalized: true }),
       startSimulatorVideoCapture: async () => ({
         started: true,
         sessionId: 'sess-abc',
@@ -226,6 +230,7 @@ describe('record_sim_video logic - version gate', () => {
     };
 
     const video: any = {
+      checkMp4Finalized: async () => ({ finalized: true }),
       startSimulatorVideoCapture: async () => ({
         started: true,
         sessionId: 'sess-xyz',
@@ -254,5 +259,69 @@ describe('record_sim_video logic - version gate', () => {
     expect(result.isError()).toBe(true);
     const text = result.text();
     expect(text).toContain('AXe v1.1.0');
+  });
+});
+
+describe('record_sim_video logic - incomplete recordings', () => {
+  const axe = {
+    areAxeToolsAvailable: () => true,
+    isAxeAtLeastVersion: async () => true,
+  };
+
+  async function stopWith(stopResult: object, finalization: object) {
+    const copied: string[] = [];
+    const fs = createMockFileSystemExecutor({
+      cp: async (source: string) => {
+        copied.push(source);
+      },
+    });
+    const video: any = {
+      startSimulatorVideoCapture: async () => ({ started: true, sessionId: 's' }),
+      stopSimulatorVideoCapture: async () => ({ stopped: true, ...stopResult }),
+      checkMp4Finalized: async () => finalization,
+    };
+    const { result, run } = createMockToolHandlerContext();
+    await run(() =>
+      record_sim_videoLogic(
+        { simulatorId: VALID_SIM_ID, stop: true, outputFile: '/var/videos/final.mp4' } as any,
+        DUMMY_EXECUTOR,
+        axe,
+        video,
+        fs,
+      ),
+    );
+    return { result, copied };
+  }
+
+  it('fails without copying when the recording has no moov box', async () => {
+    const { result, copied } = await stopWith(
+      { parsedPath: '/tmp/recorded.mp4', stdout: 'Saved /tmp/recorded.mp4', exitCode: 0 },
+      { finalized: false, reason: 'no moov box found' },
+    );
+    expect(result.isError()).toBe(true);
+    expect(copied).toEqual([]);
+    const text = result.text();
+    expect(text).toContain('incomplete');
+    expect(text).toContain('no moov box found');
+    expect(text).toContain('Saved /tmp/recorded.mp4');
+  });
+
+  it('fails when AXe had to be force-killed even if the file looks finalized', async () => {
+    const { result, copied } = await stopWith(
+      { parsedPath: '/tmp/recorded.mp4', stdout: 'Saved /tmp/recorded.mp4', forcedKill: true },
+      { finalized: true },
+    );
+    expect(result.isError()).toBe(true);
+    expect(copied).toEqual([]);
+    expect(result.text()).toContain('force-killed');
+  });
+
+  it('copies a finalized recording', async () => {
+    const { result, copied } = await stopWith(
+      { parsedPath: '/tmp/recorded.mp4', stdout: 'Saved /tmp/recorded.mp4', exitCode: 0 },
+      { finalized: true },
+    );
+    expect(result.isError()).toBe(false);
+    expect(copied).toEqual(['/tmp/recorded.mp4']);
   });
 });

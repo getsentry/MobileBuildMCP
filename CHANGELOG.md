@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- `record_sim_video` no longer reports success for an incomplete recording. A stop that needed a force-kill, or an MP4 with no `moov` box or a truncated box, now fails with the AXe output and the file left in place.
+
 ## [2.7.1]
 
 ### Changed

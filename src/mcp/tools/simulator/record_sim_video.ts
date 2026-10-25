@@ -14,6 +14,7 @@ import {
   AXE_NOT_AVAILABLE_MESSAGE,
 } from '../../../utils/axe/index.ts';
 import {
+  checkMp4Finalized,
   startSimulatorVideoCapture,
   stopSimulatorVideoCapture,
 } from '../../../utils/video-capture/index.ts';
@@ -106,6 +107,7 @@ export function createRecordSimVideoExecutor(
   video: {
     startSimulatorVideoCapture: typeof startSimulatorVideoCapture;
     stopSimulatorVideoCapture: typeof stopSimulatorVideoCapture;
+    checkMp4Finalized: typeof checkMp4Finalized;
   },
   fs: FileSystemExecutor,
 ): NonStreamingExecutor<RecordSimVideoParams, RecordSimVideoResult> {
@@ -173,10 +175,36 @@ export function createRecordSimVideoExecutor(
       });
     }
 
+    const rawOutput = stopRes.stdout ?? '(no output captured)';
+    if (stopRes.parsedPath) {
+      const processOutcome = `exit code: ${stopRes.exitCode ?? 'none'}, signal: ${stopRes.signal ?? 'none'}`;
+      let incompleteReason: string | undefined;
+      if (stopRes.forcedKill) {
+        incompleteReason = 'AXe did not exit after the stop signal and was force-killed';
+      } else {
+        try {
+          const finalization = await video.checkMp4Finalized(stopRes.parsedPath);
+          if (!finalization.finalized) {
+            incompleteReason = finalization.reason;
+          }
+        } catch (error) {
+          incompleteReason = `could not inspect ${stopRes.parsedPath}: ${error instanceof Error ? error.message : String(error)}`;
+        }
+      }
+      if (incompleteReason) {
+        return createRecordSimVideoResult({
+          simulatorId: params.simulatorId,
+          didError: true,
+          error: 'Recording stopped but the video file is incomplete.',
+          diagnosticsMessage: `${incompleteReason} (${processOutcome}). Left in place: ${stopRes.parsedPath}. Raw output: ${rawOutput}`,
+        });
+      }
+    }
+
     try {
       if (params.outputFile) {
         if (!stopRes.parsedPath) {
-          const diagnosticMessage = `Recording stopped but could not determine the recorded file path from AXe output. Raw output: ${stopRes.stdout ?? '(no output captured)'}`;
+          const diagnosticMessage = `Recording stopped but could not determine the recorded file path from AXe output. Raw output: ${rawOutput}`;
           return createRecordSimVideoResult({
             simulatorId: params.simulatorId,
             didError: true,
@@ -228,9 +256,11 @@ export async function record_sim_videoLogic(
   video: {
     startSimulatorVideoCapture: typeof startSimulatorVideoCapture;
     stopSimulatorVideoCapture: typeof stopSimulatorVideoCapture;
+    checkMp4Finalized: typeof checkMp4Finalized;
   } = {
     startSimulatorVideoCapture,
     stopSimulatorVideoCapture,
+    checkMp4Finalized,
   },
   fs: FileSystemExecutor = getDefaultFileSystemExecutor(),
 ): Promise<void> {

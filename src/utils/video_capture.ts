@@ -5,6 +5,7 @@
  * It aggregates stdout/stderr to parse the generated MP4 path on stop.
  */
 
+import { open } from 'node:fs/promises';
 import type { ChildProcess } from 'child_process';
 import { log } from './logging/index.ts';
 import { getAxePath, getBundledAxeEnvironment } from './axe-helpers.ts';
@@ -17,6 +18,7 @@ type Session = {
   startedAt: number;
   buffer: string;
   ended: boolean;
+  forcedKill?: boolean;
   releaseActivity?: () => void;
 };
 
@@ -33,7 +35,15 @@ export type StartVideoCaptureResult =
   | { started: false; error: string };
 
 export type StopVideoCaptureResult =
-  | { stopped: true; sessionId: string; stdout?: string; parsedPath?: string }
+  | {
+      stopped: true;
+      sessionId: string;
+      stdout?: string;
+      parsedPath?: string;
+      forcedKill?: boolean;
+      exitCode?: number | null;
+      signal?: string | null;
+    }
   | { stopped: false; error: string };
 
 function createTimeoutPromise(timeoutMs: number): Promise<'timed_out'> {
@@ -72,6 +82,7 @@ async function waitForChildToStop(session: Session, timeoutMs: number): Promise<
 
   const outcome = await Promise.race([closePromise, createTimeoutPromise(timeoutMs)]);
   if (outcome === 'timed_out') {
+    session.forcedKill = true;
     try {
       child.kill('SIGKILL');
     } catch {
@@ -80,7 +91,14 @@ async function waitForChildToStop(session: Session, timeoutMs: number): Promise<
   }
 }
 
-type StopSessionSuccess = { sessionId: string; stdout: string; parsedPath?: string };
+type StopSessionSuccess = {
+  sessionId: string;
+  stdout: string;
+  parsedPath?: string;
+  forcedKill: boolean;
+  exitCode: number | null;
+  signal: string | null;
+};
 type StopSessionError = { error: string };
 type StopSessionResult = StopSessionSuccess | StopSessionError;
 
@@ -117,6 +135,9 @@ async function stopSession(
     sessionId: session.sessionId,
     stdout: combinedOutput,
     parsedPath,
+    forcedKill: session.forcedKill === true,
+    exitCode: child?.exitCode ?? null,
+    signal: child?.signalCode ?? null,
   };
 }
 
@@ -265,7 +286,61 @@ export async function stopSimulatorVideoCapture(
     sessionId: result.sessionId,
     stdout: result.stdout,
     parsedPath: result.parsedPath,
+    forcedKill: result.forcedKill,
+    exitCode: result.exitCode,
+    signal: result.signal,
   };
+}
+
+export type Mp4FinalizationResult = { finalized: true } | { finalized: false; reason: string };
+
+/**
+ * Walks the top-level MP4 boxes and requires a `moov` box with every declared box
+ * fully present, so a recording cut off before the writer finalized it is rejected.
+ */
+export async function checkMp4Finalized(path: string): Promise<Mp4FinalizationResult> {
+  const handle = await open(path, 'r');
+  try {
+    const size = (await handle.stat()).size;
+    const header = Buffer.alloc(16);
+    let offset = 0;
+    let sawMoov = false;
+    let sawFtyp = false;
+
+    while (offset < size) {
+      const { bytesRead } = await handle.read(header, 0, 16, offset);
+      if (bytesRead < 8) {
+        return { finalized: false, reason: `truncated box header at byte ${offset}` };
+      }
+      let boxSize = header.readUInt32BE(0);
+      let headerSize = 8;
+      const type = header.toString('latin1', 4, 8);
+      if (boxSize === 1) {
+        if (bytesRead < 16) {
+          return { finalized: false, reason: `truncated box header at byte ${offset}` };
+        }
+        boxSize = Number(header.readBigUInt64BE(8));
+        headerSize = 16;
+      } else if (boxSize === 0) {
+        boxSize = size - offset;
+      }
+      if (boxSize < headerSize || offset + boxSize > size) {
+        return {
+          finalized: false,
+          reason: `'${type}' box at byte ${offset} declares ${boxSize} bytes but the file ends at ${size}`,
+        };
+      }
+      if (type === 'ftyp') sawFtyp = true;
+      if (type === 'moov') sawMoov = true;
+      offset += boxSize;
+    }
+
+    if (!sawFtyp) return { finalized: false, reason: 'no ftyp box found' };
+    if (!sawMoov) return { finalized: false, reason: 'no moov box found' };
+    return { finalized: true };
+  } finally {
+    await handle.close();
+  }
 }
 
 export async function stopAllVideoCaptureSessions(timeoutMs = 1000): Promise<{

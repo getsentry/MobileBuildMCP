@@ -4,6 +4,7 @@ description: Tools for managing simulators from booting, opening simulators, lis
 targetPlatforms: [iOS, tvOS, watchOS, visionOS]
 tools:
   - boot_sim
+  - shutdown_sim
   - list_sims
   - open_sim
   - erase_sims

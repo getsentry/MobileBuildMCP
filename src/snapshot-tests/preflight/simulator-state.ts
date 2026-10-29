@@ -73,6 +73,18 @@ export async function prepareSimulatorShutdown(
   await setSimulatorBootState(simulatorId, 'Shutdown', runner);
 }
 
+export async function prepareSimulatorBooted(
+  simulatorId: string,
+  cleanup: CleanupStack,
+  runner: ExternalCommandRunner = runExternalCommand,
+): Promise<void> {
+  const originalState = await readSimulatorBootState(simulatorId, runner);
+  cleanup.defer(`restore simulator ${simulatorId} boot state`, async () => {
+    await setSimulatorBootState(simulatorId, originalState, runner);
+  });
+  await setSimulatorBootState(simulatorId, 'Booted', runner);
+}
+
 export async function ensureSimulatorShutdown(
   simulatorId: string,
   runner: ExternalCommandRunner = runExternalCommand,

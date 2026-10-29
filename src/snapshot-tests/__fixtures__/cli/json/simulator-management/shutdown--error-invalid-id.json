@@ -1,0 +1,25 @@
+{
+  "schema": "mobilebuildmcp.output.simulator-action-result",
+  "schemaVersion": "3",
+  "didError": true,
+  "error": "Shut down simulator operation failed.",
+  "data": {
+    "summary": {
+      "status": "FAILED"
+    },
+    "action": {
+      "type": "shutdown"
+    },
+    "diagnostics": {
+      "warnings": [],
+      "errors": [
+        {
+          "message": "Invalid device: <UUID>"
+        }
+      ]
+    },
+    "artifacts": {
+      "simulatorId": "<UUID>"
+    }
+  }
+}

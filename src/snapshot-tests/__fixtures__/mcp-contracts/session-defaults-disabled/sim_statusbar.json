@@ -1,12 +1,22 @@
 {
   "annotations": {"destructiveHint":false,"openWorldHint":false,"readOnlyHint":true,"title":"Simulator Statusbar"},
-  "description": "Set sim status bar network.",
+  "description": "Override or clear sim status bar time, network, signal, and battery.",
   "execution": {"taskSupport":"forbidden"},
   "inputSchema": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
+      "batteryLevel": {"maximum":100,"minimum":0,"type":"integer"},
+      "batteryState": {
+        "enum": ["charging","charged","discharging"],
+        "type": "string"
+      },
+      "cellularBars": {"maximum":4,"minimum":0,"type":"integer"},
+      "cellularMode": {
+        "enum": ["notSupported","searching","failed","active"],
+        "type": "string"
+      },
       "dataNetwork": {
-        "description": "clear|hide|wifi|3g|4g|lte|lte-a|lte+|5g|5g+|5g-uwb|5g-uc",
+        "description": "clear|hide|wifi|3g|4g|lte|lte-a|lte+|5g|5g+|5g-uwb|5g-uc; clear removes all overrides and must be used alone",
         "enum": ["clear","hide","wifi","3g","4g","lte","lte-a","lte+","5g","5g+","5g-uwb","5g-uc"],
         "type": "string"
       },
@@ -15,9 +25,15 @@
         "format": "uuid",
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
         "type": "string"
+      },
+      "time": {"description":"Fixed time or ISO date string, e.g. \"9:41\"","type":"string"},
+      "wifiBars": {"maximum":3,"minimum":0,"type":"integer"},
+      "wifiMode": {
+        "enum": ["searching","failed","active"],
+        "type": "string"
       }
     },
-    "required": ["simulatorId","dataNetwork"],
+    "required": ["simulatorId"],
     "type": "object"
   },
   "name": "sim_statusbar",
@@ -106,7 +122,7 @@
         "type": "object"
       }
     },
-    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-action-result/2.registration.schema.json",
+    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-action-result/3.registration.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "oneOf": [
       {
@@ -181,8 +197,23 @@
                   {
                     "additionalProperties": false,
                     "properties": {
+                      "type": {"const":"shutdown"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "batteryLevel": {"maximum":100,"minimum":0,"type":"integer"},
+                      "batteryState": {"type":"string"},
+                      "cellularBars": {"maximum":4,"minimum":0,"type":"integer"},
+                      "cellularMode": {"type":"string"},
                       "dataNetwork": {"type":"string"},
-                      "type": {"const":"statusbar"}
+                      "time": {"type":"string"},
+                      "type": {"const":"statusbar"},
+                      "wifiBars": {"maximum":3,"minimum":0,"type":"integer"},
+                      "wifiMode": {"type":"string"}
                     },
                     "required": ["type"],
                     "type": "object"
@@ -226,7 +257,7 @@
           },
           "nextSteps": {"$ref":"#/$defs/nextSteps"},
           "schema": {"const":"mobilebuildmcp.output.simulator-action-result"},
-          "schemaVersion": {"const":"2"}
+          "schemaVersion": {"const":"3"}
         },
         "required": ["schema","schemaVersion","didError","error","data"],
         "type": "object"

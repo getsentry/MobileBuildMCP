@@ -454,9 +454,19 @@ export interface SimulatorActionSetAppearance {
   type: 'set-appearance';
   appearance: string;
 }
+export interface SimulatorActionShutdown {
+  type: 'shutdown';
+}
 export interface SimulatorActionStatusbar {
   type: 'statusbar';
+  time?: string;
   dataNetwork?: string;
+  wifiMode?: string;
+  wifiBars?: number;
+  cellularMode?: string;
+  cellularBars?: number;
+  batteryState?: string;
+  batteryLevel?: number;
 }
 export interface SimulatorActionToggleSoftwareKeyboard {
   type: 'toggle-software-keyboard';
@@ -471,6 +481,7 @@ export type SimulatorAction =
   | SimulatorActionResetLocation
   | SimulatorActionSetLocation
   | SimulatorActionSetAppearance
+  | SimulatorActionShutdown
   | SimulatorActionStatusbar
   | SimulatorActionToggleSoftwareKeyboard
   | SimulatorActionToggleConnectHardwareKeyboard;

@@ -5,6 +5,7 @@ import { runExternalCommandChecked } from '../preflight/command-runner.ts';
 import { ensureSimulatorBooted } from '../preflight/simulator.ts';
 import {
   ensureSimulatorShutdown,
+  prepareSimulatorBooted,
   prepareSimulatorShutdown,
   readSimulatorAppearance,
   setSimulatorAppearance,
@@ -81,6 +82,27 @@ export function registerSimulatorManagementSnapshotSuite(runtime: SnapshotRuntim
           simulatorId: INVALID_SIMULATOR_ID,
         });
         expectFixture(result, 'boot--error-invalid-id', 'error');
+      });
+    });
+
+    describe('shutdown', () => {
+      it.runIf(DISPOSABLE_SIMULATOR_ID !== undefined)(
+        'success',
+        async () => {
+          const simulatorId = DISPOSABLE_SIMULATOR_ID!;
+          await prepareSimulatorBooted(simulatorId, cleanup);
+
+          const result = await harness.invoke('simulator-management', 'shutdown', { simulatorId });
+          expectFixture(result, 'shutdown--success', 'success');
+        },
+        60_000,
+      );
+
+      it('error - invalid id', async () => {
+        const result = await harness.invoke('simulator-management', 'shutdown', {
+          simulatorId: INVALID_SIMULATOR_ID,
+        });
+        expectFixture(result, 'shutdown--error-invalid-id', 'error');
       });
     });
 
@@ -250,6 +272,28 @@ export function registerSimulatorManagementSnapshotSuite(runtime: SnapshotRuntim
           dataNetwork: 'wifi',
         });
         expectFixture(result, 'statusbar--success', 'success');
+      });
+
+      it.runIf(DISPOSABLE_SIMULATOR_ID !== undefined)('success - all overrides', async () => {
+        const simulatorId = DISPOSABLE_SIMULATOR_ID!;
+        await ensureSimulatorBooted(simulatorId, cleanup);
+        await runExternalCommandChecked('xcrun', ['simctl', 'status_bar', simulatorId, 'clear']);
+        cleanup.defer(`clear status bar on simulator ${simulatorId}`, async () => {
+          await runExternalCommandChecked('xcrun', ['simctl', 'status_bar', simulatorId, 'clear']);
+        });
+
+        const result = await harness.invoke('simulator-management', 'statusbar', {
+          simulatorId,
+          time: '9:41',
+          dataNetwork: 'wifi',
+          wifiMode: 'active',
+          wifiBars: 3,
+          cellularMode: 'active',
+          cellularBars: 4,
+          batteryState: 'charged',
+          batteryLevel: 100,
+        });
+        expectFixture(result, 'statusbar--success-all-overrides', 'success');
       });
 
       it('error - invalid simulator', async () => {

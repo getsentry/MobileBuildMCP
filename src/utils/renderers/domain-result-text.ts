@@ -2,6 +2,7 @@ import type { NextStep } from '../../types/common.ts';
 import type {
   BasicDiagnostics,
   DebugThread,
+  SimulatorActionStatusbar,
   TestDiagnostics,
   ToolDomainResult,
 } from '../../types/domain-results.ts';
@@ -1423,6 +1424,23 @@ function createUiErrorItems(uiError?: UiAutomationRecoverableError): TextRendera
   return [createSection('Recovery', lines)];
 }
 
+function createStatusbarParams(action: SimulatorActionStatusbar): HeaderRenderItem['params'] {
+  const fields: Array<[label: string, value: string | number | undefined]> = [
+    ['Time', action.time],
+    ['Data Network', action.dataNetwork],
+    ['Wi-Fi Mode', action.wifiMode],
+    ['Wi-Fi Bars', action.wifiBars],
+    ['Cellular Mode', action.cellularMode],
+    ['Cellular Bars', action.cellularBars],
+    ['Battery State', action.batteryState],
+    ['Battery Level', action.batteryLevel],
+  ];
+
+  return fields
+    .filter((field): field is [string, string | number] => field[1] !== undefined)
+    .map(([label, value]) => ({ label, value: String(value) }));
+}
+
 function createSimulatorActionItems(
   result: Extract<ToolDomainResult, { kind: 'simulator-action-result' }>,
 ): TextRenderableItem[] {
@@ -1433,6 +1451,7 @@ function createSimulatorActionItems(
     'reset-location': 'Reset Location',
     'set-location': 'Set Location',
     'set-appearance': 'Set Appearance',
+    shutdown: 'Shut Down Simulator',
     statusbar: 'Statusbar',
     'toggle-software-keyboard': 'Toggle Software Keyboard',
     'toggle-connect-hardware-keyboard': 'Toggle Connect Hardware Keyboard',
@@ -1451,8 +1470,8 @@ function createSimulatorActionItems(
   if (result.action.type === 'set-appearance') {
     params.push({ label: 'Mode', value: result.action.appearance });
   }
-  if (result.action.type === 'statusbar' && result.action.dataNetwork) {
-    params.push({ label: 'Data Network', value: result.action.dataNetwork });
+  if (result.action.type === 'statusbar') {
+    params.push(...createStatusbarParams(result.action));
   }
 
   const items: TextRenderableItem[] = [createHeader(titleMap[result.action.type], params)];
@@ -1466,7 +1485,11 @@ function createSimulatorActionItems(
       'reset-location': 'Location successfully reset to default',
       'set-location': 'Location set successfully',
       'set-appearance': `Appearance successfully set to ${result.action.type === 'set-appearance' ? result.action.appearance : 'requested'} mode`,
-      statusbar: 'Status bar data network set successfully',
+      shutdown: 'Simulator shut down successfully',
+      statusbar:
+        result.action.type === 'statusbar' && result.action.dataNetwork === 'clear'
+          ? 'Status bar overrides cleared'
+          : 'Status bar overrides set successfully',
       'toggle-software-keyboard': 'Sent Toggle Software Keyboard (Cmd+K)',
       'toggle-connect-hardware-keyboard': 'Sent Connect Hardware Keyboard (Cmd+Shift+K)',
     };

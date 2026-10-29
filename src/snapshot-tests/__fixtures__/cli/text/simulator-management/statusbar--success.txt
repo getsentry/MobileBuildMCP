@@ -4,4 +4,4 @@
    Simulator: <UUID>
    Data Network: wifi
 
-✅ Status bar data network set successfully
+✅ Status bar overrides set successfully

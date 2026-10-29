@@ -1,4 +1,4 @@
 
 📱 Statusbar
 
-✅ Status bar data network set successfully
+✅ Status bar overrides set successfully

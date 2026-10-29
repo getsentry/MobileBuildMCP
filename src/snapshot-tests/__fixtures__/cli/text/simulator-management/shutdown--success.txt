@@ -1,0 +1,6 @@
+
+📱 Shut Down Simulator
+
+   Simulator: <UUID>
+
+✅ Simulator shut down successfully

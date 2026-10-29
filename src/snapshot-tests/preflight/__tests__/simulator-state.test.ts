@@ -3,6 +3,7 @@ import { CleanupStack } from '../cleanup.ts';
 import type { ExternalCommandResult, ExternalCommandRunner } from '../command-runner.ts';
 import {
   ensureSimulatorShutdown,
+  prepareSimulatorBooted,
   prepareSimulatorShutdown,
   readSimulatorAppearance,
 } from '../simulator-state.ts';
@@ -59,6 +60,42 @@ describe('simulator state preflight', () => {
     const cleanup = new CleanupStack();
 
     await prepareSimulatorShutdown('SIM-1', cleanup, runner);
+    await cleanup.cleanup();
+
+    expect(runner).toHaveBeenCalledTimes(3);
+  });
+
+  it('restores a simulator that was originally shut down', async () => {
+    const runner = vi
+      .fn<ExternalCommandRunner>()
+      .mockResolvedValueOnce(simulatorList('Shutdown'))
+      .mockResolvedValueOnce(simulatorList('Shutdown'))
+      .mockResolvedValueOnce(result())
+      .mockResolvedValueOnce(result())
+      .mockResolvedValueOnce(simulatorList('Booted'))
+      .mockResolvedValueOnce(result())
+      .mockResolvedValueOnce(simulatorList('Shutdown'));
+    const cleanup = new CleanupStack();
+
+    await prepareSimulatorBooted('SIM-1', cleanup, runner);
+    await cleanup.cleanup();
+
+    expect(runner.mock.calls.map(([, args]) => args)).toEqual([
+      ['simctl', 'list', 'devices', 'SIM-1', '--json'],
+      ['simctl', 'list', 'devices', 'SIM-1', '--json'],
+      ['simctl', 'boot', 'SIM-1'],
+      ['simctl', 'bootstatus', 'SIM-1', '-b'],
+      ['simctl', 'list', 'devices', 'SIM-1', '--json'],
+      ['simctl', 'shutdown', 'SIM-1'],
+      ['simctl', 'list', 'devices', 'available', '--json'],
+    ]);
+  });
+
+  it('leaves an originally booted simulator booted', async () => {
+    const runner = vi.fn<ExternalCommandRunner>().mockResolvedValue(simulatorList('Booted'));
+    const cleanup = new CleanupStack();
+
+    await prepareSimulatorBooted('SIM-1', cleanup, runner);
     await cleanup.cleanup();
 
     expect(runner).toHaveBeenCalledTimes(3);

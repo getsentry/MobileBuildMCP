@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added `shutdown_sim` (CLI: `mobilebuildmcp simulator-management shutdown`) to shut down a simulator by `simulatorId` or `simulatorName`. Shutting down a simulator that is not booted reports the `simctl` error.
+
+### Changed
+
+- `sim_statusbar` now accepts `time`, `wifiMode`, `wifiBars`, `cellularMode`, `cellularBars`, `batteryState`, and `batteryLevel` overrides, and `dataNetwork` is optional. All supplied fields are applied in one `simctl status_bar override` call; at least one field is required, and `dataNetwork: "clear"` must be used alone.
+- `sim_statusbar` and `shutdown_sim` return `mobilebuildmcp.output.simulator-action-result` schema version 3, which adds the `shutdown` action and the new status bar fields. Validators pinned to version 2 must accept version 3 for these tools; other simulator action tools still return version 2.
+
 ## [2.7.1]
 
 ### Changed

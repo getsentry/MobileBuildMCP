@@ -1,6 +1,6 @@
 {
   "schema": "mobilebuildmcp.output.simulator-action-result",
-  "schemaVersion": "2",
+  "schemaVersion": "3",
   "didError": false,
   "error": null,
   "data": {

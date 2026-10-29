@@ -1,0 +1,14 @@
+
+📱 Statusbar
+
+   Simulator: <UUID>
+   Time: 9:41
+   Data Network: wifi
+   Wi-Fi Mode: active
+   Wi-Fi Bars: 3
+   Cellular Mode: active
+   Cellular Bars: 4
+   Battery State: charged
+   Battery Level: 100
+
+✅ Status bar overrides set successfully

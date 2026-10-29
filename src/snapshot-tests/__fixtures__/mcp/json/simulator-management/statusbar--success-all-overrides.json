@@ -1,0 +1,25 @@
+{
+  "schema": "mobilebuildmcp.output.simulator-action-result",
+  "schemaVersion": "3",
+  "didError": false,
+  "error": null,
+  "data": {
+    "summary": {
+      "status": "SUCCEEDED"
+    },
+    "action": {
+      "type": "statusbar",
+      "time": "9:41",
+      "dataNetwork": "wifi",
+      "wifiMode": "active",
+      "wifiBars": 3,
+      "cellularMode": "active",
+      "cellularBars": 4,
+      "batteryState": "charged",
+      "batteryLevel": 100
+    },
+    "artifacts": {
+      "simulatorId": "<UUID>"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "mobilebuildmcp.output.simulator-action-result",
+  "schemaVersion": "3",
+  "didError": false,
+  "error": null,
+  "data": {
+    "summary": {
+      "status": "SUCCEEDED"
+    },
+    "action": {
+      "type": "shutdown"
+    },
+    "artifacts": {
+      "simulatorId": "<UUID>"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+
+📱 Shut Down Simulator
+
+Errors (1):
+
+  ✗ Invalid device: <UUID>
+
+❌ Shut down simulator operation failed.

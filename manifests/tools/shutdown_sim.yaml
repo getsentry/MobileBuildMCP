@@ -1,0 +1,14 @@
+id: shutdown_sim
+module: mcp/tools/simulator-management/shutdown_sim
+names:
+  mcp: shutdown_sim
+  cli: shutdown
+description: Shut down a booted simulator.
+outputSchema:
+  schema: mobilebuildmcp.output.simulator-action-result
+  version: "3"
+annotations:
+  title: Shut Down Simulator
+  readOnlyHint: false
+  destructiveHint: false
+  openWorldHint: false

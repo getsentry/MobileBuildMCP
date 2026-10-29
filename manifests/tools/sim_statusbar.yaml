@@ -3,10 +3,10 @@ module: mcp/tools/simulator-management/sim_statusbar
 names:
   mcp: sim_statusbar
   cli: statusbar
-description: Set sim status bar network.
+description: Override or clear sim status bar time, network, signal, and battery.
 outputSchema:
   schema: mobilebuildmcp.output.simulator-action-result
-  version: "2"
+  version: "3"
 annotations:
   title: Simulator Statusbar
   readOnlyHint: true

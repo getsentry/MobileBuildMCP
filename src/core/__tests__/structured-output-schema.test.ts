@@ -259,6 +259,46 @@ describe('structured output schema bundling', () => {
     ).toBe(true);
   });
 
+  it('accepts shutdown and extended statusbar actions only in simulator action result v3', () => {
+    const ajv = new Ajv2020({ allErrors: true, strict: true, validateSchema: true });
+    const actionV2 = ajv.compile(
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.simulator-action-result', version: '2' }),
+    );
+    const actionV3 = ajv.compile(
+      getMcpOutputSchema({ schema: 'mobilebuildmcp.output.simulator-action-result', version: '3' }),
+    );
+    const envelope = (action: JsonObject): JsonObject => ({
+      schema: 'mobilebuildmcp.output.simulator-action-result',
+      schemaVersion: '3',
+      didError: false,
+      error: null,
+      data: {
+        summary: { status: 'SUCCEEDED' },
+        action,
+        artifacts: { simulatorId: 'SIM-1' },
+      },
+    });
+    const statusbarEnvelope = envelope({
+      type: 'statusbar',
+      time: '9:41',
+      dataNetwork: 'wifi',
+      wifiMode: 'active',
+      wifiBars: 3,
+      cellularMode: 'active',
+      cellularBars: 4,
+      batteryState: 'charged',
+      batteryLevel: 100,
+    });
+    const shutdownEnvelope = envelope({ type: 'shutdown' });
+
+    expect(actionV2({ ...statusbarEnvelope, schemaVersion: '2' })).toBe(false);
+    expect(actionV2({ ...shutdownEnvelope, schemaVersion: '2' })).toBe(false);
+    expect(actionV3(statusbarEnvelope)).toBe(true);
+    expect(actionV3(shutdownEnvelope)).toBe(true);
+    expect(actionV3(envelope({ type: 'statusbar', dataNetwork: 'clear' }))).toBe(true);
+    expect(actionV3(envelope({ type: 'statusbar', batteryLevel: 101 }))).toBe(false);
+  });
+
   it('accepts video recording capture payloads in the bumped capture contract', () => {
     const schema = getMcpOutputSchema({
       schema: 'mobilebuildmcp.output.capture-result',

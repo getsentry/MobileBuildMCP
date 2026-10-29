@@ -1,0 +1,267 @@
+{
+  "annotations": {"destructiveHint":false,"openWorldHint":false,"readOnlyHint":false,"title":"Shut Down Simulator"},
+  "description": "Shut down a booted simulator.",
+  "execution": {"taskSupport":"forbidden"},
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "simulatorId": {"description":"UUID of the simulator to use (obtained from list_sims). Provide EITHER this OR simulatorName, not both","type":"string"},
+      "simulatorName": {"description":"Name of the simulator (e.g., 'iPhone 17'). Provide EITHER this OR simulatorId, not both","type":"string"}
+    },
+    "type": "object"
+  },
+  "name": "shutdown_sim",
+  "outputSchema": {
+    "$defs": {
+      "basicDiagnostics": {
+        "additionalProperties": false,
+        "properties": {
+          "errors": {
+            "items": {"$ref":"#/$defs/diagnosticEntry"},
+            "type": "array"
+          },
+          "rawOutput": {
+            "items": {"type":"string"},
+            "type": "array"
+          },
+          "warnings": {
+            "items": {"$ref":"#/$defs/diagnosticEntry"},
+            "type": "array"
+          }
+        },
+        "required": ["warnings","errors"],
+        "type": "object"
+      },
+      "diagnosticEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "location": {"type":"string"},
+          "message": {"type":"string"}
+        },
+        "required": ["message"],
+        "type": "object"
+      },
+      "errorConsistency": {
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "didError": {"const":false}
+              },
+              "required": ["didError"]
+            },
+            "then": {
+              "properties": {
+                "error": {"type":"null"}
+              },
+              "required": ["error"]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "didError": {"const":true}
+              },
+              "required": ["didError"]
+            },
+            "then": {
+              "properties": {
+                "error": {"minLength":1,"type":"string"}
+              },
+              "required": ["error"]
+            }
+          }
+        ],
+        "properties": {
+          "didError": {"type":"boolean"},
+          "error": {
+            "type": ["string","null"]
+          }
+        },
+        "type": "object"
+      },
+      "nextSteps": {
+        "items": {"minLength":1,"type":"string"},
+        "minItems": 1,
+        "type": "array"
+      },
+      "statusSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": ["SUCCEEDED","FAILED"]
+          }
+        },
+        "required": ["status"],
+        "type": "object"
+      }
+    },
+    "$id": "https://raw.githubusercontent.com/getsentry/MobileBuildMCP/main/schemas/structured-output/mobilebuildmcp.output.simulator-action-result/3.registration.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "oneOf": [
+      {
+        "additionalProperties": false,
+        "allOf": [
+          {"$ref":"#/$defs/errorConsistency"}
+        ],
+        "properties": {
+          "data": {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"boot"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"erase"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"open"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"reset-location"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "coordinates": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "latitude": {"maximum":90,"minimum":-90,"type":"number"},
+                          "longitude": {"maximum":180,"minimum":-180,"type":"number"}
+                        },
+                        "required": ["latitude","longitude"],
+                        "type": "object"
+                      },
+                      "type": {"const":"set-location"}
+                    },
+                    "required": ["type","coordinates"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "appearance": {"type":"string"},
+                      "type": {"const":"set-appearance"}
+                    },
+                    "required": ["type","appearance"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"shutdown"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "batteryLevel": {"maximum":100,"minimum":0,"type":"integer"},
+                      "batteryState": {"type":"string"},
+                      "cellularBars": {"maximum":4,"minimum":0,"type":"integer"},
+                      "cellularMode": {"type":"string"},
+                      "dataNetwork": {"type":"string"},
+                      "time": {"type":"string"},
+                      "type": {"const":"statusbar"},
+                      "wifiBars": {"maximum":3,"minimum":0,"type":"integer"},
+                      "wifiMode": {"type":"string"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"toggle-software-keyboard"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {"const":"toggle-connect-hardware-keyboard"}
+                    },
+                    "required": ["type"],
+                    "type": "object"
+                  }
+                ]
+              },
+              "artifacts": {
+                "additionalProperties": false,
+                "minProperties": 1,
+                "properties": {
+                  "simulatorId": {"type":"string"}
+                },
+                "required": [],
+                "type": "object"
+              },
+              "diagnostics": {"$ref":"#/$defs/basicDiagnostics"},
+              "summary": {"$ref":"#/$defs/statusSummary"}
+            },
+            "required": ["summary","action"],
+            "type": "object"
+          },
+          "didError": {"type":"boolean"},
+          "error": {
+            "type": ["string","null"]
+          },
+          "nextSteps": {"$ref":"#/$defs/nextSteps"},
+          "schema": {"const":"mobilebuildmcp.output.simulator-action-result"},
+          "schemaVersion": {"const":"3"}
+        },
+        "required": ["schema","schemaVersion","didError","error","data"],
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "allOf": [
+          {"$ref":"#/$defs/errorConsistency"}
+        ],
+        "properties": {
+          "data": {
+            "additionalProperties": false,
+            "properties": {
+              "category": {
+                "enum": ["runtime","validation","schema"]
+              },
+              "code": {"minLength":1,"type":"string"}
+            },
+            "required": ["category","code"],
+            "type": "object"
+          },
+          "didError": {"const":true},
+          "error": {"minLength":1,"type":"string"},
+          "schema": {"const":"mobilebuildmcp.output.error"},
+          "schemaVersion": {"const":"1"}
+        },
+        "required": ["schema","schemaVersion","didError","error","data"],
+        "type": "object"
+      }
+    ],
+    "type": "object"
+  }
+}

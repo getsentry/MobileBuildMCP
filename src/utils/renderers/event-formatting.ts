@@ -46,6 +46,7 @@ export const OPERATION_EMOJI: Record<string, string> = {
   'File Coverage': '\u{1F4CA}',
   'List Simulators': '\u{1F4F1}',
   'Boot Simulator': '\u{1F4F1}',
+  'Shut Down Simulator': '\u{1F4F1}',
   'Open Simulator': '\u{1F4F1}',
   'Set Appearance': '\u{1F3A8}',
   'Set Location': '\u{1F4CD}',

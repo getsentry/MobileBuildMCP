@@ -50,36 +50,6 @@ paths = [
 type = "pull_request"
 actions = ["opened", "synchronize", "reopened"]
 
-[[skills]]
-name = "find-bugs"
-remote = "getsentry/skills@b10e2db21d3165de1904bdf3fa64285016765fe5"
-maxTurns = 4
-maxFindings = 3
-paths = [
-  "src/cli.ts",
-  "src/cli/**",
-  "src/daemon.ts",
-  "src/daemon/**",
-  "src/doctor-cli.ts",
-  "src/integrations/**",
-  "src/mcp/resources/**",
-  "src/mcp/tools/**",
-  "src/runtime/**",
-  "src/server/**",
-  "src/utils/execution/**",
-  "scripts/**/*.{js,mjs,ts}",
-]
-ignorePaths = [
-  "**/*.test.ts",
-  "**/__tests__/**",
-  "**/__fixtures__/**",
-  "**/__snapshots__/**",
-]
-
-[[skills.triggers]]
-type = "pull_request"
-actions = ["opened", "synchronize", "reopened"]
-
 # Targeted domain reviews run only when explicitly selected for high-risk changes.
 [[skills]]
 name = "mobilebuildmcp-runtime-boundary-review"
@@ -207,6 +177,13 @@ ignorePaths = [
 
 [[skills.triggers]]
 type = "schedule"
+
+# PR runs keep the turn and finding caps find-bugs used, so the PR budget stays the same.
+[[skills.triggers]]
+type = "pull_request"
+actions = ["opened", "synchronize", "reopened"]
+maxTurns = 4
+maxFindings = 3
 
 [[skills]]
 name = "code-simplifier"

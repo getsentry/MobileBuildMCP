@@ -164,7 +164,6 @@ type = "schedule"
 
 [[skills]]
 name = "code-review"
-remote = "getsentry/skills@b10e2db21d3165de1904bdf3fa64285016765fe5"
 maxTurns = 15
 maxFindings = 5
 paths = ["src/**/*.ts"]
